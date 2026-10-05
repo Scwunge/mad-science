@@ -1,18 +1,606 @@
 {
-  "syringe.stab_player": {
+  "abomination.attack": {
+    "sounds": [
+      "madscience:abomination/attack"
+    ]
+  },
+  "abomination.death": {
+    "sounds": [
+      "madscience:abomination/death"
+    ]
+  },
+  "abomination.egg": {
+    "sounds": [
+      "madscience:abomination/egg"
+    ]
+  },
+  "abomination.egghatch": {
+    "sounds": [
+      "madscience:abomination/egghatch"
+    ]
+  },
+  "abomination.eggpop": {
+    "sounds": [
+      "madscience:abomination/eggpop"
+    ]
+  },
+  "abomination.growl": {
+    "sounds": [
+      "madscience:abomination/growl1",
+      "madscience:abomination/growl2",
+      "madscience:abomination/growl3"
+    ]
+  },
+  "abomination.hiss": {
+    "sounds": [
+      "madscience:abomination/hiss1",
+      "madscience:abomination/hiss2",
+      "madscience:abomination/hiss3",
+      "madscience:abomination/hiss4"
+    ]
+  },
+  "abomination.pain": {
+    "sounds": [
+      "madscience:abomination/pain1",
+      "madscience:abomination/pain2",
+      "madscience:abomination/pain3"
+    ]
+  },
+  "abomination.step": {
+    "sounds": [
+      "madscience:abomination/step1",
+      "madscience:abomination/step2",
+      "madscience:abomination/step3",
+      "madscience:abomination/step4"
+    ]
+  },
+  "cnc_machine.finish_crushing": {
+    "sounds": [
+      "madscience:cnc_machine/finishcrushing"
+    ]
+  },
+  "cnc_machine.finished": {
+    "sounds": [
+      "madscience:cnc_machine/finished"
+    ]
+  },
+  "cnc_machine.insert_iron_block": {
+    "sounds": [
+      "madscience:cnc_machine/insertironblock"
+    ]
+  },
+  "cnc_machine.invalid_book": {
+    "sounds": [
+      "madscience:cnc_machine/invalidbook"
+    ]
+  },
+  "cnc_machine.power_on": {
+    "sounds": [
+      "madscience:cnc_machine/poweron"
+    ]
+  },
+  "cnc_machine.press": {
+    "sounds": [
+      "madscience:cnc_machine/press1",
+      "madscience:cnc_machine/press2",
+      "madscience:cnc_machine/press3",
+      "madscience:cnc_machine/press4"
+    ]
+  },
+  "cnc_machine.press_stop": {
+    "sounds": [
+      "madscience:cnc_machine/pressstop"
+    ]
+  },
+  "cnc_machine.pressing_work": {
+    "sounds": [
+      "madscience:cnc_machine/pressingwork"
+    ]
+  },
+  "cnc_machine.water_flow": {
+    "sounds": [
+      "madscience:cnc_machine/waterflow"
+    ]
+  },
+  "cnc_machine.water_work": {
+    "sounds": [
+      "madscience:cnc_machine/waterwork"
+    ]
+  },
+  "creeper_cow.attack": {
+    "sounds": [
+      "madscience:creeper_cow/attack"
+    ]
+  },
+  "cryo_freezer.idle": {
+    "sounds": [
+      "madscience:cryo_freezer/idle"
+    ]
+  },
+  "cryo_tube.crack_egg": {
+    "sounds": [
+      "madscience:cryo_tube/crackegg"
+    ]
+  },
+  "cryo_tube.hatch": {
+    "sounds": [
+      "madscience:cryo_tube/hatch1",
+      "madscience:cryo_tube/hatch10",
+      "madscience:cryo_tube/hatch2",
+      "madscience:cryo_tube/hatch3",
+      "madscience:cryo_tube/hatch4",
+      "madscience:cryo_tube/hatch5",
+      "madscience:cryo_tube/hatch6",
+      "madscience:cryo_tube/hatch7",
+      "madscience:cryo_tube/hatch8",
+      "madscience:cryo_tube/hatch9"
+    ]
+  },
+  "cryo_tube.hatching": {
+    "sounds": [
+      "madscience:cryo_tube/hatching"
+    ]
+  },
+  "cryo_tube.idle": {
+    "sounds": [
+      "madscience:cryo_tube/idle"
+    ]
+  },
+  "cryo_tube.off": {
+    "sounds": [
+      "madscience:cryo_tube/off"
+    ]
+  },
+  "cryo_tube.stillbirth": {
+    "sounds": [
+      "madscience:cryo_tube/stillbirth"
+    ]
+  },
+  "cryo_tube.work": {
+    "sounds": [
+      "madscience:cryo_tube/work"
+    ]
+  },
+  "data_duplicator.finish": {
+    "sounds": [
+      "madscience:data_duplicator/finish"
+    ]
+  },
+  "data_duplicator.idle": {
+    "sounds": [
+      "madscience:data_duplicator/idle"
+    ]
+  },
+  "data_duplicator.start": {
+    "sounds": [
+      "madscience:data_duplicator/start"
+    ]
+  },
+  "data_duplicator.work": {
+    "sounds": [
+      "madscience:data_duplicator/work"
+    ]
+  },
+  "dna_extractor.finish": {
+    "sounds": [
+      "madscience:dna_extractor/finish"
+    ]
+  },
+  "dna_extractor.idle": {
+    "sounds": [
+      "madscience:dna_extractor/idle"
+    ]
+  },
+  "incubator.finish": {
+    "sounds": [
+      "madscience:incubator/finish"
+    ]
+  },
+  "incubator.start": {
+    "sounds": [
+      "madscience:incubator/start"
+    ]
+  },
+  "incubator.work": {
+    "sounds": [
+      "madscience:incubator/work1",
+      "madscience:incubator/work2",
+      "madscience:incubator/work3",
+      "madscience:incubator/work4",
+      "madscience:incubator/work5",
+      "madscience:incubator/work6"
+    ]
+  },
+  "magazine_loader.insert_magazine": {
+    "sounds": [
+      "madscience:magazine_loader/insertmagazine"
+    ]
+  },
+  "magazine_loader.loading": {
+    "sounds": [
+      "madscience:magazine_loader/loading1",
+      "madscience:magazine_loader/loading2",
+      "madscience:magazine_loader/loading3",
+      "madscience:magazine_loader/loading4",
+      "madscience:magazine_loader/loading5",
+      "madscience:magazine_loader/loading6",
+      "madscience:magazine_loader/loading7"
+    ]
+  },
+  "magazine_loader.push_start": {
+    "sounds": [
+      "madscience:magazine_loader/pushstart"
+    ]
+  },
+  "magazine_loader.push_step": {
+    "sounds": [
+      "madscience:magazine_loader/pushstep"
+    ]
+  },
+  "magazine_loader.push_stop": {
+    "sounds": [
+      "madscience:magazine_loader/pushstop"
+    ]
+  },
+  "mainframe.break": {
+    "sounds": [
+      "madscience:mainframe/break"
+    ]
+  },
+  "mainframe.finish": {
+    "sounds": [
+      "madscience:mainframe/finish"
+    ]
+  },
+  "mainframe.idle": {
+    "sounds": [
+      "madscience:mainframe/idle"
+    ]
+  },
+  "mainframe.off": {
+    "sounds": [
+      "madscience:mainframe/off"
+    ]
+  },
+  "mainframe.on": {
+    "sounds": [
+      "madscience:mainframe/on"
+    ]
+  },
+  "mainframe.overheat": {
+    "sounds": [
+      "madscience:mainframe/overheat"
+    ]
+  },
+  "mainframe.start": {
+    "sounds": [
+      "madscience:mainframe/start"
+    ]
+  },
+  "mainframe.work": {
+    "sounds": [
+      "madscience:mainframe/work1",
+      "madscience:mainframe/work2",
+      "madscience:mainframe/work3",
+      "madscience:mainframe/work4",
+      "madscience:mainframe/work5"
+    ]
+  },
+  "meat_cube.belly": {
+    "sounds": [
+      "madscience:meat_cube/belly1",
+      "madscience:meat_cube/belly2",
+      "madscience:meat_cube/belly3",
+      "madscience:meat_cube/belly4",
+      "madscience:meat_cube/belly5",
+      "madscience:meat_cube/belly6"
+    ]
+  },
+  "meat_cube.heartbeat": {
+    "sounds": [
+      "madscience:meat_cube/heartbeat1",
+      "madscience:meat_cube/heartbeat2",
+      "madscience:meat_cube/heartbeat3",
+      "madscience:meat_cube/heartbeat4"
+    ]
+  },
+  "meat_cube.idle": {
+    "sounds": [
+      "madscience:meat_cube/idle1",
+      "madscience:meat_cube/idle2",
+      "madscience:meat_cube/idle3",
+      "madscience:meat_cube/idle4",
+      "madscience:meat_cube/idle5"
+    ]
+  },
+  "meat_cube.meatslap": {
+    "sounds": [
+      "madscience:meat_cube/meatslap0",
+      "madscience:meat_cube/meatslap1",
+      "madscience:meat_cube/meatslap2",
+      "madscience:meat_cube/meatslap3",
+      "madscience:meat_cube/meatslap4",
+      "madscience:meat_cube/meatslap5"
+    ]
+  },
+  "meat_cube.moo": {
+    "sounds": [
+      "madscience:meat_cube/moo1",
+      "madscience:meat_cube/moo2",
+      "madscience:meat_cube/moo3",
+      "madscience:meat_cube/moo4",
+      "madscience:meat_cube/moo5"
+    ]
+  },
+  "pulse_rifle.chamber_grenade": {
     "sounds": [
       {
-        "name": "minecraft:entity.bee.sting",
+        "name": "minecraft:block.piston.contract",
         "type": "event"
       }
     ]
   },
-  "syringe.stab_mob": {
+  "pulse_rifle.empty": {
     "sounds": [
       {
-        "name": "minecraft:entity.bee.sting",
+        "name": "minecraft:block.dispenser.fail",
         "type": "event"
       }
+    ]
+  },
+  "pulse_rifle.fire": {
+    "sounds": [
+      {
+        "name": "minecraft:entity.firework_rocket.blast",
+        "type": "event"
+      }
+    ]
+  },
+  "pulse_rifle.fire_grenade": {
+    "sounds": [
+      {
+        "name": "minecraft:entity.firework_rocket.launch",
+        "type": "event"
+      }
+    ]
+  },
+  "pulse_rifle.grenade_explode": {
+    "sounds": [
+      {
+        "name": "minecraft:entity.generic.explode",
+        "type": "event"
+      }
+    ]
+  },
+  "pulse_rifle.magazine_reload": {
+    "sounds": [
+      {
+        "name": "minecraft:item.armor.equip_iron",
+        "type": "event"
+      }
+    ]
+  },
+  "pulse_rifle.magazine_unload": {
+    "sounds": [
+      {
+        "name": "minecraft:item.armor.equip_chain",
+        "type": "event"
+      }
+    ]
+  },
+  "pulse_rifle.reload": {
+    "sounds": [
+      {
+        "name": "minecraft:item.crossbow.loading_end",
+        "type": "event"
+      }
+    ]
+  },
+  "pulse_rifle.reload_grenade": {
+    "sounds": [
+      {
+        "name": "minecraft:item.crossbow.loading_middle",
+        "type": "event"
+      }
+    ]
+  },
+  "pulse_rifle.ricochet": {
+    "sounds": [
+      {
+        "name": "minecraft:block.anvil.land",
+        "type": "event"
+      }
+    ]
+  },
+  "pulse_rifle.unload": {
+    "sounds": [
+      {
+        "name": "minecraft:item.crossbow.loading_start",
+        "type": "event"
+      }
+    ]
+  },
+  "sanitizer.idle": {
+    "sounds": [
+      "madscience:sanitizer/idle"
+    ]
+  },
+  "sequencer.finish": {
+    "sounds": [
+      "madscience:sequencer/finish"
+    ]
+  },
+  "sequencer.start": {
+    "sounds": [
+      "madscience:sequencer/start"
+    ]
+  },
+  "sequencer.work": {
+    "sounds": [
+      "madscience:sequencer/work1",
+      "madscience:sequencer/work2",
+      "madscience:sequencer/work3",
+      "madscience:sequencer/work4",
+      "madscience:sequencer/work5",
+      "madscience:sequencer/work6",
+      "madscience:sequencer/work7",
+      "madscience:sequencer/work8"
+    ]
+  },
+  "soniclocator.cooldown": {
+    "sounds": [
+      "madscience:soniclocator/cooldown"
+    ]
+  },
+  "soniclocator.cooldown_beep": {
+    "sounds": [
+      "madscience:soniclocator/cooldownbeep"
+    ]
+  },
+  "soniclocator.empty": {
+    "sounds": [
+      "madscience:soniclocator/empty"
+    ]
+  },
+  "soniclocator.explode": {
+    "sounds": [
+      "madscience:soniclocator/explode"
+    ]
+  },
+  "soniclocator.finish": {
+    "sounds": [
+      "madscience:soniclocator/finish"
+    ]
+  },
+  "soniclocator.idle": {
+    "sounds": [
+      "madscience:soniclocator/idle"
+    ]
+  },
+  "soniclocator.idle_charged": {
+    "sounds": [
+      "madscience:soniclocator/idlecharged"
+    ]
+  },
+  "soniclocator.overload": {
+    "sounds": [
+      "madscience:soniclocator/overload"
+    ]
+  },
+  "soniclocator.place": {
+    "sounds": [
+      "madscience:soniclocator/place"
+    ]
+  },
+  "soniclocator.thump": {
+    "sounds": [
+      "madscience:soniclocator/thump1",
+      "madscience:soniclocator/thump2",
+      "madscience:soniclocator/thump3",
+      "madscience:soniclocator/thump4"
+    ]
+  },
+  "soniclocator.thump_charge": {
+    "sounds": [
+      "madscience:soniclocator/thumpcharge"
+    ]
+  },
+  "soniclocator.thump_start": {
+    "sounds": [
+      "madscience:soniclocator/thumpstart"
+    ]
+  },
+  "syringe.stab_mob": {
+    "sounds": [
+      "madscience:syringe/stab"
+    ]
+  },
+  "syringe.stab_player": {
+    "sounds": [
+      "madscience:syringe/stabself"
+    ]
+  },
+  "thermosonic_bonder.idle": {
+    "sounds": [
+      "madscience:thermosonic_bonder/idle"
+    ]
+  },
+  "thermosonic_bonder.laser_start": {
+    "sounds": [
+      "madscience:thermosonic_bonder/laserstart"
+    ]
+  },
+  "thermosonic_bonder.laser_stop": {
+    "sounds": [
+      "madscience:thermosonic_bonder/laserstop"
+    ]
+  },
+  "thermosonic_bonder.laser_working": {
+    "sounds": [
+      "madscience:thermosonic_bonder/laserworking"
+    ]
+  },
+  "thermosonic_bonder.stamp": {
+    "sounds": [
+      "madscience:thermosonic_bonder/stamp1",
+      "madscience:thermosonic_bonder/stamp10",
+      "madscience:thermosonic_bonder/stamp2",
+      "madscience:thermosonic_bonder/stamp3",
+      "madscience:thermosonic_bonder/stamp4",
+      "madscience:thermosonic_bonder/stamp5",
+      "madscience:thermosonic_bonder/stamp6",
+      "madscience:thermosonic_bonder/stamp7",
+      "madscience:thermosonic_bonder/stamp8",
+      "madscience:thermosonic_bonder/stamp9"
+    ]
+  },
+  "vox_box.chime": {
+    "sounds": [
+      {
+        "name": "minecraft:block.note_block.chime",
+        "type": "event"
+      }
+    ]
+  },
+  "werewolf.attack": {
+    "sounds": [
+      "madscience:werewolf/attack1",
+      "madscience:werewolf/attack2"
+    ]
+  },
+  "werewolf.death": {
+    "sounds": [
+      "madscience:werewolf/death"
+    ]
+  },
+  "werewolf.snarl": {
+    "sounds": [
+      "madscience:werewolf/snarl1",
+      "madscience:werewolf/snarl2",
+      "madscience:werewolf/snarl3"
+    ]
+  },
+  "wooly_cow.hurt": {
+    "sounds": [
+      "madscience:wooly_cow/hurt1",
+      "madscience:wooly_cow/hurt2",
+      "madscience:wooly_cow/hurt3"
+    ]
+  },
+  "wooly_cow.say": {
+    "sounds": [
+      "madscience:wooly_cow/say1",
+      "madscience:wooly_cow/say2",
+      "madscience:wooly_cow/say3",
+      "madscience:wooly_cow/say4"
+    ]
+  },
+  "wooly_cow.step": {
+    "sounds": [
+      "madscience:wooly_cow/step1",
+      "madscience:wooly_cow/step2",
+      "madscience:wooly_cow/step3",
+      "madscience:wooly_cow/step4"
     ]
   }
 }

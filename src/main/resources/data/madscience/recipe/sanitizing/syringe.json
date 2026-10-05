@@ -1,0 +1,9 @@
+{
+  "type": "madscience:sanitizing",
+  "input": {
+    "item": "madscience:syringe_dirty"
+  },
+  "result": {
+    "id": "madscience:syringe_empty"
+  }
+}

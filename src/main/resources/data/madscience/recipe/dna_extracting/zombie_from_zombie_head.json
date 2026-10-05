@@ -1,0 +1,9 @@
+{
+  "type": "madscience:dna_extracting",
+  "input": {
+    "item": "minecraft:zombie_head"
+  },
+  "result": {
+    "id": "madscience:dna_zombie"
+  }
+}

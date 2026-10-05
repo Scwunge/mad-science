@@ -1,0 +1,9 @@
+{
+  "type": "madscience:dna_extracting",
+  "input": {
+    "item": "minecraft:ghast_tear"
+  },
+  "result": {
+    "id": "madscience:dna_ghast"
+  }
+}

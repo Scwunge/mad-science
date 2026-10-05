@@ -1,0 +1,9 @@
+{
+  "type": "madscience:dna_extracting",
+  "input": {
+    "item": "minecraft:bone"
+  },
+  "result": {
+    "id": "madscience:dna_skeleton"
+  }
+}

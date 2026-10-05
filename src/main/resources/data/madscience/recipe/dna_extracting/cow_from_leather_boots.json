@@ -1,0 +1,9 @@
+{
+  "type": "madscience:dna_extracting",
+  "input": {
+    "item": "minecraft:leather_boots"
+  },
+  "result": {
+    "id": "madscience:dna_cow"
+  }
+}

@@ -32,6 +32,10 @@ neoForge {
             gameDirectory = file('runs/client')
             programArguments.addAll('--width', '854', '--height', '480')
             systemProperty 'neoforge.enabledGameTestNamespaces', mod_id
+            // -Pharness runs the scripted in-game checks (client/dev/DevHarness) and quits
+            if (project.hasProperty('harness')) {
+                systemProperty 'madscience.harness', 'true'
+            }
         }
         server {
             server()

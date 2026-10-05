@@ -1,0 +1,9 @@
+{
+  "type": "madscience:dna_extracting",
+  "input": {
+    "item": "minecraft:ender_eye"
+  },
+  "result": {
+    "id": "madscience:dna_enderman"
+  }
+}

@@ -1,0 +1,9 @@
+{
+  "type": "madscience:dna_extracting",
+  "input": {
+    "item": "minecraft:cooked_beef"
+  },
+  "result": {
+    "id": "madscience:dna_cow"
+  }
+}

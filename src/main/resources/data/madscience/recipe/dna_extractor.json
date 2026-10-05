@@ -1,0 +1,27 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "414",
+    "424",
+    "434"
+  ],
+  "key": {
+    "1": {
+      "item": "madscience:circuit_ender_eye"
+    },
+    "2": {
+      "item": "madscience:circuit_spider_eye"
+    },
+    "3": {
+      "item": "madscience:component_computer"
+    },
+    "4": {
+      "item": "madscience:component_case"
+    }
+  },
+  "result": {
+    "id": "madscience:dna_extractor",
+    "count": 1
+  }
+}

@@ -17,7 +17,6 @@ public final class MadConfig {
     public static final ModConfigSpec.BooleanValue DECAY_BLOODWORK;
     public static final ModConfigSpec.IntValue DECAY_DELAY_SECONDS;
     public static final ModConfigSpec.IntValue CLAY_FURNACE_SECONDS;
-    public static final ModConfigSpec.IntValue THERMOSONIC_FINAL_SACRIFICE;
     public static final ModConfigSpec.BooleanValue ABOMINATION_LAYS_EGGS;
     public static final ModConfigSpec.BooleanValue ABOMINATION_TELEPORTS;
     public static final ModConfigSpec.BooleanValue PULSE_RIFLE_ENABLED;
@@ -34,8 +33,6 @@ public final class MadConfig {
         BUILDER.push("machines");
         CLAY_FURNACE_SECONDS = BUILDER.comment("How long the Clay Furnace smoulders before the ore is done.")
                 .defineInRange("clayFurnaceSeconds", 420, 1, 36000);
-        THERMOSONIC_FINAL_SACRIFICE = BUILDER.comment("Heat the Thermosonic Bonder must reach before it bonds.")
-                .defineInRange("thermosonicFinalSacrifice", 138, 1, 10000);
         BUILDER.pop();
 
         BUILDER.push("mobs");

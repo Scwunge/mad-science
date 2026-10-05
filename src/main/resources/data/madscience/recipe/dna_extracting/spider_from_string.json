@@ -1,0 +1,9 @@
+{
+  "type": "madscience:dna_extracting",
+  "input": {
+    "item": "minecraft:string"
+  },
+  "result": {
+    "id": "madscience:dna_spider"
+  }
+}

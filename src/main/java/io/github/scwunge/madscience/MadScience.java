@@ -5,8 +5,10 @@ import io.github.scwunge.madscience.registry.ModBlockEntities;
 import io.github.scwunge.madscience.registry.ModBlocks;
 import io.github.scwunge.madscience.registry.ModCreativeTabs;
 import io.github.scwunge.madscience.registry.ModDataComponents;
+import io.github.scwunge.madscience.registry.ModFluids;
 import io.github.scwunge.madscience.registry.ModItems;
 import io.github.scwunge.madscience.registry.ModMenus;
+import io.github.scwunge.madscience.registry.ModRecipes;
 import io.github.scwunge.madscience.registry.ModSounds;
 import net.minecraft.resources.ResourceLocation;
 import net.neoforged.bus.api.IEventBus;
@@ -24,8 +26,12 @@ public class MadScience {
         ModDataComponents.REGISTER.register(modBus);
         ModBlocks.REGISTER.register(modBus);
         ModItems.REGISTER.register(modBus);
+        ModFluids.TYPES.register(modBus);
+        ModFluids.FLUIDS.register(modBus);
         ModBlockEntities.REGISTER.register(modBus);
         ModMenus.REGISTER.register(modBus);
+        ModRecipes.TYPES.register(modBus);
+        ModRecipes.SERIALIZERS.register(modBus);
         ModSounds.REGISTER.register(modBus);
         ModCreativeTabs.REGISTER.register(modBus);
 

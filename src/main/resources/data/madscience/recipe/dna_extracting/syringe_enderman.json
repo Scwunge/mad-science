@@ -1,0 +1,12 @@
+{
+  "type": "madscience:dna_extracting",
+  "input": {
+    "item": "madscience:syringe_enderman"
+  },
+  "result": {
+    "id": "madscience:dna_enderman"
+  },
+  "remainder": {
+    "id": "madscience:syringe_dirty"
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "type": "madscience:dna_extracting",
+  "input": {
+    "item": "madscience:syringe_bat"
+  },
+  "result": {
+    "id": "madscience:dna_bat"
+  },
+  "remainder": {
+    "id": "madscience:syringe_dirty"
+  }
+}

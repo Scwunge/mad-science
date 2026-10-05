@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "madscience:item/mutant_dna_bucket"
+  }
+}

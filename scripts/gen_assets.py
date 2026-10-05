@@ -4,6 +4,7 @@ Run from the project root: python scripts/gen_assets.py
 Texture copying needs the original source checked out in reference/ms-164 (local only); everything else is self-contained.
 """
 import json
+import re
 import shutil
 from pathlib import Path
 
@@ -168,6 +169,130 @@ def items():
         lang[f"item.{MOD}.genome_{sid}.tooltip"] = "Genome data reel. Each matching DNA sample sequenced onto it brings it closer to completion."
 
 
+FLUIDS = {
+    # id: (original texture prefix, bucket texture, English name, bucket lore)
+    "liquid_dna": ("maddna", "madDNABucket", "Liquid DNA", "Filled bucket of liquid DNA from an organism that is not a mutant."),
+    "mutant_dna": ("maddnamutant", "madDNAMutantBucket", "Liquid Mutant DNA",
+                   "Filled bucket of corrosive mutant DNA. Highly incompatible with organisms that are not mutants. Use extreme caution when handling!"),
+}
+
+
+def fluids():
+    for fid, (orig, bucket_tex, english, lore) in FLUIDS.items():
+        if ORIG.exists():
+            for kind in ("still", "flowing"):
+                copy_texture(ORIG / f"textures/blocks/{orig}_{kind}.png", ASSETS / f"textures/block/{fid}_{kind}.png")
+                shutil.copyfile(ORIG / f"textures/blocks/{orig}_{kind}.png.mcmeta", ASSETS / f"textures/block/{fid}_{kind}.png.mcmeta")
+            copy_texture(ORIG / f"textures/items/{bucket_tex}.png", ASSETS / f"textures/item/{fid}_bucket.png")
+        write_json(ASSETS / f"blockstates/{fid}.json", {"variants": {"": {"model": f"{MOD}:block/{fid}"}}})
+        write_json(ASSETS / f"models/block/{fid}.json", {"textures": {"particle": f"{MOD}:block/{fid}_still"}})
+        item_model(f"{fid}_bucket", [f"{fid}_bucket"])
+        lang[f"fluid_type.{MOD}.{fid}"] = english
+        lang[f"block.{MOD}.{fid}"] = english
+        lang[f"item.{MOD}.{fid}_bucket"] = f"Bucket of {english}"
+        lang[f"item.{MOD}.{fid}_bucket.tooltip"] = lore
+        write_json(RES / f"data/c/tags/fluid/{fid}.json", {"replace": False, "values": [f"{MOD}:{fid}", f"{MOD}:{fid}_flowing"]})
+
+
+# machines: id -> (original internal name, English name, lore)
+MACHINES = {
+    "dna_extractor": ("dnaExtractor", "DNA Extractor", "Extracts DNA samples from filled syringes."),
+    "sanitizer": ("needleSanitizer", "Syringe Sanitizer", "Cleans dirty needles so they can be reused."),
+}
+
+# Item display transforms for machine items drawn by the block entity model renderer.
+MACHINE_ITEM_DISPLAY = {
+    "gui": {"rotation": [30, 225, 0], "translation": [0, 0, 0], "scale": [0.625, 0.625, 0.625]},
+    "ground": {"rotation": [0, 0, 0], "translation": [0, 3, 0], "scale": [0.25, 0.25, 0.25]},
+    "fixed": {"rotation": [0, 0, 0], "translation": [0, 0, 0], "scale": [0.5, 0.5, 0.5]},
+    "thirdperson_righthand": {"rotation": [75, 45, 0], "translation": [0, 2.5, 0], "scale": [0.375, 0.375, 0.375]},
+    "firstperson_righthand": {"rotation": [0, 45, 0], "translation": [0, 0, 0], "scale": [0.4, 0.4, 0.4]},
+    "firstperson_lefthand": {"rotation": [0, 225, 0], "translation": [0, 0, 0], "scale": [0.4, 0.4, 0.4]},
+}
+
+
+def machines():
+    pickaxe = []
+    for mid, (orig, english, lore) in MACHINES.items():
+        if ORIG.exists():
+            for png in (ORIG / f"models/{orig}").glob("*.png"):
+                copy_texture(png, ASSETS / f"textures/model/{mid}/{png.name}")
+            copy_texture(ORIG / f"textures/gui/{orig}.png", ASSETS / f"textures/gui/{mid}.png")
+            copy_texture(ORIG / f"textures/blocks/{orig}.png", ASSETS / f"textures/block/{mid}.png")
+        write_json(ASSETS / f"blockstates/{mid}.json", {"variants": {"": {"model": f"{MOD}:block/{mid}"}}})
+        write_json(ASSETS / f"models/block/{mid}.json", {"textures": {"particle": f"{MOD}:block/{mid}"}})
+        write_json(ASSETS / f"models/item/{mid}.json", {"parent": "minecraft:builtin/entity", "gui_light": "side",
+                                                        "textures": {"particle": f"{MOD}:block/{mid}"}, "display": MACHINE_ITEM_DISPLAY})
+        write_json(DATA / f"loot_table/blocks/{mid}.json", {
+            "type": "minecraft:block",
+            "pools": [{"rolls": 1, "entries": [{"type": "minecraft:item", "name": f"{MOD}:{mid}"}],
+                       "conditions": [{"condition": "minecraft:survives_explosion"}]}]})
+        lang[f"block.{MOD}.{mid}"] = english
+        lang[f"block.{MOD}.{mid}.tooltip"] = lore
+        pickaxe.append(f"{MOD}:{mid}")
+    write_json(RES / "data/minecraft/tags/block/mineable/pickaxe.json", {"replace": False, "values": pickaxe})
+
+
+def machine_recipes():
+    m = lambda n: f"{MOD}:{n}"
+    shaped("dna_extractor", m("dna_extractor"), ["414", "424", "434"], {
+        "1": m("circuit_ender_eye"), "2": m("circuit_spider_eye"), "3": m("component_computer"), "4": m("component_case")})
+    shaped("sanitizer", m("sanitizer"), ["545", "535", "126"], {
+        "1": m("circuit_glowstone"), "2": m("circuit_redstone"), "3": m("component_power_supply"), "4": m("component_fan"),
+        "5": m("component_case"), "6": m("circuit_ender_pearl")})
+
+
+# DNA Extractor inputs per species (besides that species' syringe), from the original MadDNA.
+DNA_ITEMS = {
+    "cave_spider": ["minecraft:fermented_spider_eye"],
+    "chicken": ["minecraft:feather", "minecraft:egg", "minecraft:cooked_chicken", "minecraft:chicken"],
+    "cow": ["minecraft:leather", "minecraft:cooked_beef", "minecraft:beef", "minecraft:leather_boots", "minecraft:leather_helmet",
+            "minecraft:leather_leggings", "minecraft:leather_chestplate", "minecraft:milk_bucket"],
+    "creeper": ["minecraft:gunpowder", "minecraft:creeper_head"],
+    "enderman": ["minecraft:ender_pearl", "minecraft:ender_eye"],
+    "ghast": ["minecraft:ghast_tear"],
+    "pig": ["minecraft:porkchop", "minecraft:cooked_porkchop"],
+    "sheep": ["#minecraft:wool"],
+    "skeleton": ["minecraft:bone", "minecraft:bone_meal", "minecraft:skeleton_skull"],
+    "slime": ["minecraft:slime_ball", "minecraft:sticky_piston"],
+    "spider": ["minecraft:spider_eye", "minecraft:string"],
+    "squid": ["minecraft:ink_sac"],
+    "zombie": ["minecraft:zombie_head", "minecraft:rotten_flesh"],
+}
+
+
+def ingredient(v):
+    return {"tag": v[1:]} if v.startswith("#") else {"item": v}
+
+
+def processing_recipes():
+    for sid, (_, has_syringe, has_sample) in SPECIES.items():
+        if not has_sample:
+            continue
+        if has_syringe:
+            write_json(DATA / f"recipe/dna_extracting/syringe_{sid}.json", {
+                "type": f"{MOD}:dna_extracting", "input": {"item": f"{MOD}:syringe_{sid}"},
+                "result": {"id": f"{MOD}:dna_{sid}"}, "remainder": {"id": f"{MOD}:syringe_dirty"}})
+        for i, item in enumerate(DNA_ITEMS.get(sid, [])):
+            name = item.split(":")[1].replace("/", "_")
+            write_json(DATA / f"recipe/dna_extracting/{sid}_from_{name}.json", {
+                "type": f"{MOD}:dna_extracting", "input": ingredient(item), "result": {"id": f"{MOD}:dna_{sid}"}})
+    write_json(DATA / "recipe/sanitizing/syringe.json", {
+        "type": f"{MOD}:sanitizing", "input": {"item": f"{MOD}:syringe_dirty"}, "result": {"id": f"{MOD}:syringe_empty"}})
+
+
+def gui_lang():
+    lang.update({
+        "gui.madscience.energy": "%s / %s FE",
+        "gui.madscience.energy_percent": "Energy %s %%",
+        "gui.madscience.progress": "%s / %s",
+        "gui.madscience.progress_percent": "Progress %s %%",
+        "gui.madscience.millibuckets": "%s mB",
+        "gui.madscience.place_empty_bucket": "Place empty bucket",
+        "gui.madscience.place_water_bucket": "Place water bucket",
+    })
+
+
 def tags():
     for sid, types in DNA_SOURCES.items():
         write_json(DATA / f"tags/entity_type/dna_source/{sid}.json", {"replace": False, "values": types})
@@ -220,13 +345,61 @@ def recipes():
     shaped("data_reel_empty", m("data_reel_empty"), ["111", "121", "111"], {"1": m("component_magnetic_tape"), "2": m("circuit_emerald")})
 
 
+# original sound folder -> sound event prefix. The VoxBox (Half-Life VOX clips) and pulse rifle (film sounds) folders are
+# deliberately absent: they belong to Valve and the film studio, not the Mad Science authors.
+SOUND_FOLDERS = {
+    "cncMachine": "cnc_machine", "computerMainframe": "mainframe", "cryoFreezer": "cryo_freezer", "cryoTube": "cryo_tube",
+    "dataDuplicator": "data_duplicator", "dnaExtractor": "dna_extractor", "genomeIncubator": "incubator",
+    "genomeSequencer": "sequencer", "gmoAbomination": "abomination", "gmoCreeperCow": "creeper_cow", "gmoWerewolf": "werewolf",
+    "gmoWoolyCow": "wooly_cow", "magLoader": "magazine_loader", "meatCube": "meat_cube", "needleEmpty": "syringe",
+    "needleSanitizer": "sanitizer", "soniclocator": "soniclocator", "thermosonicBonder": "thermosonic_bonder",
+}
+# event names that read better than the original file names
+SOUND_RENAMES = {"syringe.stab": "syringe.stab_mob", "syringe.stabself": "syringe.stab_player"}
+# vanilla stand-ins for the excluded sounds
+VANILLA_SOUNDS = {
+    "pulse_rifle.fire": "minecraft:entity.firework_rocket.blast",
+    "pulse_rifle.empty": "minecraft:block.dispenser.fail",
+    "pulse_rifle.reload": "minecraft:item.crossbow.loading_end",
+    "pulse_rifle.unload": "minecraft:item.crossbow.loading_start",
+    "pulse_rifle.magazine_reload": "minecraft:item.armor.equip_iron",
+    "pulse_rifle.magazine_unload": "minecraft:item.armor.equip_chain",
+    "pulse_rifle.fire_grenade": "minecraft:entity.firework_rocket.launch",
+    "pulse_rifle.reload_grenade": "minecraft:item.crossbow.loading_middle",
+    "pulse_rifle.chamber_grenade": "minecraft:block.piston.contract",
+    "pulse_rifle.grenade_explode": "minecraft:entity.generic.explode",
+    "pulse_rifle.ricochet": "minecraft:block.anvil.land",
+    "vox_box.chime": "minecraft:block.note_block.chime",
+}
+
+
+def snake(name):
+    return re.sub(r"(?<=[a-z0-9])([A-Z])", r"_\1", name).lower()
+
+
 def sounds():
-    # Vanilla stand-ins until the user confirms the original sounds are covered by the permission (see PERMISSION.md).
-    defs = {
-        "syringe.stab_player": "minecraft:entity.bee.sting",
-        "syringe.stab_mob": "minecraft:entity.bee.sting",
-    }
-    write_json(ASSETS / "sounds.json", {name: {"sounds": [{"name": event, "type": "event"}]} for name, event in defs.items()})
+    if not ORIG.exists():
+        print("reference/ms-164 not found, leaving sounds.json alone")
+        return
+    defs = {}
+    if True:
+        for folder, prefix in SOUND_FOLDERS.items():
+            groups = {}
+            for ogg in sorted((ORIG / f"sound/{folder}").glob("*.ogg")):
+                base = re.sub(r"\d+$", "", ogg.stem)
+                groups.setdefault(snake(base), []).append(ogg)
+            for base, files in groups.items():
+                event = SOUND_RENAMES.get(f"{prefix}.{base}", f"{prefix}.{base}")
+                entries = []
+                for ogg in files:
+                    target = ASSETS / f"sounds/{prefix}/{ogg.stem.lower()}.ogg"
+                    target.parent.mkdir(parents=True, exist_ok=True)
+                    shutil.copyfile(ogg, target)
+                    entries.append(f"{MOD}:{prefix}/{ogg.stem.lower()}")
+                defs[event] = {"sounds": entries}
+    for event, vanilla in VANILLA_SOUNDS.items():
+        defs[event] = {"sounds": [{"name": vanilla, "type": "event"}]}
+    write_json(ASSETS / "sounds.json", dict(sorted(defs.items())))
 
 
 def nbt_payload(tag_type, value):
@@ -274,6 +447,11 @@ def misc_lang():
 
 copy_textures()
 items()
+fluids()
+machines()
+machine_recipes()
+processing_recipes()
+gui_lang()
 tags()
 recipes()
 sounds()

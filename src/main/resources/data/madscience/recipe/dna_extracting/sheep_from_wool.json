@@ -1,0 +1,9 @@
+{
+  "type": "madscience:dna_extracting",
+  "input": {
+    "tag": "minecraft:wool"
+  },
+  "result": {
+    "id": "madscience:dna_sheep"
+  }
+}

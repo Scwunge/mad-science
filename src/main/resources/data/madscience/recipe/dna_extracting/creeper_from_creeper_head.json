@@ -1,0 +1,9 @@
+{
+  "type": "madscience:dna_extracting",
+  "input": {
+    "item": "minecraft:creeper_head"
+  },
+  "result": {
+    "id": "madscience:dna_creeper"
+  }
+}

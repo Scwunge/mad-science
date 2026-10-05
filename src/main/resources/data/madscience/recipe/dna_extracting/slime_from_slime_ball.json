@@ -1,0 +1,9 @@
+{
+  "type": "madscience:dna_extracting",
+  "input": {
+    "item": "minecraft:slime_ball"
+  },
+  "result": {
+    "id": "madscience:dna_slime"
+  }
+}
