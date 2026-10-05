@@ -12,8 +12,9 @@ This is a port of **Mad Science** for Minecraft 1.6.4 to Minecraft **1.21.1** on
 - Mob designs suggested by community members credited in the original: Bart74 (Wooly Cow), Deuce_Loosely (Shoggoth),
   monodemono (Abomination), Pyrobrine (Wither Skeleton, Villager Zombie, Skeleton/Zombie Horse) and TheTechnician (Ender Squid).
 
-The port is released under the MIT licence with the original authors' permission. See [PERMISSION.md](PERMISSION.md) for the
-details and for what is *not* covered (and so is not included).
+The port is released under the MIT licence with the original authors' permission. Material in the original download that
+belonged to other people is not included: the Universal Electricity API, the announcer voice clips (from Valve's Half-Life)
+and the pulse rifle sound effects.
 
 ## Differences from the original
 
