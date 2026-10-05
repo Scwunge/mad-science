@@ -1,0 +1,37 @@
+modLoader = "javafml"
+loaderVersion = "${loader_version_range}"
+license = "${mod_license}"
+issueTrackerURL = "https://github.com/Scwunge/mad-science/issues"
+
+[[mods]]
+modId = "${mod_id}"
+version = "${mod_version}"
+displayName = "${mod_name}"
+displayURL = "https://github.com/Scwunge/mad-science"
+authors = "Scwunge (port); original by Maxwolf Goodliffe, Fox Diller and Prowler"
+credits = "Original Mad Science by Maxwolf Goodliffe and Fox Diller, art by Prowler. Mob ideas by Bart74, Deuce_Loosely, monodemono, Pyrobrine and TheTechnician."
+description = '''
+Machines, items and mobs to build your own genetics laboratory. Remember kids, science has no limits... and no bounds...
+A 1.21.1 port of the 1.6.4 Mad Science mod.
+'''
+
+[[dependencies.${mod_id}]]
+modId = "neoforge"
+type = "required"
+versionRange = "${neo_version_range}"
+ordering = "NONE"
+side = "BOTH"
+
+[[dependencies.${mod_id}]]
+modId = "minecraft"
+type = "required"
+versionRange = "${minecraft_version_range}"
+ordering = "NONE"
+side = "BOTH"
+
+[[dependencies.${mod_id}]]
+modId = "jei"
+type = "optional"
+versionRange = "[19,)"
+ordering = "NONE"
+side = "BOTH"

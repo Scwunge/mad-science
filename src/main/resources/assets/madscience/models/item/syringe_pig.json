@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "madscience:item/syringe_layer_1",
+    "layer1": "madscience:item/syringe_layer_2",
+    "layer2": "madscience:item/syringe_overlay"
+  }
+}

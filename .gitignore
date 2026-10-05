@@ -1,0 +1,23 @@
+﻿# build
+.gradle/
+build/
+out/
+bin/
+runs/
+run/
+logs/
+*.class
+
+# IDE
+.idea/
+*.iml
+*.ipr
+*.iws
+.vscode/
+.classpath
+.project
+.settings/
+
+reference/
+PLAN.md
+scripts/out/

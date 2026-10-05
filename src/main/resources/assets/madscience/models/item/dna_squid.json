@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "madscience:item/dna_sample_overlay",
+    "layer1": "madscience:item/dna_sample"
+  }
+}

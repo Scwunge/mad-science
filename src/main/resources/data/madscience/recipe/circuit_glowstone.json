@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "TTT",
+    "TCT",
+    "TTT"
+  ],
+  "key": {
+    "T": {
+      "item": "madscience:component_transistor"
+    },
+    "C": {
+      "tag": "c:dusts/glowstone"
+    }
+  },
+  "result": {
+    "id": "madscience:circuit_glowstone",
+    "count": 1
+  }
+}

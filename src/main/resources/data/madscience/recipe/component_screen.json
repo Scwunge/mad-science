@@ -1,0 +1,27 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "444",
+    "333",
+    "212"
+  ],
+  "key": {
+    "1": {
+      "item": "madscience:circuit_diamond"
+    },
+    "2": {
+      "item": "madscience:circuit_redstone"
+    },
+    "3": {
+      "item": "madscience:component_transistor"
+    },
+    "4": {
+      "tag": "c:glass_blocks/colorless"
+    }
+  },
+  "result": {
+    "id": "madscience:component_screen",
+    "count": 1
+  }
+}

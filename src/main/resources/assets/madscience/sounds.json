@@ -1,0 +1,18 @@
+{
+  "syringe.stab_player": {
+    "sounds": [
+      {
+        "name": "minecraft:entity.bee.sting",
+        "type": "event"
+      }
+    ]
+  },
+  "syringe.stab_mob": {
+    "sounds": [
+      {
+        "name": "minecraft:entity.bee.sting",
+        "type": "event"
+      }
+    ]
+  }
+}

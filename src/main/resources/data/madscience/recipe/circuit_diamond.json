@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "TTT",
+    "TCT",
+    "TTT"
+  ],
+  "key": {
+    "T": {
+      "item": "madscience:component_transistor"
+    },
+    "C": {
+      "tag": "c:gems/diamond"
+    }
+  },
+  "result": {
+    "id": "madscience:circuit_diamond",
+    "count": 1
+  }
+}

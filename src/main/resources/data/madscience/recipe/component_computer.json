@@ -1,0 +1,33 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "ECE",
+    "FBD",
+    "EAE"
+  ],
+  "key": {
+    "A": {
+      "item": "madscience:component_screen"
+    },
+    "B": {
+      "item": "madscience:component_cpu"
+    },
+    "C": {
+      "item": "madscience:component_fan"
+    },
+    "D": {
+      "item": "madscience:component_power_supply"
+    },
+    "E": {
+      "item": "madscience:component_case"
+    },
+    "F": {
+      "item": "madscience:component_ram"
+    }
+  },
+  "result": {
+    "id": "madscience:component_computer",
+    "count": 1
+  }
+}

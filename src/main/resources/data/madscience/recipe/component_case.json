@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "121",
+    "2 2",
+    "121"
+  ],
+  "key": {
+    "1": {
+      "tag": "c:ingots/iron"
+    },
+    "2": {
+      "tag": "c:rods/wooden"
+    }
+  },
+  "result": {
+    "id": "madscience:component_case",
+    "count": 1
+  }
+}

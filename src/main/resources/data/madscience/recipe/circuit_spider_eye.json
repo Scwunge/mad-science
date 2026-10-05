@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "TTT",
+    "TCT",
+    "TTT"
+  ],
+  "key": {
+    "T": {
+      "item": "madscience:component_transistor"
+    },
+    "C": {
+      "item": "minecraft:spider_eye"
+    }
+  },
+  "result": {
+    "id": "madscience:circuit_spider_eye",
+    "count": 1
+  }
+}

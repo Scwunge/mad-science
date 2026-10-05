@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "TTT",
+    "TCT",
+    "TTT"
+  ],
+  "key": {
+    "T": {
+      "item": "madscience:component_transistor"
+    },
+    "C": {
+      "tag": "c:ender_pearls"
+    }
+  },
+  "result": {
+    "id": "madscience:circuit_ender_pearl",
+    "count": 1
+  }
+}

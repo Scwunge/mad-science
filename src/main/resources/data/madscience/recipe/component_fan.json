@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "121",
+    "222",
+    "121"
+  ],
+  "key": {
+    "1": {
+      "item": "madscience:component_case"
+    },
+    "2": {
+      "tag": "c:ingots/iron"
+    }
+  },
+  "result": {
+    "id": "madscience:component_fan",
+    "count": 1
+  }
+}
