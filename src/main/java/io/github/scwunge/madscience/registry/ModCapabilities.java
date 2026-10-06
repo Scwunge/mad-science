@@ -24,6 +24,10 @@ public final class ModCapabilities {
         machine(event, ModBlockEntities.MAINFRAME.get());
         event.registerBlockEntity(Capabilities.FluidHandler.BLOCK, ModBlockEntities.MAINFRAME.get(), (be, side) -> be.fluidHandler(side));
         machine(event, ModBlockEntities.INCUBATOR.get());
+        machine(event, ModBlockEntities.FREEZER.get());
+        machine(event, ModBlockEntities.DUPLICATOR.get());
+        machine(event, ModBlockEntities.BONDER.get());
+        event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, ModBlockEntities.CLAY_FURNACE.get(), MachineBlockEntity::sidedItemHandler);
     }
 
     /** Items (side rules applied) and energy for a machine. */

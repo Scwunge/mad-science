@@ -29,7 +29,7 @@ public final class ModRecipes {
     /** Genome Incubator: complete genome → spawn egg (or a creature block, like the meat cube). */
     public static final Processing INCUBATING = processing("incubating", 2600);
     /** Thermosonic Bonder: component → upgraded component, with a gold nugget. */
-    public static final Processing BONDING = processing("bonding", 200);
+    public static final Processing BONDING = processing("bonding", 2600);
     /** Clay Furnace: ore block → metal block over a long smoulder. */
     public static final Processing CLAY_SMELTING = processing("clay_smelting", 0);
 

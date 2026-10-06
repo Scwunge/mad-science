@@ -1,0 +1,9 @@
+{
+  "type": "madscience:clay_smelting",
+  "input": {
+    "tag": "c:ores/gold"
+  },
+  "result": {
+    "id": "minecraft:gold_block"
+  }
+}

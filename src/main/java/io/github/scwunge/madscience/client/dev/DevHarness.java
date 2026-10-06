@@ -101,6 +101,13 @@ public final class DevHarness {
             hidden = true;
             GLFW.glfwHideWindow(mc.getWindow().getWindow());
         }
+        if (scripted && mc.level == null) {
+            // kicked out of the world (a crash in a screen, for example): don't sit there forever
+            MadScience.LOGGER.error("[harness] FAIL disconnected from the world, {} failure(s) before that", failures);
+            scripted = false;
+            mc.stop();
+            return;
+        }
         if (mc.level == null) {
             if (!worldRequested && mc.screen instanceof TitleScreen) {
                 worldRequested = true;

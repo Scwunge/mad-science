@@ -42,13 +42,18 @@ public class MachineRenderer<T extends MachineBlockEntity> implements BlockEntit
     @Override
     public void render(T machine, float partialTick, PoseStack pose, MultiBufferSource buffers, int light, int overlay) {
         pose.pushPose();
-        pose.translate(0.5, 0.5, 0.5);
+        place(machine, pose);
         pose.mulPose(Axis.YP.rotationDegrees(originalYaw(playerFacing(machine.getBlockState()))));
         pose.scale(-1.0F, -1.0F, 1.0F); // the original Techne loader's flip
         animate(machine, partialTick);
         model.render(pose, buffers.getBuffer(RenderType.entityCutout(texture.apply(machine, partialTick))), light, overlay);
         renderExtras(machine, partialTick, pose, buffers, light, overlay);
         pose.popPose();
+    }
+
+    /** Moves the model to its spot in the block: the centre, unless the original placed it differently. */
+    protected void place(T machine, PoseStack pose) {
+        pose.translate(0.5, 0.5, 0.5);
     }
 
     /** Moves model parts before drawing (spinning reels, thumpers...). */

@@ -1,0 +1,9 @@
+{
+  "type": "madscience:clay_smelting",
+  "input": {
+    "tag": "c:ores/iron"
+  },
+  "result": {
+    "id": "minecraft:iron_block"
+  }
+}

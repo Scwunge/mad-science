@@ -1,6 +1,12 @@
 package io.github.scwunge.madscience.content.machine;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.EntityBlock;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
@@ -20,9 +26,35 @@ public class MachineMenu extends AbstractContainerMenu {
     private final ContainerData data;
     private int machineSlots;
 
-    /** Client side: the block entity exists on the client too, so we look it up by position. */
-    public MachineMenu(MenuType<?> type, int containerId, Inventory inventory, BlockPos pos) {
-        this(type, containerId, inventory, (MachineBlockEntity) inventory.player.level().getBlockEntity(pos), true);
+    /**
+     * Client side. The block entity normally exists on the client too; if it hasn't arrived yet (the menu can open in
+     * the same tick the block was placed) a stand-in is made from the block state. Slots and gauges are synced by the
+     * menu either way.
+     */
+    public MachineMenu(MenuType<?> type, int containerId, Inventory inventory, RegistryFriendlyByteBuf buf) {
+        this(type, containerId, inventory, clientMachine(inventory.player.level(), buf.readBlockPos(), Block.stateById(buf.readVarInt())), true);
+    }
+
+    private static MachineBlockEntity clientMachine(Level level, BlockPos pos, BlockState state) {
+        // the client's copy can be stale (the block was just replaced), so it must match the server's block
+        if (level.getBlockEntity(pos) instanceof MachineBlockEntity machine && machine.getBlockState().is(state.getBlock())) {
+            return machine;
+        }
+        if (state.getBlock() instanceof EntityBlock block && block.newBlockEntity(pos, state) instanceof MachineBlockEntity machine) {
+            machine.setLevel(level);
+            return machine;
+        }
+        throw new IllegalStateException("no Mad Science machine at " + pos);
+    }
+
+    /** Opens a machine's menu for a player, sending what the client needs to build it. */
+    public static void open(ServerPlayer player, MachineBlockEntity machine) {
+        BlockPos pos = machine.getBlockPos();
+        BlockState state = machine.getBlockState();
+        player.openMenu(machine, buf -> {
+            buf.writeBlockPos(pos);
+            buf.writeVarInt(Block.getId(state));
+        });
     }
 
     public MachineMenu(MenuType<?> type, int containerId, Inventory inventory, MachineBlockEntity machine) {

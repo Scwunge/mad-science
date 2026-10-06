@@ -112,7 +112,7 @@ public class MachineBlock extends BaseEntityBlock {
     @Override
     protected InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos, Player player, BlockHitResult hit) {
         if (!level.isClientSide && level.getBlockEntity(pos) instanceof MachineBlockEntity machine && player instanceof ServerPlayer serverPlayer) {
-            serverPlayer.openMenu(machine, pos);
+            MachineMenu.open(serverPlayer, machine);
         }
         return InteractionResult.sidedSuccess(level.isClientSide);
     }

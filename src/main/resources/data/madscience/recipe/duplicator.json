@@ -1,0 +1,33 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "161",
+    "232",
+    "454"
+  ],
+  "key": {
+    "1": {
+      "item": "madscience:data_reel_empty"
+    },
+    "2": {
+      "item": "madscience:component_case"
+    },
+    "3": {
+      "item": "minecraft:repeater"
+    },
+    "4": {
+      "item": "madscience:circuit_spider_eye"
+    },
+    "5": {
+      "item": "madscience:component_power_supply"
+    },
+    "6": {
+      "item": "madscience:component_fan"
+    }
+  },
+  "result": {
+    "id": "madscience:duplicator",
+    "count": 1
+  }
+}

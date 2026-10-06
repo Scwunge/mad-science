@@ -1,0 +1,27 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "131",
+    "121",
+    "141"
+  ],
+  "key": {
+    "1": {
+      "item": "madscience:component_case"
+    },
+    "2": {
+      "item": "madscience:component_computer"
+    },
+    "3": {
+      "item": "madscience:circuit_comparator"
+    },
+    "4": {
+      "item": "madscience:component_fan"
+    }
+  },
+  "result": {
+    "id": "madscience:freezer",
+    "count": 1
+  }
+}

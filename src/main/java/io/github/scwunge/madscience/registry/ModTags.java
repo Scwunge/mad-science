@@ -8,6 +8,8 @@ import net.minecraft.world.item.Item;
 public final class ModTags {
     /** Every genome reel, sequenced or combined: what the Mainframe and Incubator accept. */
     public static final TagKey<Item> GENOMES = TagKey.create(Registries.ITEM, MadScience.id("genomes"));
+    /** Reels the Data Reel Duplicator can copy: genomes and villager memories. */
+    public static final TagKey<Item> DATA_REELS = TagKey.create(Registries.ITEM, MadScience.id("data_reels"));
     /** Filled syringes and DNA samples: what the Cryogenic Freezer keeps fresh. */
     public static final TagKey<Item> BLOODWORK = TagKey.create(Registries.ITEM, MadScience.id("bloodwork"));
 

@@ -1,0 +1,30 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "343",
+    "353",
+    "121"
+  ],
+  "key": {
+    "1": {
+      "item": "minecraft:glowstone"
+    },
+    "2": {
+      "item": "minecraft:beacon"
+    },
+    "3": {
+      "tag": "c:storage_blocks/iron"
+    },
+    "4": {
+      "tag": "c:storage_blocks/redstone"
+    },
+    "5": {
+      "tag": "c:storage_blocks/diamond"
+    }
+  },
+  "result": {
+    "id": "madscience:thermosonic_bonder",
+    "count": 1
+  }
+}

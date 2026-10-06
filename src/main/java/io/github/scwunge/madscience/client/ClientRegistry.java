@@ -1,26 +1,38 @@
 package io.github.scwunge.madscience.client;
 
 import io.github.scwunge.madscience.MadScience;
+import io.github.scwunge.madscience.client.model.BonderModel;
+import io.github.scwunge.madscience.client.model.ClayFurnaceModel;
 import io.github.scwunge.madscience.client.model.DnaExtractorModel;
+import io.github.scwunge.madscience.client.model.DuplicatorModel;
+import io.github.scwunge.madscience.client.model.FreezerModel;
 import io.github.scwunge.madscience.client.model.IncubatorModel;
 import io.github.scwunge.madscience.client.model.MainframeModel;
 import io.github.scwunge.madscience.client.model.SanitizerModel;
 import io.github.scwunge.madscience.client.model.SequencerModel;
+import io.github.scwunge.madscience.client.render.ClayFurnaceRenderer;
 import io.github.scwunge.madscience.client.render.MachineItemRenderer;
 import io.github.scwunge.madscience.client.render.MachineRenderer;
 import io.github.scwunge.madscience.client.screen.DnaExtractorScreen;
-import io.github.scwunge.madscience.client.screen.IncubatorScreen;
+import io.github.scwunge.madscience.client.screen.HeatedMachineScreen;
 import io.github.scwunge.madscience.client.screen.MainframeScreen;
 import io.github.scwunge.madscience.client.screen.SanitizerScreen;
 import io.github.scwunge.madscience.client.screen.SequencerScreen;
+import io.github.scwunge.madscience.client.screen.SimpleMachineScreens;
+import io.github.scwunge.madscience.content.machine.bonder.BonderBlockEntity;
+import io.github.scwunge.madscience.content.machine.duplicator.DuplicatorBlockEntity;
+import io.github.scwunge.madscience.content.machine.freezer.FreezerBlockEntity;
 import io.github.scwunge.madscience.content.machine.incubator.IncubatorBlockEntity;
 import io.github.scwunge.madscience.content.machine.mainframe.MainframeBlockEntity;
 import io.github.scwunge.madscience.content.machine.MachineBlockEntity;
+import io.github.scwunge.madscience.content.machine.MachineMenu;
 import io.github.scwunge.madscience.registry.ModBlockEntities;
 import io.github.scwunge.madscience.registry.ModBlocks;
 import io.github.scwunge.madscience.registry.ModMenus;
 import net.minecraft.client.model.geom.ModelLayerLocation;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntityType;
@@ -42,6 +54,10 @@ public final class ClientRegistry {
     public static final ModelLayerLocation SEQUENCER = layer("sequencer");
     public static final ModelLayerLocation MAINFRAME = layer("mainframe");
     public static final ModelLayerLocation INCUBATOR = layer("incubator");
+    public static final ModelLayerLocation FREEZER = layer("freezer");
+    public static final ModelLayerLocation DUPLICATOR = layer("duplicator");
+    public static final ModelLayerLocation BONDER = layer("thermosonic_bonder");
+    public static final ModelLayerLocation CLAY_FURNACE = layer("clay_furnace");
 
     /** Machine items drawn with their block model: item, layer, texture. */
     private record MachineItem(Supplier<? extends Block> block, ModelLayerLocation layer, ResourceLocation texture) {
@@ -52,7 +68,11 @@ public final class ClientRegistry {
             new MachineItem(ModBlocks.SANITIZER, SANITIZER, modelTexture("sanitizer", "idle")),
             new MachineItem(ModBlocks.SEQUENCER, SEQUENCER, modelTexture("sequencer", "idle")),
             new MachineItem(ModBlocks.MAINFRAME, MAINFRAME, modelTexture("mainframe", "off")),
-            new MachineItem(ModBlocks.INCUBATOR, INCUBATOR, modelTexture("incubator", "idle")));
+            new MachineItem(ModBlocks.INCUBATOR, INCUBATOR, modelTexture("incubator", "idle")),
+            new MachineItem(ModBlocks.FREEZER, FREEZER, modelTexture("freezer", "idle")),
+            new MachineItem(ModBlocks.DUPLICATOR, DUPLICATOR, modelTexture("duplicator", "off")),
+            new MachineItem(ModBlocks.BONDER, BONDER, modelTexture("thermosonic_bonder", "off")),
+            new MachineItem(ModBlocks.CLAY_FURNACE, CLAY_FURNACE, modelTexture("clay_furnace", "idle")));
 
     private ClientRegistry() {
     }
@@ -73,6 +93,10 @@ public final class ClientRegistry {
         event.registerLayerDefinition(SEQUENCER, SequencerModel::create);
         event.registerLayerDefinition(MAINFRAME, MainframeModel::create);
         event.registerLayerDefinition(INCUBATOR, IncubatorModel::create);
+        event.registerLayerDefinition(FREEZER, FreezerModel::create);
+        event.registerLayerDefinition(DUPLICATOR, DuplicatorModel::create);
+        event.registerLayerDefinition(BONDER, BonderModel::create);
+        event.registerLayerDefinition(CLAY_FURNACE, ClayFurnaceModel::create);
     }
 
     @SubscribeEvent
@@ -107,6 +131,35 @@ public final class ClientRegistry {
                     case READY -> incubatorReady;
                     case WORKING -> incubatorWork[MachineRenderer.frame(be, 5, 5)];
                 }));
+
+        ResourceLocation freezerIdle = modelTexture("freezer", "idle");
+        ResourceLocation freezerPowered = modelTexture("freezer", "powered");
+        event.registerBlockEntityRenderer(ModBlockEntities.FREEZER.get(), ctx -> new MachineRenderer<FreezerBlockEntity>(ctx, FREEZER,
+                (be, pt) -> be.isActive() ? freezerPowered : freezerIdle));
+
+        ResourceLocation duplicatorOff = modelTexture("duplicator", "off");
+        ResourceLocation duplicatorIdle = modelTexture("duplicator", "idle");
+        ResourceLocation[] duplicatorWork = frames("duplicator", "work_", 10);
+        event.registerBlockEntityRenderer(ModBlockEntities.DUPLICATOR.get(), ctx -> new MachineRenderer<DuplicatorBlockEntity>(ctx, DUPLICATOR,
+                (be, pt) -> switch (be.state()) {
+                    case OFF -> duplicatorOff;
+                    case IDLE -> duplicatorIdle;
+                    case WORKING -> duplicatorWork[MachineRenderer.frame(be, 10, 5)];
+                }));
+
+        ResourceLocation bonderOff = modelTexture("thermosonic_bonder", "off");
+        ResourceLocation bonderReady = modelTexture("thermosonic_bonder", "laser_off");
+        ResourceLocation[] bonderHeating = frames("thermosonic_bonder", "power_", 6);
+        ResourceLocation[] bonderRun = frames("thermosonic_bonder", "run_", 6);
+        event.registerBlockEntityRenderer(ModBlockEntities.BONDER.get(), ctx -> new MachineRenderer<BonderBlockEntity>(ctx, BONDER,
+                (be, pt) -> switch (be.state()) {
+                    case OFF -> bonderOff;
+                    case HEATING -> bonderHeating[Math.min(5, be.heat() * 6 / BonderBlockEntity.MAX_HEAT)];
+                    case READY -> bonderReady;
+                    case WORKING -> bonderRun[MachineRenderer.frame(be, 6, 20)];
+                }));
+
+        event.registerBlockEntityRenderer(ModBlockEntities.CLAY_FURNACE.get(), ClayFurnaceRenderer::new);
     }
 
     /** Renderer for a machine that shows "idle" when stopped and cycles work frames while active. */
@@ -124,7 +177,11 @@ public final class ClientRegistry {
         event.register(ModMenus.SANITIZER.get(), SanitizerScreen::new);
         event.register(ModMenus.SEQUENCER.get(), SequencerScreen::new);
         event.register(ModMenus.MAINFRAME.get(), MainframeScreen::new);
-        event.register(ModMenus.INCUBATOR.get(), IncubatorScreen::new);
+        event.register(ModMenus.INCUBATOR.get(), (MachineMenu m, Inventory i, Component t) -> new HeatedMachineScreen(m, i, t, "incubator"));
+        event.register(ModMenus.BONDER.get(), (MachineMenu m, Inventory i, Component t) -> new HeatedMachineScreen(m, i, t, "thermosonic_bonder"));
+        event.register(ModMenus.FREEZER.get(), SimpleMachineScreens.Freezer::new);
+        event.register(ModMenus.DUPLICATOR.get(), SimpleMachineScreens.Duplicator::new);
+        event.register(ModMenus.CLAY_FURNACE.get(), SimpleMachineScreens.ClayFurnace::new);
     }
 
     private static MachineItemRenderer itemRenderer;

@@ -2,6 +2,7 @@ package io.github.scwunge.madscience.registry;
 
 import io.github.scwunge.madscience.MadScience;
 import io.github.scwunge.madscience.content.machine.MachineBlock;
+import io.github.scwunge.madscience.content.machine.clayfurnace.ClayFurnaceBlock;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
@@ -27,6 +28,15 @@ public final class ModBlocks {
             () -> new MachineBlock(machineProperties(), ModBlockEntities.MAINFRAME));
     public static final DeferredBlock<MachineBlock> INCUBATOR = machine("incubator",
             () -> new MachineBlock(machineProperties(), ModBlockEntities.INCUBATOR));
+    public static final DeferredBlock<MachineBlock> FREEZER = machine("freezer",
+            () -> new MachineBlock(machineProperties(), ModBlockEntities.FREEZER));
+    public static final DeferredBlock<MachineBlock> DUPLICATOR = machine("duplicator",
+            () -> new MachineBlock(machineProperties(), ModBlockEntities.DUPLICATOR));
+    public static final DeferredBlock<MachineBlock> BONDER = machine("thermosonic_bonder",
+            () -> new MachineBlock(machineProperties(), ModBlockEntities.BONDER));
+    public static final DeferredBlock<ClayFurnaceBlock> CLAY_FURNACE = machine("clay_furnace",
+            () -> new ClayFurnaceBlock(BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_ORANGE).strength(1.25F, 4.2F)
+                    .sound(SoundType.STONE).noOcclusion()));
 
     private ModBlocks() {
     }

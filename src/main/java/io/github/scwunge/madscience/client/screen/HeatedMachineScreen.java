@@ -5,9 +5,10 @@ import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Inventory;
 
-public class IncubatorScreen extends MachineScreen {
-    public IncubatorScreen(MachineMenu menu, Inventory inventory, Component title) {
-        super(menu, inventory, title, "incubator");
+/** Incubator and Thermosonic Bonder: same layout, with a heat gauge. */
+public class HeatedMachineScreen extends MachineScreen {
+    public HeatedMachineScreen(MachineMenu menu, Inventory inventory, Component title, String texture) {
+        super(menu, inventory, title, texture);
     }
 
     @Override

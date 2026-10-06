@@ -1,0 +1,10 @@
+{
+  "type": "madscience:bonding",
+  "input": {
+    "item": "madscience:circuit_glowstone"
+  },
+  "result": {
+    "id": "madscience:component_ram",
+    "count": 1
+  }
+}

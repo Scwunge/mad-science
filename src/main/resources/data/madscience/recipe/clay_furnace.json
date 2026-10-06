@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "111",
+    "121",
+    "111"
+  ],
+  "key": {
+    "1": {
+      "item": "minecraft:terracotta"
+    },
+    "2": {
+      "item": "minecraft:furnace"
+    }
+  },
+  "result": {
+    "id": "madscience:clay_furnace",
+    "count": 1
+  }
+}

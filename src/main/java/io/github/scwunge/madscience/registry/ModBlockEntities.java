@@ -1,7 +1,11 @@
 package io.github.scwunge.madscience.registry;
 
 import io.github.scwunge.madscience.MadScience;
+import io.github.scwunge.madscience.content.machine.bonder.BonderBlockEntity;
+import io.github.scwunge.madscience.content.machine.clayfurnace.ClayFurnaceBlockEntity;
 import io.github.scwunge.madscience.content.machine.dnaextractor.DnaExtractorBlockEntity;
+import io.github.scwunge.madscience.content.machine.duplicator.DuplicatorBlockEntity;
+import io.github.scwunge.madscience.content.machine.freezer.FreezerBlockEntity;
 import io.github.scwunge.madscience.content.machine.incubator.IncubatorBlockEntity;
 import io.github.scwunge.madscience.content.machine.mainframe.MainframeBlockEntity;
 import io.github.scwunge.madscience.content.machine.sanitizer.SanitizerBlockEntity;
@@ -28,6 +32,14 @@ public final class ModBlockEntities {
             register("mainframe", MainframeBlockEntity::new, ModBlocks.MAINFRAME);
     public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<IncubatorBlockEntity>> INCUBATOR =
             register("incubator", IncubatorBlockEntity::new, ModBlocks.INCUBATOR);
+    public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<FreezerBlockEntity>> FREEZER =
+            register("freezer", FreezerBlockEntity::new, ModBlocks.FREEZER);
+    public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<DuplicatorBlockEntity>> DUPLICATOR =
+            register("duplicator", DuplicatorBlockEntity::new, ModBlocks.DUPLICATOR);
+    public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<BonderBlockEntity>> BONDER =
+            register("thermosonic_bonder", BonderBlockEntity::new, ModBlocks.BONDER);
+    public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<ClayFurnaceBlockEntity>> CLAY_FURNACE =
+            register("clay_furnace", ClayFurnaceBlockEntity::new, ModBlocks.CLAY_FURNACE);
 
     private ModBlockEntities() {
     }

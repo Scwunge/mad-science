@@ -3,6 +3,7 @@ package io.github.scwunge.madscience.client.dev;
 import io.github.scwunge.madscience.content.Species;
 import io.github.scwunge.madscience.content.machine.MachineBlock;
 import io.github.scwunge.madscience.content.machine.MachineBlockEntity;
+import io.github.scwunge.madscience.content.machine.MachineMenu;
 import io.github.scwunge.madscience.content.machine.dnaextractor.DnaExtractorBlockEntity;
 import io.github.scwunge.madscience.content.machine.sanitizer.SanitizerBlockEntity;
 import io.github.scwunge.madscience.registry.ModBlocks;
@@ -40,6 +41,7 @@ final class HarnessScript {
 
     static void build() {
         machineRow();
+        guiTour();
         dnaExtractor();
         sanitizer();
         inventory();
@@ -60,8 +62,37 @@ final class HarnessScript {
     }
 
     /** Every machine facing each way, to check models, orientation and textures. */
+    /** Every machine block, in placement order. */
+    static List<Block> machines() {
+        return List.of(ModBlocks.DNA_EXTRACTOR.get(), ModBlocks.SANITIZER.get(), ModBlocks.SEQUENCER.get(), ModBlocks.MAINFRAME.get(),
+                ModBlocks.INCUBATOR.get(), ModBlocks.FREEZER.get(), ModBlocks.DUPLICATOR.get(), ModBlocks.BONDER.get(),
+                ModBlocks.CLAY_FURNACE.get());
+    }
+
+    /** Opens each machine's GUI in turn and takes a screenshot. */
+    private static void guiTour() {
+        BlockPos pos = new BlockPos(-6, Y, 10);
+        for (Block block : machines()) {
+            String name = net.minecraft.core.registries.BuiltInRegistries.BLOCK.getKey(block).getPath();
+            server(30, server -> {
+                ServerLevel level = level(server);
+                level.removeBlock(pos, false);
+                place(level, pos, block, Direction.NORTH);
+                look(player(server), pos.getX() + 0.5, Y + 0.6, pos.getZ() - 1.6, 0, 25);
+            });
+            shot("closeup-" + name);
+            server(20, server -> MachineMenu.open(player(server), (MachineBlockEntity) level(server).getBlockEntity(pos)));
+            shot("gui-" + name);
+            add((mc, server) -> {
+                mc.setScreen(null);
+                return 2;
+            });
+        }
+        server(2, server -> level(server).removeBlock(pos, false));
+    }
+
     private static void machineRow() {
-        List<Block> machines = List.of(ModBlocks.DNA_EXTRACTOR.get(), ModBlocks.SANITIZER.get());
+        List<Block> machines = machines();
         server(80, server -> {
             ServerLevel level = level(server);
             Direction[] facings = {Direction.NORTH, Direction.EAST, Direction.SOUTH, Direction.WEST};
@@ -96,7 +127,7 @@ final class HarnessScript {
             look(player(server), 3.5, Y + 1, 7.5, 0, 20);
         });
         shot("sanitizer-working");
-        server(30, server -> player(server).openMenu((SanitizerBlockEntity) level(server).getBlockEntity(pos), pos));
+        server(30, server -> MachineMenu.open(player(server), (SanitizerBlockEntity) level(server).getBlockEntity(pos)));
         shot("sanitizer-gui");
         add((mc, server) -> {
             mc.setScreen(null);
@@ -120,7 +151,7 @@ final class HarnessScript {
             look(player(server), 0.5, Y + 1, 7.5, 0, 20);
         });
         shot("dna-extractor-working");
-        server(30, server -> player(server).openMenu((DnaExtractorBlockEntity) level(server).getBlockEntity(pos), pos));
+        server(30, server -> MachineMenu.open(player(server), (DnaExtractorBlockEntity) level(server).getBlockEntity(pos)));
         shot("dna-extractor-gui");
         add((mc, server) -> {
             mc.setScreen(null);

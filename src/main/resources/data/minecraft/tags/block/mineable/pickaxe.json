@@ -5,6 +5,10 @@
     "madscience:sanitizer",
     "madscience:sequencer",
     "madscience:mainframe",
-    "madscience:incubator"
+    "madscience:incubator",
+    "madscience:freezer",
+    "madscience:duplicator",
+    "madscience:thermosonic_bonder",
+    "madscience:clay_furnace"
   ]
 }

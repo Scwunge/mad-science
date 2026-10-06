@@ -1,0 +1,10 @@
+{
+  "type": "madscience:bonding",
+  "input": {
+    "item": "madscience:component_silicon_wafer"
+  },
+  "result": {
+    "id": "madscience:component_transistor",
+    "count": 16
+  }
+}

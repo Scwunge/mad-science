@@ -5,6 +5,11 @@ import io.github.scwunge.madscience.content.Species;
 import io.github.scwunge.madscience.content.machine.MachineBlockEntity;
 import io.github.scwunge.madscience.content.machine.dnaextractor.DnaExtractorBlockEntity;
 import io.github.scwunge.madscience.content.Gmo;
+import io.github.scwunge.madscience.content.item.DecayingItem;
+import io.github.scwunge.madscience.content.machine.bonder.BonderBlockEntity;
+import io.github.scwunge.madscience.content.machine.clayfurnace.ClayFurnaceBlockEntity;
+import io.github.scwunge.madscience.content.machine.duplicator.DuplicatorBlockEntity;
+import io.github.scwunge.madscience.content.machine.freezer.FreezerBlockEntity;
 import io.github.scwunge.madscience.content.machine.incubator.IncubatorBlockEntity;
 import io.github.scwunge.madscience.content.machine.mainframe.MainframeBlockEntity;
 import io.github.scwunge.madscience.content.machine.sanitizer.SanitizerBlockEntity;
@@ -173,6 +178,57 @@ public final class MachineTests {
         helper.runAfterDelay(250, () -> {
             helper.assertTrue(incubator.state() != IncubatorBlockEntity.State.WORKING, "incubated an unfinished genome");
             helper.succeed();
+        });
+    }
+
+    @GameTest(template = ItemTests.EMPTY, timeoutTicks = 400)
+    public static void freezerRefreshesBloodwork(GameTestHelper helper) {
+        FreezerBlockEntity freezer = place(helper, ModBlocks.FREEZER.get());
+        ItemStack old = new ItemStack(ModItems.sample(Species.COW));
+        DecayingItem.setDecay(old, 5);
+        freezer.items().setStackInSlot(FreezerBlockEntity.STORAGE_START, old);
+        freezer.items().setStackInSlot(FreezerBlockEntity.FUEL, new ItemStack(Items.SNOWBALL, 2));
+        helper.succeedWhen(() -> {
+            helper.assertTrue(DecayingItem.getDecay(freezer.items().getStackInSlot(FreezerBlockEntity.STORAGE_START)) == 4, "sample was not chilled");
+            assertSlot(helper, freezer, FreezerBlockEntity.FUEL, new ItemStack(Items.SNOWBALL, 1));
+        });
+    }
+
+    @GameTest(template = ItemTests.EMPTY, timeoutTicks = 3000)
+    public static void duplicatorCopiesGenome(GameTestHelper helper) {
+        helper.setBlock(new BlockPos(1, 1, 0), Blocks.REDSTONE_BLOCK);
+        DuplicatorBlockEntity duplicator = place(helper, ModBlocks.DUPLICATOR.get());
+        duplicator.items().setStackInSlot(DuplicatorBlockEntity.SOURCE, new ItemStack(ModItems.combinedGenome(Gmo.SHOGGOTH)));
+        duplicator.items().setStackInSlot(DuplicatorBlockEntity.BLANK, new ItemStack(ModItems.EMPTY_DATA_REEL.get()));
+        helper.succeedWhen(() -> {
+            assertSlot(helper, duplicator, DuplicatorBlockEntity.OUTPUT, new ItemStack(ModItems.combinedGenome(Gmo.SHOGGOTH)));
+            assertSlot(helper, duplicator, DuplicatorBlockEntity.SOURCE, new ItemStack(ModItems.combinedGenome(Gmo.SHOGGOTH)));
+            helper.assertTrue(duplicator.items().getStackInSlot(DuplicatorBlockEntity.BLANK).isEmpty(), "blank reel not used");
+        });
+    }
+
+    @GameTest(template = ItemTests.EMPTY, timeoutTicks = 8000)
+    public static void bonderMakesTransistors(GameTestHelper helper) {
+        helper.setBlock(new BlockPos(1, 1, 0), Blocks.REDSTONE_BLOCK);
+        BonderBlockEntity bonder = place(helper, ModBlocks.BONDER.get());
+        bonder.items().setStackInSlot(BonderBlockEntity.GOLD_IN, new ItemStack(Items.GOLD_NUGGET));
+        bonder.items().setStackInSlot(BonderBlockEntity.COMPONENT_IN, new ItemStack(ModItems.SILICON_WAFER.get()));
+        helper.succeedWhen(() -> assertSlot(helper, bonder, BonderBlockEntity.OUTPUT, new ItemStack(ModItems.TRANSISTOR.get(), 16)));
+    }
+
+    @GameTest(template = ItemTests.EMPTY, timeoutTicks = 10000)
+    public static void clayFurnaceCooksOre(GameTestHelper helper) {
+        helper.setBlock(POS, ModBlocks.CLAY_FURNACE.get());
+        ClayFurnaceBlockEntity furnace = (ClayFurnaceBlockEntity) helper.getBlockEntity(POS);
+        furnace.items().setStackInSlot(ClayFurnaceBlockEntity.COAL, new ItemStack(Items.COAL_BLOCK));
+        furnace.items().setStackInSlot(ClayFurnaceBlockEntity.ORE, new ItemStack(Items.IRON_ORE));
+        helper.assertTrue(furnace.light(), "could not light the furnace");
+        helper.succeedWhen(() -> {
+            if (furnace.phase() == ClayFurnaceBlockEntity.Phase.SMOULDERING) {
+                furnace.breakShell();
+            }
+            helper.assertTrue(furnace.phase() == ClayFurnaceBlockEntity.Phase.COOLED, "still " + furnace.phase());
+            helper.assertTrue(furnace.resultBlock() != null && furnace.resultBlock().is(Blocks.IRON_BLOCK), "should give an iron block");
         });
     }
 

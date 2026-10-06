@@ -1,0 +1,10 @@
+{
+  "type": "madscience:bonding",
+  "input": {
+    "item": "madscience:component_fused_quartz"
+  },
+  "result": {
+    "id": "madscience:component_silicon_wafer",
+    "count": 1
+  }
+}

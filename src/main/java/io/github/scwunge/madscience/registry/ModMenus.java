@@ -16,6 +16,10 @@ public final class ModMenus {
     public static final DeferredHolder<MenuType<?>, MenuType<MachineMenu>> SEQUENCER = machine("sequencer");
     public static final DeferredHolder<MenuType<?>, MenuType<MachineMenu>> MAINFRAME = machine("mainframe");
     public static final DeferredHolder<MenuType<?>, MenuType<MachineMenu>> INCUBATOR = machine("incubator");
+    public static final DeferredHolder<MenuType<?>, MenuType<MachineMenu>> FREEZER = machine("freezer");
+    public static final DeferredHolder<MenuType<?>, MenuType<MachineMenu>> DUPLICATOR = machine("duplicator");
+    public static final DeferredHolder<MenuType<?>, MenuType<MachineMenu>> BONDER = machine("thermosonic_bonder");
+    public static final DeferredHolder<MenuType<?>, MenuType<MachineMenu>> CLAY_FURNACE = machine("clay_furnace");
 
     private ModMenus() {
     }
@@ -23,7 +27,7 @@ public final class ModMenus {
     private static DeferredHolder<MenuType<?>, MenuType<MachineMenu>> machine(String name) {
         DeferredHolder<MenuType<?>, MenuType<MachineMenu>>[] self = new DeferredHolder[1];
         self[0] = REGISTER.register(name, () -> IMenuTypeExtension.create(
-                (id, inventory, buf) -> new MachineMenu(self[0].get(), id, inventory, buf.readBlockPos())));
+                (id, inventory, buf) -> new MachineMenu(self[0].get(), id, inventory, buf)));
         return self[0];
     }
 }
