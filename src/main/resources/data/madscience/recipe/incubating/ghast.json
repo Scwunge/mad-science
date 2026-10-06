@@ -1,0 +1,9 @@
+{
+  "type": "madscience:incubating",
+  "input": {
+    "item": "madscience:genome_ghast"
+  },
+  "result": {
+    "id": "minecraft:ghast_spawn_egg"
+  }
+}

@@ -1,0 +1,9 @@
+{
+  "type": "madscience:incubating",
+  "input": {
+    "item": "madscience:genome_bat"
+  },
+  "result": {
+    "id": "minecraft:bat_spawn_egg"
+  }
+}

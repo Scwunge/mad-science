@@ -1,6 +1,7 @@
 package io.github.scwunge.madscience.registry;
 
 import io.github.scwunge.madscience.MadScience;
+import io.github.scwunge.madscience.content.recipe.MergingRecipe;
 import io.github.scwunge.madscience.content.recipe.ProcessingRecipe;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.item.ItemStack;
@@ -23,6 +24,20 @@ public final class ModRecipes {
     public static final Processing DNA_EXTRACTING = processing("dna_extracting", 0);
     /** Syringe Sanitizer: dirty syringe → clean syringe. */
     public static final Processing SANITIZING = processing("sanitizing", 200);
+    /** Gene Sequencer: DNA sample → genome (started fresh, then repaired one point per sample). */
+    public static final Processing SEQUENCING = processing("sequencing", 200);
+    /** Genome Incubator: complete genome → spawn egg (or a creature block, like the meat cube). */
+    public static final Processing INCUBATING = processing("incubating", 2600);
+    /** Thermosonic Bonder: component → upgraded component, with a gold nugget. */
+    public static final Processing BONDING = processing("bonding", 200);
+    /** Clay Furnace: ore block → metal block over a long smoulder. */
+    public static final Processing CLAY_SMELTING = processing("clay_smelting", 0);
+
+    /** Computer Mainframe: two genomes → combined genome. */
+    public static final DeferredHolder<RecipeType<?>, RecipeType<MergingRecipe>> MERGING =
+            TYPES.register("genome_merging", () -> RecipeType.simple(MadScience.id("genome_merging")));
+    public static final DeferredHolder<RecipeSerializer<?>, RecipeSerializer<MergingRecipe>> MERGING_SERIALIZER =
+            SERIALIZERS.register("genome_merging", MergingRecipe.Serializer::new);
 
     private ModRecipes() {
     }

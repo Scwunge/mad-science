@@ -1,0 +1,9 @@
+{
+  "type": "madscience:incubating",
+  "input": {
+    "item": "madscience:genome_witch"
+  },
+  "result": {
+    "id": "minecraft:witch_spawn_egg"
+  }
+}

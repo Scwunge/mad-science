@@ -4,7 +4,15 @@ import io.github.scwunge.madscience.MadScience;
 import io.github.scwunge.madscience.content.Species;
 import io.github.scwunge.madscience.content.machine.MachineBlockEntity;
 import io.github.scwunge.madscience.content.machine.dnaextractor.DnaExtractorBlockEntity;
+import io.github.scwunge.madscience.content.Gmo;
+import io.github.scwunge.madscience.content.machine.incubator.IncubatorBlockEntity;
+import io.github.scwunge.madscience.content.machine.mainframe.MainframeBlockEntity;
 import io.github.scwunge.madscience.content.machine.sanitizer.SanitizerBlockEntity;
+import io.github.scwunge.madscience.content.machine.sequencer.SequencerBlockEntity;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.material.Fluids;
+import net.neoforged.neoforge.fluids.FluidStack;
+import net.neoforged.neoforge.fluids.capability.IFluidHandler;
 import io.github.scwunge.madscience.registry.ModBlocks;
 import io.github.scwunge.madscience.registry.ModFluids;
 import io.github.scwunge.madscience.registry.ModItems;
@@ -89,6 +97,81 @@ public final class MachineTests {
         sanitizer.items().setStackInSlot(SanitizerBlockEntity.DIRTY_IN, new ItemStack(ModItems.DIRTY_SYRINGE.get()));
         helper.runAfterDelay(250, () -> {
             helper.assertTrue(sanitizer.items().getStackInSlot(SanitizerBlockEntity.CLEAN_OUT).isEmpty(), "cleaned without water");
+            helper.succeed();
+        });
+    }
+
+    @GameTest(template = ItemTests.EMPTY, timeoutTicks = 800)
+    public static void sequencerStartsAndRepairsGenome(GameTestHelper helper) {
+        SequencerBlockEntity sequencer = place(helper, ModBlocks.SEQUENCER.get());
+        sequencer.items().setStackInSlot(SequencerBlockEntity.SAMPLE_IN, new ItemStack(ModItems.sample(Species.PIG), 2));
+        sequencer.items().setStackInSlot(SequencerBlockEntity.REEL_IN, new ItemStack(ModItems.EMPTY_DATA_REEL.get()));
+        helper.succeedWhen(() -> {
+            ItemStack out = sequencer.items().getStackInSlot(SequencerBlockEntity.OUTPUT);
+            helper.assertTrue(out.is(ModItems.genome(Species.PIG)), "no pig genome yet");
+            helper.assertTrue(out.getDamageValue() == out.getMaxDamage(), "a new genome should start fully unfinished");
+        });
+    }
+
+    @GameTest(template = ItemTests.EMPTY, timeoutTicks = 800)
+    public static void sequencerCompletesGenome(GameTestHelper helper) {
+        SequencerBlockEntity sequencer = place(helper, ModBlocks.SEQUENCER.get());
+        ItemStack almostDone = new ItemStack(ModItems.genome(Species.PIG));
+        almostDone.setDamageValue(1);
+        sequencer.items().setStackInSlot(SequencerBlockEntity.REEL_IN, almostDone);
+        sequencer.items().setStackInSlot(SequencerBlockEntity.SAMPLE_IN, new ItemStack(ModItems.sample(Species.PIG)));
+        helper.succeedWhen(() -> {
+            ItemStack out = sequencer.items().getStackInSlot(SequencerBlockEntity.OUTPUT);
+            helper.assertTrue(out.is(ModItems.genome(Species.PIG)) && !out.isDamaged(), "genome not completed");
+        });
+    }
+
+    @GameTest(template = ItemTests.EMPTY, timeoutTicks = 8000)
+    public static void mainframeMergesGenomes(GameTestHelper helper) {
+        helper.setBlock(new BlockPos(1, 1, 0), Blocks.REDSTONE_BLOCK);
+        MainframeBlockEntity mainframe = place(helper, ModBlocks.MAINFRAME.get());
+        mainframe.tank().fill(new FluidStack(Fluids.WATER, 10_000), IFluidHandler.FluidAction.EXECUTE);
+        mainframe.items().setStackInSlot(MainframeBlockEntity.GENOME_A, new ItemStack(ModItems.genome(Species.VILLAGER)));
+        mainframe.items().setStackInSlot(MainframeBlockEntity.GENOME_B, new ItemStack(ModItems.genome(Species.WOLF)));
+        mainframe.items().setStackInSlot(MainframeBlockEntity.REEL_IN, new ItemStack(ModItems.EMPTY_DATA_REEL.get()));
+        helper.succeedWhen(() -> {
+            assertSlot(helper, mainframe, MainframeBlockEntity.OUTPUT, new ItemStack(ModItems.combinedGenome(Gmo.WEREWOLF)));
+            helper.assertTrue(!mainframe.items().getStackInSlot(MainframeBlockEntity.GENOME_A).isEmpty(), "input genomes should be kept");
+        });
+    }
+
+    @GameTest(template = ItemTests.EMPTY, timeoutTicks = 300)
+    public static void mainframeNeedsRedstone(GameTestHelper helper) {
+        MainframeBlockEntity mainframe = place(helper, ModBlocks.MAINFRAME.get());
+        mainframe.tank().fill(new FluidStack(Fluids.WATER, 10_000), IFluidHandler.FluidAction.EXECUTE);
+        mainframe.items().setStackInSlot(MainframeBlockEntity.GENOME_A, new ItemStack(ModItems.genome(Species.VILLAGER)));
+        mainframe.items().setStackInSlot(MainframeBlockEntity.GENOME_B, new ItemStack(ModItems.genome(Species.WOLF)));
+        mainframe.items().setStackInSlot(MainframeBlockEntity.REEL_IN, new ItemStack(ModItems.EMPTY_DATA_REEL.get()));
+        helper.runAfterDelay(200, () -> {
+            helper.assertTrue(mainframe.state() == MainframeBlockEntity.State.OFF, "mainframe ran without a redstone signal");
+            helper.succeed();
+        });
+    }
+
+    @GameTest(template = ItemTests.EMPTY, timeoutTicks = 8000)
+    public static void incubatorHatchesSpawnEgg(GameTestHelper helper) {
+        helper.setBlock(new BlockPos(1, 1, 0), Blocks.REDSTONE_BLOCK);
+        IncubatorBlockEntity incubator = place(helper, ModBlocks.INCUBATOR.get());
+        incubator.items().setStackInSlot(IncubatorBlockEntity.EGG_IN, new ItemStack(Items.EGG, 2));
+        incubator.items().setStackInSlot(IncubatorBlockEntity.GENOME_IN, new ItemStack(ModItems.genome(Species.COW)));
+        helper.succeedWhen(() -> assertSlot(helper, incubator, IncubatorBlockEntity.OUTPUT, new ItemStack(Items.COW_SPAWN_EGG)));
+    }
+
+    @GameTest(template = ItemTests.EMPTY, timeoutTicks = 300)
+    public static void incubatorRejectsUnfinishedGenome(GameTestHelper helper) {
+        helper.setBlock(new BlockPos(1, 1, 0), Blocks.REDSTONE_BLOCK);
+        IncubatorBlockEntity incubator = place(helper, ModBlocks.INCUBATOR.get());
+        ItemStack unfinished = new ItemStack(ModItems.genome(Species.COW));
+        unfinished.setDamageValue(5);
+        incubator.items().setStackInSlot(IncubatorBlockEntity.EGG_IN, new ItemStack(Items.EGG));
+        incubator.items().setStackInSlot(IncubatorBlockEntity.GENOME_IN, unfinished);
+        helper.runAfterDelay(250, () -> {
+            helper.assertTrue(incubator.state() != IncubatorBlockEntity.State.WORKING, "incubated an unfinished genome");
             helper.succeed();
         });
     }

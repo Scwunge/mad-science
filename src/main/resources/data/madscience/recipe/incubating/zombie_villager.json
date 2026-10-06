@@ -1,0 +1,9 @@
+{
+  "type": "madscience:incubating",
+  "input": {
+    "item": "madscience:genome_zombie_villager"
+  },
+  "result": {
+    "id": "minecraft:zombie_villager_spawn_egg"
+  }
+}

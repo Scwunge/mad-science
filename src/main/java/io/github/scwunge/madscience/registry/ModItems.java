@@ -1,6 +1,7 @@
 package io.github.scwunge.madscience.registry;
 
 import io.github.scwunge.madscience.MadScience;
+import io.github.scwunge.madscience.content.Gmo;
 import io.github.scwunge.madscience.content.Species;
 import io.github.scwunge.madscience.content.item.DecayingItem;
 import io.github.scwunge.madscience.content.item.EmptySyringeItem;
@@ -76,11 +77,21 @@ public final class ModItems {
     public static final DeferredItem<Item> EMPTY_DATA_REEL = add(REGISTER.register("data_reel_empty",
             () -> new TwoToneItem(new Item.Properties(), 0x35A5C8, 0x35A5C8)));
 
+    private static final Map<Gmo, DeferredItem<TwoToneItem>> COMBINED_GENOMES = new EnumMap<>(Gmo.class);
+
     static {
         for (Species species : Species.values()) {
             GENOMES.put(species, add(REGISTER.register("genome_" + species.getSerializedName(),
                     () -> new GenomeItem(new Item.Properties(), species))));
         }
+        for (Gmo gmo : Gmo.values()) {
+            COMBINED_GENOMES.put(gmo, add(REGISTER.register("genome_" + gmo.getSerializedName(),
+                    () -> new TwoToneItem(new Item.Properties().stacksTo(1), gmo.primaryColor(), gmo.secondaryColor()))));
+        }
+    }
+
+    public static TwoToneItem combinedGenome(Gmo gmo) {
+        return COMBINED_GENOMES.get(gmo).get();
     }
 
     private ModItems() {

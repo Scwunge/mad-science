@@ -90,7 +90,7 @@ public final class {class_name} {{
 }}
 """
     OUT.mkdir(parents=True, exist_ok=True)
-    (OUT / f"{class_name}.java").write_text(source, encoding="utf-8")
+    (OUT / f"{class_name}.java").write_text(source, encoding="utf-8", newline="\n")
     print(f"{class_name}: {len(names)} parts, texture {tex_w}x{tex_h}")
 
 

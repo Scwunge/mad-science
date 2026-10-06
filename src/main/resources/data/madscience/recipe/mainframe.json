@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "111",
+    "121",
+    "111"
+  ],
+  "key": {
+    "1": {
+      "item": "madscience:component_computer"
+    },
+    "2": {
+      "item": "madscience:component_case"
+    }
+  },
+  "result": {
+    "id": "madscience:mainframe",
+    "count": 1
+  }
+}

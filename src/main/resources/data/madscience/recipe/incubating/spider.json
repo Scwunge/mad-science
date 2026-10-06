@@ -1,0 +1,9 @@
+{
+  "type": "madscience:incubating",
+  "input": {
+    "item": "madscience:genome_spider"
+  },
+  "result": {
+    "id": "minecraft:spider_spawn_egg"
+  }
+}

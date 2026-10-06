@@ -1,0 +1,13 @@
+{
+  "type": "madscience:genome_merging",
+  "first": {
+    "item": "madscience:genome_villager"
+  },
+  "second": {
+    "item": "madscience:genome_wolf"
+  },
+  "result": {
+    "id": "madscience:genome_werewolf"
+  },
+  "time": 2600
+}

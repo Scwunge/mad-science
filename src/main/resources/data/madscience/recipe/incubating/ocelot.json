@@ -1,0 +1,9 @@
+{
+  "type": "madscience:incubating",
+  "input": {
+    "item": "madscience:genome_ocelot"
+  },
+  "result": {
+    "id": "minecraft:ocelot_spawn_egg"
+  }
+}

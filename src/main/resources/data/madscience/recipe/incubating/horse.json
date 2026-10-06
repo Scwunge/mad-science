@@ -1,0 +1,9 @@
+{
+  "type": "madscience:incubating",
+  "input": {
+    "item": "madscience:genome_horse"
+  },
+  "result": {
+    "id": "minecraft:horse_spawn_egg"
+  }
+}

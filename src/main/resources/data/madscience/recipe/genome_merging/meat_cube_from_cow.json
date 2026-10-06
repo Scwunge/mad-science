@@ -1,0 +1,13 @@
+{
+  "type": "madscience:genome_merging",
+  "first": {
+    "item": "madscience:genome_slime"
+  },
+  "second": {
+    "item": "madscience:genome_cow"
+  },
+  "result": {
+    "id": "madscience:genome_meat_cube"
+  },
+  "time": 2600
+}

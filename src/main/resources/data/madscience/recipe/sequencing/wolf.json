@@ -1,0 +1,9 @@
+{
+  "type": "madscience:sequencing",
+  "input": {
+    "item": "madscience:dna_wolf"
+  },
+  "result": {
+    "id": "madscience:genome_wolf"
+  }
+}

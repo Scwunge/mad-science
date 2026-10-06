@@ -21,6 +21,12 @@ public final class ModBlocks {
             () -> new MachineBlock(machineProperties(), ModBlockEntities.DNA_EXTRACTOR));
     public static final DeferredBlock<MachineBlock> SANITIZER = machine("sanitizer",
             () -> new MachineBlock(machineProperties(), ModBlockEntities.SANITIZER));
+    public static final DeferredBlock<MachineBlock> SEQUENCER = machine("sequencer",
+            () -> new MachineBlock(machineProperties(), ModBlockEntities.SEQUENCER));
+    public static final DeferredBlock<MachineBlock> MAINFRAME = machine("mainframe",
+            () -> new MachineBlock(machineProperties(), ModBlockEntities.MAINFRAME));
+    public static final DeferredBlock<MachineBlock> INCUBATOR = machine("incubator",
+            () -> new MachineBlock(machineProperties(), ModBlockEntities.INCUBATOR));
 
     private ModBlocks() {
     }

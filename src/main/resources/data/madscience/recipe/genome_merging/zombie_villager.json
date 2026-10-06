@@ -1,0 +1,13 @@
+{
+  "type": "madscience:genome_merging",
+  "first": {
+    "item": "madscience:genome_villager"
+  },
+  "second": {
+    "item": "madscience:genome_zombie"
+  },
+  "result": {
+    "id": "madscience:genome_zombie_villager"
+  },
+  "time": 2600
+}

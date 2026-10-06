@@ -1,0 +1,9 @@
+{
+  "type": "madscience:sequencing",
+  "input": {
+    "item": "madscience:dna_witch"
+  },
+  "result": {
+    "id": "madscience:genome_witch"
+  }
+}

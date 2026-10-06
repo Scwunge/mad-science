@@ -1,0 +1,27 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "212",
+    "232",
+    "242"
+  ],
+  "key": {
+    "1": {
+      "item": "madscience:syringe_mutant"
+    },
+    "2": {
+      "item": "minecraft:soul_sand"
+    },
+    "3": {
+      "item": "minecraft:skeleton_skull"
+    },
+    "4": {
+      "item": "minecraft:egg"
+    }
+  },
+  "result": {
+    "id": "minecraft:wither_skeleton_spawn_egg",
+    "count": 1
+  }
+}

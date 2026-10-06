@@ -104,7 +104,7 @@ generated = []
 
 def write_json(path: Path, obj):
     path.parent.mkdir(parents=True, exist_ok=True)
-    path.write_text(json.dumps(obj, indent=2) + "\n", encoding="utf-8")
+    path.write_text(json.dumps(obj, indent=2) + "\n", encoding="utf-8", newline="\n")
     generated.append(path)
 
 
@@ -198,7 +198,38 @@ def fluids():
 MACHINES = {
     "dna_extractor": ("dnaExtractor", "DNA Extractor", "Extracts DNA samples from filled syringes."),
     "sanitizer": ("needleSanitizer", "Syringe Sanitizer", "Cleans dirty needles so they can be reused."),
+    "sequencer": ("genomeSequencer", "Gene Sequencer", "Reads DNA samples into data reels to create sequenced genomes."),
+    "mainframe": ("computerMainframe", "Computer Mainframe",
+                  "Combines multiple sequenced genomes together to make new lifeforms. Needs power, a redstone signal and water to keep cool."),
+    "incubator": ("genomeIncubator", "Genome Incubator",
+                  "Reads sequenced genomes and encodes this information onto chicken eggs. Needs power and a redstone signal to heat up."),
 }
+
+# combined genomes: id -> (English name, parent genome pairs, Mainframe ticks)
+GMOS = {
+    "werewolf": ("Werewolf", [("villager", "wolf")], 2600),
+    "meat_cube": ("Disgusting Meat Cube", [("slime", "cow"), ("slime", "pig"), ("slime", "chicken")], 2600),
+    "creeper_cow": ("Creeper Cow", [("creeper", "cow")], 2600),
+    "enderslime": ("Enderslime", [("enderman", "slime")], 2600),
+    "wooly_cow": ("Wooly Cow", [("cow", "sheep")], 2600),
+    "shoggoth": ("Shoggoth", [("slime", "squid")], 2600),
+    "abomination": ("Abomination", [("enderman", "spider")], 2600),
+    "wither_skeleton": ("Wither Skeleton", [("enderman", "skeleton")], 2600),
+    "zombie_villager": ("Zombie Villager", [("villager", "zombie")], 2600),
+    "skeleton_horse": ("Skeleton Horse", [("horse", "skeleton")], 2600),
+    "zombie_horse": ("Zombie Horse", [("zombie", "horse")], 2600),
+    "ender_squid": ("Ender Squid", [("enderman", "squid")], 2600),
+}
+# what the Incubator hatches from each genome (custom creatures are added with their entities)
+VANILLA_EGGS = {
+    "bat": "bat", "cave_spider": "cave_spider", "chicken": "chicken", "cow": "cow", "creeper": "creeper", "enderman": "enderman",
+    "ghast": "ghast", "horse": "horse", "mushroom_cow": "mooshroom", "ocelot": "ocelot", "pig": "pig", "pig_zombie": "zombified_piglin",
+    "sheep": "sheep", "skeleton": "skeleton", "slime": "slime", "spider": "spider", "squid": "squid", "villager": "villager",
+    "witch": "witch", "wolf": "wolf", "zombie": "zombie",
+    "wither_skeleton": "wither_skeleton", "zombie_villager": "zombie_villager", "skeleton_horse": "skeleton_horse", "zombie_horse": "zombie_horse",
+}
+# custom creature results, filled in as the entities are ported: genome id -> result item
+GMO_RESULTS = {}
 
 # Item display transforms for machine items drawn by the block entity model renderer.
 MACHINE_ITEM_DISPLAY = {
@@ -240,6 +271,16 @@ def machine_recipes():
     shaped("sanitizer", m("sanitizer"), ["545", "535", "126"], {
         "1": m("circuit_glowstone"), "2": m("circuit_redstone"), "3": m("component_power_supply"), "4": m("component_fan"),
         "5": m("component_case"), "6": m("circuit_ender_pearl")})
+    shaped("sequencer", m("sequencer"), ["172", "858", "364"], {
+        "1": m("circuit_emerald"), "2": m("circuit_comparator"), "3": m("circuit_diamond"), "4": m("circuit_ender_eye"),
+        "5": m("component_computer"), "6": m("component_power_supply"), "7": m("component_fan"), "8": m("component_case")})
+    shaped("mainframe", m("mainframe"), ["111", "121", "111"], {"1": m("component_computer"), "2": m("component_case")})
+    shaped("incubator", m("incubator"), ["656", "142", "636"], {
+        "1": m("circuit_glowstone"), "2": m("circuit_comparator"), "3": m("component_power_supply"), "4": m("component_computer"),
+        "5": m("component_fan"), "6": m("component_case")})
+    # early-game help for the Thermosonic Bonder's nether star: mutant DNA over a skull in soul sand gives a wither skeleton egg
+    shaped("wither_skeleton_spawn_egg", "minecraft:wither_skeleton_spawn_egg", ["212", "232", "242"], {
+        "1": m("syringe_mutant"), "2": "minecraft:soul_sand", "3": "minecraft:skeleton_skull", "4": "minecraft:egg"})
 
 
 # DNA Extractor inputs per species (besides that species' syringe), from the original MadDNA.
@@ -279,6 +320,38 @@ def processing_recipes():
                 "type": f"{MOD}:dna_extracting", "input": ingredient(item), "result": {"id": f"{MOD}:dna_{sid}"}})
     write_json(DATA / "recipe/sanitizing/syringe.json", {
         "type": f"{MOD}:sanitizing", "input": {"item": f"{MOD}:syringe_dirty"}, "result": {"id": f"{MOD}:syringe_empty"}})
+    for sid, (_, _, has_sample) in SPECIES.items():
+        if has_sample:
+            write_json(DATA / f"recipe/sequencing/{sid}.json", {
+                "type": f"{MOD}:sequencing", "input": {"item": f"{MOD}:dna_{sid}"}, "result": {"id": f"{MOD}:genome_{sid}"}})
+    for gid, (_, parents, ticks) in GMOS.items():
+        for i, (a, b) in enumerate(parents):
+            suffix = "" if len(parents) == 1 else f"_from_{b}"
+            write_json(DATA / f"recipe/genome_merging/{gid}{suffix}.json", {
+                "type": f"{MOD}:genome_merging", "first": {"item": f"{MOD}:genome_{a}"}, "second": {"item": f"{MOD}:genome_{b}"},
+                "result": {"id": f"{MOD}:genome_{gid}"}, "time": ticks})
+    write_json(DATA / "recipe/genome_merging/pig_zombie.json", {
+        "type": f"{MOD}:genome_merging", "first": {"item": f"{MOD}:genome_zombie"}, "second": {"item": f"{MOD}:genome_pig"},
+        "result": {"id": f"{MOD}:genome_pig_zombie"}, "time": 1337})
+    for gid, egg in VANILLA_EGGS.items():
+        write_json(DATA / f"recipe/incubating/{gid}.json", {
+            "type": f"{MOD}:incubating", "input": {"item": f"{MOD}:genome_{gid}"}, "result": {"id": f"minecraft:{egg}_spawn_egg"}})
+    for gid, result in GMO_RESULTS.items():
+        write_json(DATA / f"recipe/incubating/{gid}.json", {
+            "type": f"{MOD}:incubating", "input": {"item": f"{MOD}:genome_{gid}"}, "result": {"id": result}})
+
+
+def gmo_items():
+    reel_layers = ["data_reel_layer_1", "data_reel_layer_2", "data_reel_overlay"]
+    genomes = [f"{MOD}:genome_{sid}" for sid in SPECIES] + [f"{MOD}:genome_{gid}" for gid in GMOS]
+    for gid, (english, parents, _) in GMOS.items():
+        item_model(f"genome_{gid}", reel_layers)
+        lang[f"item.{MOD}.genome_{gid}"] = f"{english} Genome"
+        lang[f"item.{MOD}.genome_{gid}.tooltip"] = "Combined genome. Write it onto an egg in a Genome Incubator to bring it to life."
+    write_json(DATA / "tags/item/genomes.json", {"replace": False, "values": genomes})
+    bloodwork = [f"{MOD}:syringe_mutant"] + [f"{MOD}:syringe_{s}" for s, (_, syr, _) in SPECIES.items() if syr] \
+        + [f"{MOD}:dna_{s}" for s, (_, _, smp) in SPECIES.items() if smp]
+    write_json(DATA / "tags/item/bloodwork.json", {"replace": False, "values": bloodwork})
 
 
 def gui_lang():
@@ -287,6 +360,7 @@ def gui_lang():
         "gui.madscience.energy_percent": "Energy %s %%",
         "gui.madscience.progress": "%s / %s",
         "gui.madscience.progress_percent": "Progress %s %%",
+        "gui.madscience.heat_percent": "Heat %s %%",
         "gui.madscience.millibuckets": "%s mB",
         "gui.madscience.place_empty_bucket": "Place empty bucket",
         "gui.madscience.place_water_bucket": "Place water bucket",
@@ -451,6 +525,7 @@ fluids()
 machines()
 machine_recipes()
 processing_recipes()
+gmo_items()
 gui_lang()
 tags()
 recipes()

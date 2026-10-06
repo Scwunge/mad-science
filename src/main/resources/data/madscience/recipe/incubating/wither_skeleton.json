@@ -1,0 +1,9 @@
+{
+  "type": "madscience:incubating",
+  "input": {
+    "item": "madscience:genome_wither_skeleton"
+  },
+  "result": {
+    "id": "minecraft:wither_skeleton_spawn_egg"
+  }
+}

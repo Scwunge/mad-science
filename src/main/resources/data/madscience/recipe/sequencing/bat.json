@@ -1,0 +1,9 @@
+{
+  "type": "madscience:sequencing",
+  "input": {
+    "item": "madscience:dna_bat"
+  },
+  "result": {
+    "id": "madscience:genome_bat"
+  }
+}

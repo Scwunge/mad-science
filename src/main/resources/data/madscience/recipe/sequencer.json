@@ -1,0 +1,39 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "172",
+    "858",
+    "364"
+  ],
+  "key": {
+    "1": {
+      "item": "madscience:circuit_emerald"
+    },
+    "2": {
+      "item": "madscience:circuit_comparator"
+    },
+    "3": {
+      "item": "madscience:circuit_diamond"
+    },
+    "4": {
+      "item": "madscience:circuit_ender_eye"
+    },
+    "5": {
+      "item": "madscience:component_computer"
+    },
+    "6": {
+      "item": "madscience:component_power_supply"
+    },
+    "7": {
+      "item": "madscience:component_fan"
+    },
+    "8": {
+      "item": "madscience:component_case"
+    }
+  },
+  "result": {
+    "id": "madscience:sequencer",
+    "count": 1
+  }
+}

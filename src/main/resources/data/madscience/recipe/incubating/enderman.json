@@ -1,0 +1,9 @@
+{
+  "type": "madscience:incubating",
+  "input": {
+    "item": "madscience:genome_enderman"
+  },
+  "result": {
+    "id": "minecraft:enderman_spawn_egg"
+  }
+}

@@ -15,6 +15,17 @@ public final class ModSounds {
     public static final DeferredHolder<SoundEvent, SoundEvent> DNA_EXTRACTOR_IDLE = register("dna_extractor.idle");
     public static final DeferredHolder<SoundEvent, SoundEvent> DNA_EXTRACTOR_FINISH = register("dna_extractor.finish");
     public static final DeferredHolder<SoundEvent, SoundEvent> SANITIZER_IDLE = register("sanitizer.idle");
+    public static final DeferredHolder<SoundEvent, SoundEvent> SEQUENCER_START = register("sequencer.start");
+    public static final DeferredHolder<SoundEvent, SoundEvent> SEQUENCER_WORK = register("sequencer.work");
+    public static final DeferredHolder<SoundEvent, SoundEvent> SEQUENCER_FINISH = register("sequencer.finish");
+    public static final DeferredHolder<SoundEvent, SoundEvent> MAINFRAME_START = register("mainframe.start");
+    public static final DeferredHolder<SoundEvent, SoundEvent> MAINFRAME_WORK = register("mainframe.work");
+    public static final DeferredHolder<SoundEvent, SoundEvent> MAINFRAME_IDLE = register("mainframe.idle");
+    public static final DeferredHolder<SoundEvent, SoundEvent> MAINFRAME_FINISH = register("mainframe.finish");
+    public static final DeferredHolder<SoundEvent, SoundEvent> MAINFRAME_OVERHEAT = register("mainframe.overheat");
+    public static final DeferredHolder<SoundEvent, SoundEvent> INCUBATOR_START = register("incubator.start");
+    public static final DeferredHolder<SoundEvent, SoundEvent> INCUBATOR_WORK = register("incubator.work");
+    public static final DeferredHolder<SoundEvent, SoundEvent> INCUBATOR_FINISH = register("incubator.finish");
 
     private ModSounds() {
     }

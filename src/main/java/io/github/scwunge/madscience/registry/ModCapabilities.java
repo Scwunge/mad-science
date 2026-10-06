@@ -20,6 +20,10 @@ public final class ModCapabilities {
         event.registerBlockEntity(Capabilities.FluidHandler.BLOCK, ModBlockEntities.DNA_EXTRACTOR.get(), (be, side) -> be.fluidHandler(side));
         machine(event, ModBlockEntities.SANITIZER.get());
         event.registerBlockEntity(Capabilities.FluidHandler.BLOCK, ModBlockEntities.SANITIZER.get(), (be, side) -> be.fluidHandler(side));
+        machine(event, ModBlockEntities.SEQUENCER.get());
+        machine(event, ModBlockEntities.MAINFRAME.get());
+        event.registerBlockEntity(Capabilities.FluidHandler.BLOCK, ModBlockEntities.MAINFRAME.get(), (be, side) -> be.fluidHandler(side));
+        machine(event, ModBlockEntities.INCUBATOR.get());
     }
 
     /** Items (side rules applied) and energy for a machine. */

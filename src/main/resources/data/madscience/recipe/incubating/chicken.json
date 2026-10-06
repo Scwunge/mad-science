@@ -1,0 +1,9 @@
+{
+  "type": "madscience:incubating",
+  "input": {
+    "item": "madscience:genome_chicken"
+  },
+  "result": {
+    "id": "minecraft:chicken_spawn_egg"
+  }
+}

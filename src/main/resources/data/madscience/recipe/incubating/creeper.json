@@ -1,0 +1,9 @@
+{
+  "type": "madscience:incubating",
+  "input": {
+    "item": "madscience:genome_creeper"
+  },
+  "result": {
+    "id": "minecraft:creeper_spawn_egg"
+  }
+}

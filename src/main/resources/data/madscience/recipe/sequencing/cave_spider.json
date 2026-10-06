@@ -1,0 +1,9 @@
+{
+  "type": "madscience:sequencing",
+  "input": {
+    "item": "madscience:dna_cave_spider"
+  },
+  "result": {
+    "id": "madscience:genome_cave_spider"
+  }
+}

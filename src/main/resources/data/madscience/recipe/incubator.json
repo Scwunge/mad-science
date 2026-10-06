@@ -1,0 +1,33 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "656",
+    "142",
+    "636"
+  ],
+  "key": {
+    "1": {
+      "item": "madscience:circuit_glowstone"
+    },
+    "2": {
+      "item": "madscience:circuit_comparator"
+    },
+    "3": {
+      "item": "madscience:component_power_supply"
+    },
+    "4": {
+      "item": "madscience:component_computer"
+    },
+    "5": {
+      "item": "madscience:component_fan"
+    },
+    "6": {
+      "item": "madscience:component_case"
+    }
+  },
+  "result": {
+    "id": "madscience:incubator",
+    "count": 1
+  }
+}

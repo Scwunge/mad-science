@@ -1,0 +1,9 @@
+{
+  "type": "madscience:incubating",
+  "input": {
+    "item": "madscience:genome_pig_zombie"
+  },
+  "result": {
+    "id": "minecraft:zombified_piglin_spawn_egg"
+  }
+}

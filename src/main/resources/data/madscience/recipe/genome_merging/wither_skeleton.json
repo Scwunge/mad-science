@@ -1,0 +1,13 @@
+{
+  "type": "madscience:genome_merging",
+  "first": {
+    "item": "madscience:genome_enderman"
+  },
+  "second": {
+    "item": "madscience:genome_skeleton"
+  },
+  "result": {
+    "id": "madscience:genome_wither_skeleton"
+  },
+  "time": 2600
+}

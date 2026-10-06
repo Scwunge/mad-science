@@ -13,6 +13,9 @@ public final class ModMenus {
 
     public static final DeferredHolder<MenuType<?>, MenuType<MachineMenu>> DNA_EXTRACTOR = machine("dna_extractor");
     public static final DeferredHolder<MenuType<?>, MenuType<MachineMenu>> SANITIZER = machine("sanitizer");
+    public static final DeferredHolder<MenuType<?>, MenuType<MachineMenu>> SEQUENCER = machine("sequencer");
+    public static final DeferredHolder<MenuType<?>, MenuType<MachineMenu>> MAINFRAME = machine("mainframe");
+    public static final DeferredHolder<MenuType<?>, MenuType<MachineMenu>> INCUBATOR = machine("incubator");
 
     private ModMenus() {
     }

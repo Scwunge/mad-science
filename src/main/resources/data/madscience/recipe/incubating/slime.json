@@ -1,0 +1,9 @@
+{
+  "type": "madscience:incubating",
+  "input": {
+    "item": "madscience:genome_slime"
+  },
+  "result": {
+    "id": "minecraft:slime_spawn_egg"
+  }
+}

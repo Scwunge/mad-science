@@ -1,0 +1,13 @@
+{
+  "type": "madscience:genome_merging",
+  "first": {
+    "item": "madscience:genome_enderman"
+  },
+  "second": {
+    "item": "madscience:genome_spider"
+  },
+  "result": {
+    "id": "madscience:genome_abomination"
+  },
+  "time": 2600
+}

@@ -1,0 +1,9 @@
+{
+  "type": "madscience:sequencing",
+  "input": {
+    "item": "madscience:dna_mushroom_cow"
+  },
+  "result": {
+    "id": "madscience:genome_mushroom_cow"
+  }
+}

@@ -1,0 +1,9 @@
+{
+  "type": "madscience:sequencing",
+  "input": {
+    "item": "madscience:dna_zombie"
+  },
+  "result": {
+    "id": "madscience:genome_zombie"
+  }
+}
