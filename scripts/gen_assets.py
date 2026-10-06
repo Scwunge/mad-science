@@ -827,7 +827,34 @@ WARNING_SIGNS = {
 }
 
 
+JEI_LANG = {
+    "jei.madscience.time": "%s s",
+    "jei.madscience.dna_extracting": "Takes longer the more the sample has decayed.",
+    "jei.madscience.sequencing": "Each sample adds to the genome until it is complete.",
+    "jei.madscience.needs_redstone_heat": "Needs power and a redstone signal to heat up.",
+    "jei.madscience.needs_redstone": "Needs power, water and a redstone signal.",
+    "jei.madscience.clay_furnace": "Light with flint and steel; hit it when hot, then when cool.",
+    "jei.madscience.cnc_code": "Book's first page: \"%s\" (or in binary)",
+    "jei.madscience.info.pulse_rifle": "Hold attack to fire: a round every 12 ticks, or one grenade per pull in launcher mode. Use to switch modes. Sneak and use to load the fullest magazine (or up to four grenades), or to unload. Rounds explode on impact; servers can turn off firing or block damage in the config.",
+    "jei.madscience.info.magazine": "Holds up to 99 rounds. Load it by crafting it with rounds, or have a Magazine Loader put %s rounds into empty ones.",
+    "jei.madscience.info.magazine_crafting": "Craft a magazine with rounds to load them (up to %s). Craft a loaded magazine on its own to take the rounds back out.",
+    "jei.madscience.info.magazine_loader": "Put rounds in the storage slots and empty magazines in the input. With power and a redstone signal it loads %s rounds into each magazine.",
+    "jei.madscience.info.cnc_machine": "Write the part's name on the first page of a book (plain text or binary ASCII), sign it, and put it in with a block of iron and water. Needs power and a redstone signal. The book is kept.",
+    "jei.madscience.info.cryotube": "Three blocks tall. Give it a villager spawn egg and a redstone signal to grow a subject; a nether star turns its neural activity into power, and an empty data reel records its memory when it dies. Some subjects are stillborn, and rotten flesh piles up as waste.",
+    "jei.madscience.info.soniclocator": "Three blocks tall. Give it gravel and a sample of the block to find, plus power and a redstone signal. Each thump swaps one matching block in its chunk for gravel and collects it, withering and blinding everything nearby. Two Soniclocators thumping close together blow each other up.",
+    "jei.madscience.info.meat_cube": "Hatched from a Disgusting Meat Cube genome. Punch it for meat; feed it Liquid Mutant DNA to grow the meat back.",
+    "jei.madscience.info.vox_box": "Put in a written book. Each redstone pulse announces it in chat to players nearby.",
+    "jei.madscience.info.clay_furnace": "Put in a block of coal and an ore block, then light it with flint and steel. When it glows red-hot, hit it to pour out lava, or wait for it to cool and hit it again for the metal block.",
+    "jei.madscience.info.freezer": "Fuelled by snow and ice. Restores filled syringes and DNA samples kept inside so they stop decaying.",
+    "jei.madscience.info.duplicator": "Copies a finished genome or memory reel onto an empty data reel. Needs power and a redstone signal.",
+    "jei.madscience.info.syringe": "Hit a mob with it to draw blood, or use it to draw your own (villager DNA). Bloodwork decays unless kept in a Cryogenic Freezer.",
+    "jei.madscience.info.warning_sign": "Hang it on a wall. Its owner sneak-hits it to change the symbol and hits it to take it down; anyone else just reads the warning.",
+    "jei.madscience.info.abomination_egg": "Laid by an Abomination when it kills something. It hatches when a player comes near. Break it and it bursts into Liquid Mutant DNA.",
+}
+
+
 def misc_lang():
+    lang.update(JEI_LANG)
     lang["itemGroup.madscience"] = "Mad Science"
     lang["tooltip.madscience.hold_shift"] = "Hold SHIFT for more information."
     lang["tooltip.madscience.pulse_rifle_ammo"] = "%s rounds, %s grenades loaded"

@@ -50,6 +50,9 @@ final class HarnessScript {
         if (only.isEmpty() || only.equals("lab")) {
             WeaponHarness.lab();
         }
+        if ((only.isEmpty() || only.equals("jei")) && net.neoforged.fml.ModList.get().isLoaded("jei")) {
+            WeaponHarness.jei();
+        }
         if (!only.isEmpty()) {
             return;
         }

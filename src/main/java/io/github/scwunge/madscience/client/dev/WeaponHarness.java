@@ -217,4 +217,29 @@ final class WeaponHarness {
             return 5;
         });
     }
+
+    /** JEI's pages for a few of the machines' recipes and the info pages. */
+    static void jei() {
+        record Page(String name, java.util.function.Supplier<ItemStack> stack, boolean uses) {
+        }
+        List<Page> pages = List.of(
+                new Page("cnc", () -> new ItemStack(ModItems.RIFLE_BARREL.get()), false),
+                new Page("dna", () -> new ItemStack(ModItems.sample(io.github.scwunge.madscience.content.Species.COW)), false),
+                new Page("mainframe", () -> new ItemStack(ModItems.combinedGenome(io.github.scwunge.madscience.content.Gmo.WEREWOLF)), false),
+                new Page("clay-furnace", () -> new ItemStack(io.github.scwunge.madscience.registry.ModBlocks.CLAY_FURNACE.get()), true),
+                new Page("magazine", () -> new ItemStack(ModItems.MAGAZINE.get()), false),
+                new Page("iron-block", () -> new ItemStack(net.minecraft.world.item.Items.IRON_BLOCK), false),
+                new Page("cnc-uses", () -> new ItemStack(io.github.scwunge.madscience.registry.ModBlocks.CNC_MACHINE.get()), true));
+        for (Page page : pages) {
+            add((mc, server) -> {
+                check("JEI opened the " + page.name() + " page", io.github.scwunge.madscience.compat.jei.MadSciencePlugin.show(page.stack().get(), page.uses()));
+                return 20;
+            });
+            shot("jei-" + page.name());
+            add((mc, server) -> {
+                mc.setScreen(null);
+                return 5;
+            });
+        }
+    }
 }
