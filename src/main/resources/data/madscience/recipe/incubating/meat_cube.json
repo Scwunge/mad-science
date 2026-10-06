@@ -1,0 +1,9 @@
+{
+  "type": "madscience:incubating",
+  "input": {
+    "item": "madscience:genome_meat_cube"
+  },
+  "result": {
+    "id": "madscience:meat_cube"
+  }
+}

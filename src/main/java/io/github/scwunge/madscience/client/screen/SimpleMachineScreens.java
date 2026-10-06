@@ -89,4 +89,21 @@ public final class SimpleMachineScreens {
                     Component.translatable("gui.madscience.soniclocator_targets", value(4), value(5)));
         }
     }
+    public static class MeatCube extends MachineScreen {
+        public MeatCube(MachineMenu menu, Inventory inventory, Component title) {
+            super(menu, inventory, title, "meat_cube");
+        }
+
+        @Override
+        protected void drawGauges(GuiGraphics graphics) {
+            drawTank(graphics, 67, 18, 16, 58, io.github.scwunge.madscience.registry.ModFluids.MUTANT_DNA.source.get(), value(2), value(3), 176, 0);
+        }
+
+        @Override
+        protected void addTooltips() {
+            tip(67, 18, 16, 58, io.github.scwunge.madscience.registry.ModFluids.MUTANT_DNA.type.get().getDescription(),
+                    Component.translatable("gui.madscience.millibuckets", value(2)),
+                    Component.translatable("gui.madscience.meat_left", value(4), value(5)));
+        }
+    }
 }

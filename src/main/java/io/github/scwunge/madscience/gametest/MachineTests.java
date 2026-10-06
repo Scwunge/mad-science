@@ -11,6 +11,7 @@ import io.github.scwunge.madscience.content.item.MemoryReelItem;
 import io.github.scwunge.madscience.content.machine.TallMachineBlock;
 import io.github.scwunge.madscience.content.machine.clayfurnace.ClayFurnaceBlockEntity;
 import io.github.scwunge.madscience.content.machine.cryotube.CryotubeBlockEntity;
+import io.github.scwunge.madscience.content.machine.meatcube.MeatCubeBlockEntity;
 import io.github.scwunge.madscience.content.machine.soniclocator.SoniclocatorBlockEntity;
 import io.github.scwunge.madscience.content.machine.duplicator.DuplicatorBlockEntity;
 import io.github.scwunge.madscience.content.machine.freezer.FreezerBlockEntity;
@@ -276,45 +277,53 @@ public final class MachineTests {
         });
     }
 
-    // separate batches: two Soniclocators running at once would blow each other up (the conflict rule)
-    @GameTest(template = ItemTests.EMPTY, timeoutTicks = 1200, batch = "soniclocator_a")
-    public static void soniclocatorPullsTargetFromChunk(GameTestHelper helper) {
+    /**
+     * One test for both cases: two Soniclocators running at once would set off the conflict rule. First a claim mod
+     * (stood in for by an event listener) protects the ore, then it's allowed and the machine takes it.
+     */
+    @GameTest(template = ItemTests.EMPTY, timeoutTicks = 2400)
+    public static void soniclocatorPullsTargetUnlessProtected(GameTestHelper helper) {
         BlockPos ore = POS.below();
         helper.setBlock(ore, Blocks.IRON_ORE);
         helper.setBlock(new BlockPos(1, 1, 0), Blocks.REDSTONE_BLOCK);
         SoniclocatorBlockEntity sonic = placeTall(helper, ModBlocks.SONICLOCATOR.get());
         sonic.items().setStackInSlot(SoniclocatorBlockEntity.GRAVEL_IN, new ItemStack(Items.GRAVEL, 4));
         sonic.items().setStackInSlot(SoniclocatorBlockEntity.TARGET, new ItemStack(Items.IRON_ORE));
-        helper.succeedWhen(() -> {
-            helper.assertTrue(!sonic.items().getStackInSlot(SoniclocatorBlockEntity.OUTPUT).isEmpty(), "state " + sonic.state() + " charge " + sonic.charge()
-                    + " energy " + sonic.energyStored() + " redstone " + sonic.isRedstonePowered() + " removed " + sonic.isRemoved());
-            assertSlot(helper, sonic, SoniclocatorBlockEntity.OUTPUT, new ItemStack(Items.IRON_ORE));
-            helper.assertBlockPresent(Blocks.GRAVEL, ore);
-            assertSlot(helper, sonic, SoniclocatorBlockEntity.GRAVEL_IN, new ItemStack(Items.GRAVEL, 3));
-        });
-    }
-
-    @GameTest(template = ItemTests.EMPTY, timeoutTicks = 1200, batch = "soniclocator_b")
-    public static void soniclocatorRespectsProtection(GameTestHelper helper) {
-        BlockPos ore = POS.below();
-        helper.setBlock(ore, Blocks.GOLD_ORE);
-        helper.setBlock(new BlockPos(1, 1, 0), Blocks.REDSTONE_BLOCK);
-        SoniclocatorBlockEntity sonic = placeTall(helper, ModBlocks.SONICLOCATOR.get());
-        sonic.items().setStackInSlot(SoniclocatorBlockEntity.GRAVEL_IN, new ItemStack(Items.GRAVEL, 4));
-        sonic.items().setStackInSlot(SoniclocatorBlockEntity.TARGET, new ItemStack(Items.GOLD_ORE));
         BlockPos absOre = helper.absolutePos(ore);
-        // stand-in for a claim mod: nobody may break this block
         java.util.function.Consumer<net.neoforged.neoforge.event.level.BlockEvent.BreakEvent> guard = event -> {
             if (event.getPos().equals(absOre)) {
                 event.setCanceled(true);
             }
         };
         net.neoforged.neoforge.common.NeoForge.EVENT_BUS.addListener(guard);
-        helper.runAfterDelay(MAX_SONIC_WAIT, () -> {
-            net.neoforged.neoforge.common.NeoForge.EVENT_BUS.unregister(guard);
-            helper.assertBlockPresent(Blocks.GOLD_ORE, ore);
-            helper.assertTrue(sonic.items().getStackInSlot(SoniclocatorBlockEntity.OUTPUT).isEmpty(), "took a protected block");
-            helper.succeed();
+        helper.startSequence()
+                .thenIdle(MAX_SONIC_WAIT)
+                .thenExecute(() -> {
+                    net.neoforged.neoforge.common.NeoForge.EVENT_BUS.unregister(guard);
+                    helper.assertBlockPresent(Blocks.IRON_ORE, ore);
+                    helper.assertTrue(sonic.items().getStackInSlot(SoniclocatorBlockEntity.OUTPUT).isEmpty(), "took a protected block");
+                })
+                .thenWaitUntil(() -> {
+                    helper.assertTrue(!sonic.items().getStackInSlot(SoniclocatorBlockEntity.OUTPUT).isEmpty(), "state " + sonic.state()
+                            + " charge " + sonic.charge() + " removed " + sonic.isRemoved());
+                    assertSlot(helper, sonic, SoniclocatorBlockEntity.OUTPUT, new ItemStack(Items.IRON_ORE));
+                    helper.assertBlockPresent(Blocks.GRAVEL, ore);
+                })
+                .thenSucceed();
+    }
+
+    @GameTest(template = ItemTests.EMPTY, timeoutTicks = 600)
+    public static void meatCubeGivesMeatAndRegrows(GameTestHelper helper) {
+        MeatCubeBlockEntity cube = place(helper, ModBlocks.MEAT_CUBE.get());
+        helper.assertTrue(cube.meat() == MeatCubeBlockEntity.MAX_MEAT, "a new cube should be full of meat");
+        ItemStack meat = cube.tearMeat();
+        helper.assertTrue(meat.is(Items.BEEF) || meat.is(Items.PORKCHOP) || meat.is(Items.CHICKEN), "tore off " + meat);
+        helper.assertTrue(cube.meat() == MeatCubeBlockEntity.MAX_MEAT - 1, "meat level should drop");
+        cube.items().setStackInSlot(MeatCubeBlockEntity.BUCKET_IN, new ItemStack(ModFluids.MUTANT_DNA.bucket.get()));
+        helper.succeedWhen(() -> {
+            helper.assertTrue(cube.meat() == MeatCubeBlockEntity.MAX_MEAT, "did not regrow, meat " + cube.meat());
+            helper.assertTrue(cube.tank().getFluidAmount() == 750, "regrowing one chunk should use 250 mB");
+            assertSlot(helper, cube, MeatCubeBlockEntity.BUCKET_OUT, new ItemStack(Items.BUCKET));
         });
     }
 

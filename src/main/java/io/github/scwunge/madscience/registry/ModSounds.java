@@ -72,6 +72,12 @@ public final class ModSounds {
     public static final DeferredHolder<SoundEvent, SoundEvent> SONICLOCATOR_COOLDOWN_BEEP = register("soniclocator.cooldown_beep");
     public static final DeferredHolder<SoundEvent, SoundEvent> SONICLOCATOR_EXPLODE = register("soniclocator.explode");
 
+    public static final DeferredHolder<SoundEvent, SoundEvent> MEAT_CUBE_MEATSLAP = register("meat_cube.meatslap");
+    public static final DeferredHolder<SoundEvent, SoundEvent> MEAT_CUBE_MOO = register("meat_cube.moo");
+    public static final DeferredHolder<SoundEvent, SoundEvent> MEAT_CUBE_IDLE = register("meat_cube.idle");
+    public static final DeferredHolder<SoundEvent, SoundEvent> MEAT_CUBE_HEARTBEAT = register("meat_cube.heartbeat");
+    public static final DeferredHolder<SoundEvent, SoundEvent> MEAT_CUBE_BELLY = register("meat_cube.belly");
+
     private ModSounds() {
     }
 

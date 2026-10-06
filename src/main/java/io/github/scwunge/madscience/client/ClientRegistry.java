@@ -63,6 +63,7 @@ public final class ClientRegistry {
     public static final ModelLayerLocation CLAY_FURNACE = layer("clay_furnace");
     public static final ModelLayerLocation CRYOTUBE = layer("cryotube");
     public static final ModelLayerLocation SONICLOCATOR = layer("soniclocator");
+    public static final ModelLayerLocation MEAT_CUBE = layer("meat_cube");
 
     /** Machine items drawn with their block model: item, layer, texture. */
     private record MachineItem(Supplier<? extends Block> block, ModelLayerLocation layer, ResourceLocation texture, float scale) {
@@ -82,7 +83,8 @@ public final class ClientRegistry {
             new MachineItem(ModBlocks.BONDER, BONDER, modelTexture("thermosonic_bonder", "off")),
             new MachineItem(ModBlocks.CLAY_FURNACE, CLAY_FURNACE, modelTexture("clay_furnace", "idle")),
             new MachineItem(ModBlocks.CRYOTUBE, CRYOTUBE, modelTexture("cryotube", "on"), 0.45F),
-            new MachineItem(ModBlocks.SONICLOCATOR, SONICLOCATOR, modelTexture("soniclocator", "off"), 0.4F));
+            new MachineItem(ModBlocks.SONICLOCATOR, SONICLOCATOR, modelTexture("soniclocator", "off"), 0.4F),
+            new MachineItem(ModBlocks.MEAT_CUBE, MEAT_CUBE, modelTexture("meat_cube", "meatcube_0")));
 
     private ClientRegistry() {
     }
@@ -109,6 +111,7 @@ public final class ClientRegistry {
         event.registerLayerDefinition(CLAY_FURNACE, ClayFurnaceModel::create);
         event.registerLayerDefinition(CRYOTUBE, CryotubeModel::create);
         event.registerLayerDefinition(SONICLOCATOR, io.github.scwunge.madscience.client.model.SoniclocatorModel::create);
+        event.registerLayerDefinition(MEAT_CUBE, io.github.scwunge.madscience.client.model.MeatCubeModel::create);
     }
 
     @SubscribeEvent
@@ -173,6 +176,7 @@ public final class ClientRegistry {
 
         event.registerBlockEntityRenderer(ModBlockEntities.CLAY_FURNACE.get(), ClayFurnaceRenderer::new);
         event.registerBlockEntityRenderer(ModBlockEntities.SONICLOCATOR.get(), io.github.scwunge.madscience.client.render.SoniclocatorRenderer::new);
+        event.registerBlockEntityRenderer(ModBlockEntities.MEAT_CUBE.get(), io.github.scwunge.madscience.client.render.MeatCubeRenderer::new);
 
         ResourceLocation cryotubeOff = modelTexture("cryotube", "off");
         ResourceLocation cryotubeOn = modelTexture("cryotube", "on");
@@ -209,6 +213,7 @@ public final class ClientRegistry {
         event.register(ModMenus.CLAY_FURNACE.get(), SimpleMachineScreens.ClayFurnace::new);
         event.register(ModMenus.CRYOTUBE.get(), CryotubeScreen::new);
         event.register(ModMenus.SONICLOCATOR.get(), SimpleMachineScreens.Soniclocator::new);
+        event.register(ModMenus.MEAT_CUBE.get(), SimpleMachineScreens.MeatCube::new);
     }
 
     private static MachineItemRenderer itemRenderer;

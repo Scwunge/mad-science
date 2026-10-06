@@ -22,6 +22,7 @@ public final class ModMenus {
     public static final DeferredHolder<MenuType<?>, MenuType<MachineMenu>> CLAY_FURNACE = machine("clay_furnace");
     public static final DeferredHolder<MenuType<?>, MenuType<MachineMenu>> CRYOTUBE = machine("cryotube");
     public static final DeferredHolder<MenuType<?>, MenuType<MachineMenu>> SONICLOCATOR = machine("soniclocator");
+    public static final DeferredHolder<MenuType<?>, MenuType<MachineMenu>> MEAT_CUBE = machine("meat_cube");
 
     private ModMenus() {
     }

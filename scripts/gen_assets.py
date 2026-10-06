@@ -210,6 +210,8 @@ MACHINES = {
     "cryotube": ("cryoTube", "Cryogenic Tube", "Harvests electrical power from villagers' memories! Needs a redstone signal, a villager spawn egg, a data reel and a nether star."),
     "soniclocator": ("soniclocator", "Soniclocator Device",
                      "Replaces target blocks in a given chunk with gravel, and keeps the target block. Needs power and a redstone signal."),
+    "meat_cube": ("meatCube", "Disgusting Meat Cube",
+                  "[Slime + Pig, Chicken or Cow] Punch it for meat. Feed it Liquid Mutant DNA to grow the meat back."),
     "clay_furnace": ("clayFurnace", "Clay Furnace",
                      "Ancient technology that can give a source block from a single ore. Requires a block of coal and to be lit on fire."),
 }
@@ -240,6 +242,7 @@ VANILLA_EGGS = {
 # custom creature results: genome id -> result item
 GMO_RESULTS = {gid: f"madscience:{gid}_spawn_egg" for gid in
                ("werewolf", "creeper_cow", "enderslime", "wooly_cow", "shoggoth", "abomination", "ender_squid")}
+GMO_RESULTS["meat_cube"] = "madscience:meat_cube"
 
 # creatures: id -> (original model folder, English name)
 ENTITIES = {
@@ -517,6 +520,7 @@ def gui_lang():
         "gui.madscience.hatching_percent": "Hatching %s %%",
         "gui.madscience.health_percent": "Health %s %%",
         "gui.madscience.neural_percent": "Neural %s %%",
+        "gui.madscience.meat_left": "Meat: %s / %s",
         "gui.madscience.soniclocator_targets": "Targets left in chunk: %s (after %s thumps)",
         "gui.madscience.clay_furnace_hint": "Light with flint and steel. Hit it when it stops burning, wait for it to cool, then hit it again.",
         "gui.madscience.millibuckets": "%s mB",

@@ -6,6 +6,7 @@ import io.github.scwunge.madscience.content.block.EnderslimeBlock;
 import io.github.scwunge.madscience.content.machine.MachineBlock;
 import io.github.scwunge.madscience.content.machine.TallMachineBlock;
 import io.github.scwunge.madscience.content.machine.clayfurnace.ClayFurnaceBlock;
+import io.github.scwunge.madscience.content.machine.meatcube.MeatCubeBlock;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
@@ -45,6 +46,8 @@ public final class ModBlocks {
             () -> new TallMachineBlock(machineProperties(), ModBlockEntities.CRYOTUBE, 3));
     public static final DeferredBlock<TallMachineBlock> SONICLOCATOR = machine("soniclocator",
             () -> new TallMachineBlock(machineProperties(), ModBlockEntities.SONICLOCATOR, 3));
+    public static final DeferredBlock<MeatCubeBlock> MEAT_CUBE = machine("meat_cube",
+            () -> new MeatCubeBlock(BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_RED).strength(5.0F).sound(SoundType.SLIME_BLOCK).noOcclusion()));
     public static final DeferredBlock<AbominationEggBlock> ABOMINATION_EGG = machine("abomination_egg",
             () -> new AbominationEggBlock(BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_BLACK).strength(5.0F, 1.0F)
                     .ignitedByLava().noOcclusion().lightLevel(state -> 1).pushReaction(net.minecraft.world.level.material.PushReaction.DESTROY)));
