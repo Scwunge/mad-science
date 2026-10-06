@@ -1,0 +1,9 @@
+{
+  "type": "madscience:incubating",
+  "input": {
+    "item": "madscience:genome_abomination"
+  },
+  "result": {
+    "id": "madscience:abomination_spawn_egg"
+  }
+}

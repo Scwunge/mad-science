@@ -1,0 +1,9 @@
+{
+  "type": "madscience:incubating",
+  "input": {
+    "item": "madscience:genome_wooly_cow"
+  },
+  "result": {
+    "id": "madscience:wooly_cow_spawn_egg"
+  }
+}

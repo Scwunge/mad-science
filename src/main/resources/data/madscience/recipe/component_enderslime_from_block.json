@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "madscience:enderslime_block"
+    }
+  ],
+  "result": {
+    "id": "madscience:component_enderslime",
+    "count": 9
+  }
+}

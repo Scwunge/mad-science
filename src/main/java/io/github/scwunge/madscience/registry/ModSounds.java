@@ -36,6 +36,22 @@ public final class ModSounds {
     public static final DeferredHolder<SoundEvent, SoundEvent> BONDER_LASER_WORKING = register("thermosonic_bonder.laser_working");
     public static final DeferredHolder<SoundEvent, SoundEvent> BONDER_STAMP = register("thermosonic_bonder.stamp");
 
+    public static final DeferredHolder<SoundEvent, SoundEvent> WEREWOLF_ATTACK = register("werewolf.attack");
+    public static final DeferredHolder<SoundEvent, SoundEvent> WEREWOLF_DEATH = register("werewolf.death");
+    public static final DeferredHolder<SoundEvent, SoundEvent> WEREWOLF_SNARL = register("werewolf.snarl");
+    public static final DeferredHolder<SoundEvent, SoundEvent> CREEPER_COW_ATTACK = register("creeper_cow.attack");
+    public static final DeferredHolder<SoundEvent, SoundEvent> ABOMINATION_GROWL = register("abomination.growl");
+    public static final DeferredHolder<SoundEvent, SoundEvent> ABOMINATION_HISS = register("abomination.hiss");
+    public static final DeferredHolder<SoundEvent, SoundEvent> ABOMINATION_PAIN = register("abomination.pain");
+    public static final DeferredHolder<SoundEvent, SoundEvent> ABOMINATION_DEATH = register("abomination.death");
+    public static final DeferredHolder<SoundEvent, SoundEvent> ABOMINATION_STEP = register("abomination.step");
+    public static final DeferredHolder<SoundEvent, SoundEvent> ABOMINATION_EGG = register("abomination.egg");
+    public static final DeferredHolder<SoundEvent, SoundEvent> ABOMINATION_EGGPOP = register("abomination.eggpop");
+    public static final DeferredHolder<SoundEvent, SoundEvent> ABOMINATION_EGGHATCH = register("abomination.egghatch");
+    public static final DeferredHolder<SoundEvent, SoundEvent> WOOLY_COW_SAY = register("wooly_cow.say");
+    public static final DeferredHolder<SoundEvent, SoundEvent> WOOLY_COW_HURT = register("wooly_cow.hurt");
+    public static final DeferredHolder<SoundEvent, SoundEvent> WOOLY_COW_STEP = register("wooly_cow.step");
+
     private ModSounds() {
     }
 

@@ -1,6 +1,8 @@
 package io.github.scwunge.madscience.registry;
 
 import io.github.scwunge.madscience.MadScience;
+import io.github.scwunge.madscience.content.block.AbominationEggBlock;
+import io.github.scwunge.madscience.content.block.EnderslimeBlock;
 import io.github.scwunge.madscience.content.machine.MachineBlock;
 import io.github.scwunge.madscience.content.machine.clayfurnace.ClayFurnaceBlock;
 import net.minecraft.world.item.BlockItem;
@@ -37,6 +39,12 @@ public final class ModBlocks {
     public static final DeferredBlock<ClayFurnaceBlock> CLAY_FURNACE = machine("clay_furnace",
             () -> new ClayFurnaceBlock(BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_ORANGE).strength(1.25F, 4.2F)
                     .sound(SoundType.STONE).noOcclusion()));
+
+    public static final DeferredBlock<AbominationEggBlock> ABOMINATION_EGG = machine("abomination_egg",
+            () -> new AbominationEggBlock(BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_BLACK).strength(5.0F, 1.0F)
+                    .ignitedByLava().noOcclusion().lightLevel(state -> 1).pushReaction(net.minecraft.world.level.material.PushReaction.DESTROY)));
+    public static final DeferredBlock<EnderslimeBlock> ENDERSLIME_BLOCK = machine("enderslime_block",
+            () -> new EnderslimeBlock(BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_PURPLE).strength(5.0F).sound(SoundType.SLIME_BLOCK)));
 
     private ModBlocks() {
     }

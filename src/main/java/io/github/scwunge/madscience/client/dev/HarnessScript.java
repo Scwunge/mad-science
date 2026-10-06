@@ -41,6 +41,7 @@ final class HarnessScript {
 
     static void build() {
         machineRow();
+        creatures();
         guiTour();
         dnaExtractor();
         sanitizer();
@@ -84,11 +85,49 @@ final class HarnessScript {
             server(20, server -> MachineMenu.open(player(server), (MachineBlockEntity) level(server).getBlockEntity(pos)));
             shot("gui-" + name);
             add((mc, server) -> {
-                mc.setScreen(null);
+                mc.player.closeContainer();
                 return 2;
             });
         }
         server(2, server -> level(server).removeBlock(pos, false));
+    }
+
+    /** Every creature standing still in a row, facing the camera, for checking models and textures. */
+    private static void creatures() {
+        List<net.minecraft.world.entity.EntityType<? extends net.minecraft.world.entity.Mob>> types = List.of(
+                io.github.scwunge.madscience.registry.ModEntities.WEREWOLF.get(), io.github.scwunge.madscience.registry.ModEntities.CREEPER_COW.get(),
+                io.github.scwunge.madscience.registry.ModEntities.ENDERSLIME.get(), io.github.scwunge.madscience.registry.ModEntities.WOOLY_COW.get(),
+                io.github.scwunge.madscience.registry.ModEntities.SHOGGOTH.get(), io.github.scwunge.madscience.registry.ModEntities.ABOMINATION.get(),
+                io.github.scwunge.madscience.registry.ModEntities.ENDER_SQUID.get());
+        server(60, server -> {
+            // monsters vanish on peaceful
+            server.setDifficulty(net.minecraft.world.Difficulty.NORMAL, true);
+            ServerLevel level = level(server);
+            for (int i = 0; i < types.size(); i++) {
+                var mob = types.get(i).create(level);
+                mob.moveTo(20 + i * 2.5, Y, 8, 180, 0);
+                mob.setNoAi(true);
+                mob.setYHeadRot(180);
+                mob.yBodyRot = 180;
+                if (mob instanceof net.minecraft.world.entity.monster.Slime slime) {
+                    slime.setSize(2, true);
+                }
+                if (mob instanceof io.github.scwunge.madscience.content.entity.WoolyCowEntity cow) {
+                    cow.setColor(net.minecraft.world.item.DyeColor.ORANGE);
+                }
+                level.addFreshEntity(mob);
+            }
+            look(player(server), 20 + (types.size() - 1) * 1.25, Y + 1.5, 1.5, 0, 12);
+        });
+        shot("creatures");
+        for (int i = 0; i < types.size(); i++) {
+            double x = 20 + i * 2.5;
+            String name = net.minecraft.core.registries.BuiltInRegistries.ENTITY_TYPE.getKey(types.get(i)).getPath();
+            server(20, server -> look(player(server), x, Y + 1.3, 4.5, 0, 15));
+            shot("creature-" + name);
+        }
+        server(5, server -> level(server).getEntitiesOfClass(net.minecraft.world.entity.Mob.class,
+                new net.minecraft.world.phys.AABB(15, Y - 2, 0, 45, Y + 6, 16)).forEach(net.minecraft.world.entity.Entity::discard));
     }
 
     private static void machineRow() {
@@ -130,7 +169,7 @@ final class HarnessScript {
         server(30, server -> MachineMenu.open(player(server), (SanitizerBlockEntity) level(server).getBlockEntity(pos)));
         shot("sanitizer-gui");
         add((mc, server) -> {
-            mc.setScreen(null);
+            mc.player.closeContainer();
             return 240;
         });
         server(5, server -> {
@@ -154,7 +193,7 @@ final class HarnessScript {
         server(30, server -> MachineMenu.open(player(server), (DnaExtractorBlockEntity) level(server).getBlockEntity(pos)));
         shot("dna-extractor-gui");
         add((mc, server) -> {
-            mc.setScreen(null);
+            mc.player.closeContainer();
             return 200;
         });
         server(5, server -> {
@@ -197,7 +236,7 @@ final class HarnessScript {
             shot("creative-tab-" + (page + 1));
         }
         add((mc, server) -> {
-            mc.setScreen(null);
+            mc.player.closeContainer();
             return 5;
         });
     }

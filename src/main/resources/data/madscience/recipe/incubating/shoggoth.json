@@ -1,0 +1,9 @@
+{
+  "type": "madscience:incubating",
+  "input": {
+    "item": "madscience:genome_shoggoth"
+  },
+  "result": {
+    "id": "madscience:shoggoth_spawn_egg"
+  }
+}

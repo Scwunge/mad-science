@@ -1,0 +1,9 @@
+{
+  "type": "madscience:incubating",
+  "input": {
+    "item": "madscience:genome_ender_squid"
+  },
+  "result": {
+    "id": "madscience:ender_squid_spawn_egg"
+  }
+}

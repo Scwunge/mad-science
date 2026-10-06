@@ -234,8 +234,98 @@ VANILLA_EGGS = {
     "witch": "witch", "wolf": "wolf", "zombie": "zombie",
     "wither_skeleton": "wither_skeleton", "zombie_villager": "zombie_villager", "skeleton_horse": "skeleton_horse", "zombie_horse": "zombie_horse",
 }
-# custom creature results, filled in as the entities are ported: genome id -> result item
-GMO_RESULTS = {}
+# custom creature results: genome id -> result item
+GMO_RESULTS = {gid: f"madscience:{gid}_spawn_egg" for gid in
+               ("werewolf", "creeper_cow", "enderslime", "wooly_cow", "shoggoth", "abomination", "ender_squid")}
+
+# creatures: id -> (original model folder, English name)
+ENTITIES = {
+    "werewolf": ("gmoWerewolf", "Werewolf"),
+    "creeper_cow": ("gmoCreeperCow", "Creeper Cow"),
+    "enderslime": ("gmoEnderslime", "Enderslime"),
+    "wooly_cow": ("gmoWoolyCow", "Wooly Cow"),
+    "shoggoth": ("gmoShoggoth", "Shoggoth"),
+    "abomination": ("gmoAbomination", "Abomination"),
+    "ender_squid": ("gmoEnderSquid", "Ender Squid"),
+}
+DYES = ["white", "orange", "magenta", "light_blue", "yellow", "lime", "pink", "gray", "light_gray", "cyan", "purple", "blue",
+        "brown", "green", "red", "black"]
+
+
+def entry(item, lo=0, hi=2, looting=True, smelt=False, conditions=None):
+    functions = [{"function": "minecraft:set_count", "count": {"type": "minecraft:uniform", "min": lo, "max": hi}}]
+    if smelt:
+        functions.append({"function": "minecraft:furnace_smelt", "conditions": [
+            {"condition": "minecraft:entity_properties", "entity": "this", "predicate": {"flags": {"is_on_fire": True}}}]})
+    if looting:
+        functions.append({"function": "minecraft:enchanted_count_increase", "enchantment": "minecraft:looting",
+                          "count": {"type": "minecraft:uniform", "min": 0, "max": 1}})
+    pool = {"rolls": 1, "entries": [{"type": "minecraft:item", "name": item, "functions": functions}]}
+    if conditions:
+        pool["conditions"] = conditions
+    return pool
+
+
+SLIME_SIZE_1 = [{"condition": "minecraft:entity_properties", "entity": "this",
+                 "predicate": {"type_specific": {"type": "minecraft:slime", "size": 1}}}]
+PLAYER_KILL = [{"condition": "minecraft:killed_by_player"}]
+
+
+def entities():
+    for eid, (orig, english) in ENTITIES.items():
+        if ORIG.exists():
+            for png in (ORIG / f"models/{orig}").glob("*.png"):
+                name = png.stem.replace(orig, eid).lower()
+                copy_texture(png, ASSETS / f"textures/entity/{eid}/{name}.png")
+        lang[f"entity.{MOD}.{eid}"] = english
+        lang[f"item.{MOD}.{eid}_spawn_egg"] = f"{english} Spawn Egg"
+        write_json(ASSETS / f"models/item/{eid}_spawn_egg.json", {"parent": "minecraft:item/template_spawn_egg"})
+    loot = lambda name, pools: write_json(DATA / f"loot_table/entities/{name}.json", {"type": "minecraft:entity", "pools": pools})
+    loot("werewolf", [entry("minecraft:egg")])
+    loot("creeper_cow", [entry("minecraft:leather"), entry("minecraft:gunpowder"), entry("minecraft:beef", 1, 3, smelt=True),
+                         {"rolls": 1, "entries": [{"type": "minecraft:tag", "name": "minecraft:creeper_drop_music_discs", "expand": True}],
+                          "conditions": [{"condition": "minecraft:entity_properties", "entity": "attacker",
+                                          "predicate": {"type": "#minecraft:skeletons"}}]}])
+    loot("abomination", [entry("minecraft:string"),
+                         {"rolls": 1, "entries": [{"type": "minecraft:item", "name": "minecraft:spider_eye"}],
+                          "conditions": PLAYER_KILL + [{"condition": "minecraft:random_chance_with_enchanted_bonus", "enchantment": "minecraft:looting",
+                                                        "unenchanted_chance": 0.33, "enchanted_chance": {"type": "minecraft:linear", "base": 0.5, "per_level_above_first": 0.1}}]},
+                         {"rolls": 1, "entries": [{"type": "minecraft:item", "name": "minecraft:ender_pearl"}],
+                          "conditions": PLAYER_KILL + [{"condition": "minecraft:random_chance_with_enchanted_bonus", "enchantment": "minecraft:looting",
+                                                        "unenchanted_chance": 0.33, "enchanted_chance": {"type": "minecraft:linear", "base": 0.5, "per_level_above_first": 0.1}}]}])
+    loot("enderslime", [entry(f"{MOD}:component_enderslime", conditions=SLIME_SIZE_1)])
+    loot("shoggoth", [entry("minecraft:slime_ball", conditions=SLIME_SIZE_1)])
+    loot("ender_squid", [entry("minecraft:ender_pearl", 0, 1)])
+    base = [entry("minecraft:leather"), entry("minecraft:beef", 1, 3, smelt=True)]
+    loot("wooly_cow", base)
+    for dye in DYES:
+        loot(f"wooly_cow/{dye}", [{"rolls": 1, "entries": [{"type": "minecraft:item", "name": f"minecraft:{dye}_wool"}]}]
+             + [{"rolls": 1, "entries": [{"type": "minecraft:loot_table", "value": f"{MOD}:entities/wooly_cow"}]}])
+
+
+def simple_blocks():
+    if ORIG.exists():
+        copy_texture(ORIG / "textures/blocks/abominationEgg.png", ASSETS / "textures/block/abomination_egg.png")
+        copy_texture(ORIG / "textures/blocks/enderslimeBlock.png", ASSETS / "textures/block/enderslime_block.png")
+    write_json(ASSETS / "blockstates/abomination_egg.json", {"variants": {"": {"model": f"{MOD}:block/abomination_egg"}}})
+    write_json(ASSETS / "models/block/abomination_egg.json", {"parent": "minecraft:block/dragon_egg",
+                                                              "textures": {"all": f"{MOD}:block/abomination_egg", "particle": f"{MOD}:block/abomination_egg"}})
+    write_json(ASSETS / "models/item/abomination_egg.json", {"parent": f"{MOD}:block/abomination_egg"})
+    write_json(ASSETS / "blockstates/enderslime_block.json", {"variants": {"": {"model": f"{MOD}:block/enderslime_block"}}})
+    write_json(ASSETS / "models/block/enderslime_block.json", {"parent": "minecraft:block/cube_all", "textures": {"all": f"{MOD}:block/enderslime_block"}})
+    write_json(ASSETS / "models/item/enderslime_block.json", {"parent": f"{MOD}:block/enderslime_block"})
+    write_json(DATA / "loot_table/blocks/abomination_egg.json", {"type": "minecraft:block", "pools": []})
+    write_json(DATA / "loot_table/blocks/enderslime_block.json", {"type": "minecraft:block", "pools": [
+        {"rolls": 1, "entries": [{"type": "minecraft:item", "name": f"{MOD}:enderslime_block"}], "conditions": [{"condition": "minecraft:survives_explosion"}]}]})
+    lang[f"block.{MOD}.abomination_egg"] = "Abomination Egg"
+    lang[f"block.{MOD}.abomination_egg.tooltip"] = "Spawned into the world when The Abomination kills another living creature, mob or player alike."
+    lang[f"block.{MOD}.enderslime_block"] = "Block of Enderslime"
+    lang[f"block.{MOD}.enderslime_block.tooltip"] = "Oh god, it's slimy..."
+    m = lambda n: f"{MOD}:{n}"
+    shaped("enderslime_block", m("enderslime_block"), ["111", "111", "111"], {"1": m("component_enderslime")})
+    shapeless("component_enderslime_from_block", m("component_enderslime"), [m("enderslime_block")], count=9)
+    shaped("component_thumper", m("component_thumper"), ["535", "212", "222"], {
+        "1": m("component_power_supply"), "2": m("enderslime_block"), "3": "#c:storage_blocks/redstone", "5": "minecraft:piston"})
 
 # Item display transforms for machine items drawn by the block entity model renderer.
 MACHINE_ITEM_DISPLAY = {
@@ -556,6 +646,8 @@ items()
 fluids()
 machines()
 machine_recipes()
+entities()
+simple_blocks()
 processing_recipes()
 gmo_items()
 gui_lang()

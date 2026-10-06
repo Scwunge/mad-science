@@ -5,6 +5,7 @@ import io.github.scwunge.madscience.registry.ModBlockEntities;
 import io.github.scwunge.madscience.registry.ModBlocks;
 import io.github.scwunge.madscience.registry.ModCreativeTabs;
 import io.github.scwunge.madscience.registry.ModDataComponents;
+import io.github.scwunge.madscience.registry.ModEntities;
 import io.github.scwunge.madscience.registry.ModFluids;
 import io.github.scwunge.madscience.registry.ModItems;
 import io.github.scwunge.madscience.registry.ModMenus;
@@ -29,6 +30,7 @@ public class MadScience {
         ModFluids.TYPES.register(modBus);
         ModFluids.FLUIDS.register(modBus);
         ModBlockEntities.REGISTER.register(modBus);
+        ModEntities.REGISTER.register(modBus);
         ModMenus.REGISTER.register(modBus);
         ModRecipes.TYPES.register(modBus);
         ModRecipes.SERIALIZERS.register(modBus);

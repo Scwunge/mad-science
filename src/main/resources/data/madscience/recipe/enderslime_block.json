@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "111",
+    "111",
+    "111"
+  ],
+  "key": {
+    "1": {
+      "item": "madscience:component_enderslime"
+    }
+  },
+  "result": {
+    "id": "madscience:enderslime_block",
+    "count": 1
+  }
+}

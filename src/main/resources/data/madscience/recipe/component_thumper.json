@@ -1,0 +1,27 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "535",
+    "212",
+    "222"
+  ],
+  "key": {
+    "1": {
+      "item": "madscience:component_power_supply"
+    },
+    "2": {
+      "item": "madscience:enderslime_block"
+    },
+    "3": {
+      "tag": "c:storage_blocks/redstone"
+    },
+    "5": {
+      "item": "minecraft:piston"
+    }
+  },
+  "result": {
+    "id": "madscience:component_thumper",
+    "count": 1
+  }
+}
