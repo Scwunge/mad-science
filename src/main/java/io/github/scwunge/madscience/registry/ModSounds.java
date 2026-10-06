@@ -80,6 +80,18 @@ public final class ModSounds {
 
     public static final DeferredHolder<SoundEvent, SoundEvent> VOX_BOX_CHIME = register("vox_box.chime");
 
+    public static final DeferredHolder<SoundEvent, SoundEvent> PULSE_RIFLE_FIRE = register("pulse_rifle.fire");
+    public static final DeferredHolder<SoundEvent, SoundEvent> PULSE_RIFLE_EMPTY = register("pulse_rifle.empty");
+    public static final DeferredHolder<SoundEvent, SoundEvent> PULSE_RIFLE_RELOAD = register("pulse_rifle.reload");
+    public static final DeferredHolder<SoundEvent, SoundEvent> PULSE_RIFLE_UNLOAD = register("pulse_rifle.unload");
+    public static final DeferredHolder<SoundEvent, SoundEvent> PULSE_RIFLE_MAGAZINE_RELOAD = register("pulse_rifle.magazine_reload");
+    public static final DeferredHolder<SoundEvent, SoundEvent> PULSE_RIFLE_MAGAZINE_UNLOAD = register("pulse_rifle.magazine_unload");
+    public static final DeferredHolder<SoundEvent, SoundEvent> PULSE_RIFLE_FIRE_GRENADE = register("pulse_rifle.fire_grenade");
+    public static final DeferredHolder<SoundEvent, SoundEvent> PULSE_RIFLE_RELOAD_GRENADE = register("pulse_rifle.reload_grenade");
+    public static final DeferredHolder<SoundEvent, SoundEvent> PULSE_RIFLE_CHAMBER_GRENADE = register("pulse_rifle.chamber_grenade");
+    public static final DeferredHolder<SoundEvent, SoundEvent> PULSE_RIFLE_GRENADE_EXPLODE = register("pulse_rifle.grenade_explode");
+    public static final DeferredHolder<SoundEvent, SoundEvent> PULSE_RIFLE_RICOCHET = register("pulse_rifle.ricochet");
+
     private ModSounds() {
     }
 

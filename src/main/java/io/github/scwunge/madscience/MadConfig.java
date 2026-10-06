@@ -56,9 +56,10 @@ public final class MadConfig {
         BUILDER.pop();
 
         BUILDER.push("weapons");
-        PULSE_RIFLE_ENABLED = BUILDER.comment("Allow crafting and firing the pulse rifle.")
+        PULSE_RIFLE_ENABLED = BUILDER.comment("The pulse rifle fires. When false it can still be crafted and carried but will not shoot.")
                 .define("pulseRifleEnabled", true);
-        BULLETS_DAMAGE_WORLD = BUILDER.comment("Pulse rifle rounds break glass and similar blocks (still respects claims).")
+        BULLETS_DAMAGE_WORLD = BUILDER.comment("Pulse rifle grenades and the rare critical round break blocks, like the original.",
+                        "They also need the mobGriefing game rule, and claim mods can still stop the blast. False keeps the damage to mobs and players.")
                 .define("bulletsDamageWorld", true);
         BUILDER.pop();
     }

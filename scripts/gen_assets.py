@@ -91,6 +91,21 @@ SIMPLE = {
     "syringe_dirty": ("needleDirty", "Dirty Syringe", "Don't play with dirty needles!"),
 }
 
+# pulse rifle family: id -> (original texture name, English name, lore). The original's film-derived names (M41A and so on)
+# are replaced with plain descriptive ones.
+WEAPON_ITEMS = {
+    "component_pulse_rifle_barrel": ("componentPulseRifleBarrel", "Pulse Rifle Barrel", "Metal tube through which a controlled explosion is released in order to propel a projectile out of the end at a high velocity."),
+    "component_pulse_rifle_bolt": ("componentPulseRifleBolt", "Pulse Rifle Bolt", "Mechanical part of a firearm that blocks the rear of the chamber while the propellant burns, but moves out of the way to allow another cartridge or shell to be inserted in the chamber."),
+    "component_pulse_rifle_receiver": ("componentPulseRifleReciever", "Pulse Rifle Receiver", "Part of the Pulse Rifle that houses the operating parts."),
+    "component_pulse_rifle_trigger": ("componentPulseRifleTrigger", "Pulse Rifle Trigger", "Actuates the firing sequence of the Pulse Rifle."),
+    "component_pulse_rifle_bullet_casing": ("componentPulseRifleBulletCasing", "Empty Pulse Rifle Round", "An empty bullet casing that needs to be filled to become a finished round for the Pulse Rifle."),
+    "component_pulse_rifle_grenade_casing": ("componentPulseRifleGrenadeCasing", "Empty Pulse Rifle Grenade", "An empty grenade casing that needs to be filled to become a finished grenade for the Pulse Rifle."),
+    "pulse_rifle": ("pulseRifle", "Pulse Rifle", "Hold attack to fire. Use to switch between rounds and the grenade launcher; sneak and use to reload or unload."),
+    "pulse_rifle_magazine": ("pulseRifleMagazine", "Pulse Rifle Magazine", "Holds up to 99 rounds. Craft it with rounds to load it, or craft it on its own to unload it."),
+    "pulse_rifle_round": ("pulseRifleBullet", "Pulse Rifle Round", "Explosive-tipped caseless round. Load them into a magazine."),
+    "pulse_rifle_grenade": ("pulseRifleGrenade", "Pulse Rifle Grenade", "High explosive fragmentation grenade for the Pulse Rifle's launcher. It holds four."),
+}
+
 # texture copies: original name -> new name (items/)
 LAYER_TEXTURES = {
     "needleDNA1": "syringe_layer_1", "needleDNA2": "syringe_layer_2", "needleDNA_overlay": "syringe_overlay",
@@ -136,11 +151,64 @@ def copy_textures():
         copy_texture(ORIG / f"textures/items/{old}.png", out / f"{new}.png")
     for old, new in LAYER_TEXTURES.items():
         copy_texture(ORIG / f"textures/items/{old}.png", out / f"{new}.png")
+    for new, (old, _, _) in WEAPON_ITEMS.items():
+        copy_texture(ORIG / f"textures/items/{old}.png", out / f"{new}.png")
+
+
+# pulse rifle model textures: original (under models/) -> new name under textures/model/pulse_rifle/
+WEAPON_MODEL_TEXTURES = {
+    "pulseRifle/pulseRifle": "rifle", "pulseRifle/pulseRifle_flash12": "flash_12", "pulseRifle/pulseRifle_flash34": "flash_34",
+    **{f"pulseRifle/pulseRifle_counter{d}": f"counter_{d}" for d in range(10)},
+    "pulseRifleBullet/pulseRifleBullet": "round", "pulseRifleGrenade/pulseRifleGrenade": "grenade",
+    "pulseRifleMagazine/pulseRifleMagazine": "magazine", "weaponComponents/ironRifle": "components",
+    "weaponComponents/componentPulseRifleBulletCasing": "bullet_casing", "weaponComponents/componentPulseRifleGrenadeCasing": "grenade_casing",
+}
+
+
+# how big each weapon item is drawn in hand, in frames and on the ground (its 3D model is a block long at scale 1)
+WEAPON_SIZES = {
+    "pulse_rifle": 1.0, "pulse_rifle_magazine": 0.5, "pulse_rifle_round": 0.3, "pulse_rifle_grenade": 0.35,
+    "component_pulse_rifle_barrel": 0.7, "component_pulse_rifle_bolt": 0.6, "component_pulse_rifle_receiver": 0.5,
+    "component_pulse_rifle_trigger": 0.6, "component_pulse_rifle_bullet_casing": 0.3, "component_pulse_rifle_grenade_casing": 0.35,
+}
+
+
+def weapon_item_model(name):
+    """The original's 3D model in hand, on the ground and in frames; its flat icon in inventories."""
+    k = WEAPON_SIZES[name]
+    sc = lambda f: [round(f * k, 3)] * 3
+    display = {
+        "firstperson_righthand": {"rotation": [0, 0, 0], "translation": [1, 2, -2], "scale": sc(1.0)},
+        "firstperson_lefthand": {"rotation": [0, 0, 0], "translation": [-1, 2, -2], "scale": sc(1.0)},
+        # held up like a crossbow (see the rifle's arm pose), so the barrel runs along the raised arm
+        "thirdperson_righthand": {"rotation": [0, 0, 0], "translation": [0, 3, 0], "scale": sc(0.75)},
+        "thirdperson_lefthand": {"rotation": [0, 0, 0], "translation": [0, 3, 0], "scale": sc(0.75)},
+        "ground": {"rotation": [0, 0, 0], "translation": [0, 2, 0], "scale": sc(0.6)},
+        "fixed": {"rotation": [0, 90, 0], "translation": [0, 0, 0], "scale": sc(1.6)},
+        "head": {"rotation": [0, 0, 0], "translation": [0, 0, 0], "scale": sc(1.0)},
+    }
+    write_json(ASSETS / f"models/item/{name}.json", {
+        "loader": "neoforge:separate_transforms",
+        "gui_light": "front",
+        "base": {"parent": "minecraft:builtin/entity", "gui_light": "front", "display": display,
+                 "textures": {"particle": f"{MOD}:item/{name}"}},
+        "perspectives": {"gui": {"parent": "minecraft:item/generated", "textures": {"layer0": f"{MOD}:item/{name}"}}},
+        "textures": {"particle": f"{MOD}:item/{name}"},
+    })
+
+
+def weapon_textures():
+    if ORIG.exists():
+        for old, new in WEAPON_MODEL_TEXTURES.items():
+            copy_texture(ORIG / f"models/{old}.png", ASSETS / f"textures/model/pulse_rifle/{new}.png")
 
 
 def items():
-    for name, (_, english, lore) in SIMPLE.items():
-        item_model(name, [name])
+    for name, (_, english, lore) in (SIMPLE | WEAPON_ITEMS).items():
+        if name in WEAPON_SIZES:
+            weapon_item_model(name)
+        else:
+            item_model(name, [name])
         lang[f"item.{MOD}.{name}"] = english
         lang[f"item.{MOD}.{name}.tooltip"] = lore
 
@@ -587,6 +655,18 @@ def recipes():
         "1": m("circuit_diamond"), "2": m("circuit_redstone"), "3": transistor, "4": "#c:glass_blocks/colorless"})
     shaped("data_reel_empty", m("data_reel_empty"), ["111", "121", "111"], {"1": m("component_magnetic_tape"), "2": m("circuit_emerald")})
 
+    shaped("pulse_rifle", m("pulse_rifle"), ["123", "654", "789"], {
+        "1": m("component_pulse_rifle_barrel"), "2": m("component_pulse_rifle_bolt"), "3": m("component_pulse_rifle_receiver"),
+        "4": m("component_pulse_rifle_trigger"), "5": m("component_screen"), "6": m("component_power_supply"),
+        "7": m("component_cpu"), "8": m("circuit_diamond"), "9": "#c:dyes/green"})
+    shaped("pulse_rifle_round", m("pulse_rifle_round"), ["454", "424", "313"], {
+        "1": m("component_pulse_rifle_bullet_casing"), "2": "minecraft:tnt", "3": "#c:gunpowders", "4": "minecraft:terracotta",
+        "5": "#c:obsidians"}, count=64)
+    shaped("pulse_rifle_grenade", m("pulse_rifle_grenade"), ["424", "424", "313"], {
+        "1": m("component_pulse_rifle_grenade_casing"), "2": "minecraft:tnt", "3": "#c:gunpowders", "4": "#c:ingots/iron"}, count=16)
+    for special in ("magazine_load", "magazine_unload"):
+        write_json(DATA / f"recipe/{special}.json", {"type": f"{MOD}:{special}", "category": "misc"})
+
 
 # original sound folder -> sound event prefix. The VoxBox (Half-Life VOX clips) and pulse rifle (film sounds) folders are
 # deliberately absent: they belong to Valve and the film studio, not the Mad Science authors.
@@ -686,9 +766,18 @@ def empty_structure(name, size=3):
 def misc_lang():
     lang["itemGroup.madscience"] = "Mad Science"
     lang["tooltip.madscience.hold_shift"] = "Hold SHIFT for more information."
+    lang["tooltip.madscience.pulse_rifle_ammo"] = "%s rounds, %s grenades loaded"
+    lang["tooltip.madscience.magazine_rounds"] = "%s/%s rounds"
+    lang["message.madscience.pulse_rifle_ammo"] = "Rounds %s/%s | Grenades %s/%s | %s"
+    lang["message.madscience.pulse_rifle_mode_rifle"] = "Rifle"
+    lang["message.madscience.pulse_rifle_mode_grenade"] = "Grenade launcher"
+    lang["message.madscience.pulse_rifle_disabled"] = "The Pulse Rifle is disabled on this server."
+    for entity in ("pulse_rifle_round", "pulse_rifle_grenade"):
+        lang[f"entity.{MOD}.{entity}"] = WEAPON_ITEMS[entity][1]
 
 
 copy_textures()
+weapon_textures()
 items()
 fluids()
 machines()

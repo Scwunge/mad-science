@@ -2,6 +2,7 @@ package io.github.scwunge.madscience.registry;
 
 import com.mojang.serialization.Codec;
 import io.github.scwunge.madscience.MadScience;
+import io.github.scwunge.madscience.content.weapon.RifleState;
 import net.minecraft.core.component.DataComponentType;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.codec.ByteBufCodecs;
@@ -18,6 +19,14 @@ public final class ModDataComponents {
      */
     public static final DeferredHolder<DataComponentType<?>, DataComponentType<Integer>> DECAY = REGISTER.registerComponentType("decay",
             builder -> builder.persistent(Codec.intRange(0, 10)).networkSynchronized(ByteBufCodecs.VAR_INT));
+
+    /** Rounds in a pulse rifle magazine, 0 to 99. */
+    public static final DeferredHolder<DataComponentType<?>, DataComponentType<Integer>> ROUNDS = REGISTER.registerComponentType("rounds",
+            builder -> builder.persistent(Codec.intRange(0, RifleState.MAX_ROUNDS)).networkSynchronized(ByteBufCodecs.VAR_INT));
+
+    /** What is loaded in a pulse rifle. */
+    public static final DeferredHolder<DataComponentType<?>, DataComponentType<RifleState>> RIFLE = REGISTER.registerComponentType("rifle",
+            builder -> builder.persistent(RifleState.CODEC).networkSynchronized(RifleState.STREAM_CODEC));
 
     private ModDataComponents() {
     }

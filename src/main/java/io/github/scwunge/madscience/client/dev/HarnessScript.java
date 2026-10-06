@@ -40,6 +40,13 @@ final class HarnessScript {
     }
 
     static void build() {
+        String only = System.getProperty("madscience.harness.only", "");
+        if (only.isEmpty() || only.equals("rifle")) {
+            WeaponHarness.rifle();
+        }
+        if (!only.isEmpty()) {
+            return;
+        }
         machineRow();
         creatures();
         guiTour();

@@ -14,6 +14,7 @@ import io.github.scwunge.madscience.client.model.SequencerModel;
 import io.github.scwunge.madscience.client.render.ClayFurnaceRenderer;
 import io.github.scwunge.madscience.client.render.MachineItemRenderer;
 import io.github.scwunge.madscience.client.render.MachineRenderer;
+import io.github.scwunge.madscience.client.render.WeaponRenderers;
 import io.github.scwunge.madscience.client.screen.CryotubeScreen;
 import io.github.scwunge.madscience.client.screen.DnaExtractorScreen;
 import io.github.scwunge.madscience.content.machine.cryotube.CryotubeBlockEntity;
@@ -115,10 +116,12 @@ public final class ClientRegistry {
         event.registerLayerDefinition(SONICLOCATOR, io.github.scwunge.madscience.client.model.SoniclocatorModel::create);
         event.registerLayerDefinition(MEAT_CUBE, io.github.scwunge.madscience.client.model.MeatCubeModel::create);
         event.registerLayerDefinition(VOX_BOX, io.github.scwunge.madscience.client.model.VoxBoxModel::create);
+        WeaponRenderers.layers(event);
     }
 
     @SubscribeEvent
     static void renderers(EntityRenderersEvent.RegisterRenderers event) {
+        WeaponRenderers.entities(event);
         idleOrWorking(event, ModBlockEntities.DNA_EXTRACTOR.get(), DNA_EXTRACTOR, "dna_extractor", "work_", 12, 25);
         idleOrWorking(event, ModBlockEntities.SANITIZER.get(), SANITIZER, "sanitizer", "work_", 10, 15);
         idleOrWorking(event, ModBlockEntities.SEQUENCER.get(), SEQUENCER, "sequencer", "work_", 10, 15);

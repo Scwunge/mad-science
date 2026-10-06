@@ -35,6 +35,10 @@ neoForge {
             // -Pharness runs the scripted in-game checks (client/dev/DevHarness) and quits
             if (project.hasProperty('harness')) {
                 systemProperty 'madscience.harness', 'true'
+                // -PharnessOnly=rifle runs just one section of the script
+                if (project.hasProperty('harnessOnly')) {
+                    systemProperty 'madscience.harness.only', project.property('harnessOnly')
+                }
             }
         }
         server {

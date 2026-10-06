@@ -3,12 +3,14 @@ package io.github.scwunge.madscience.registry;
 import io.github.scwunge.madscience.MadScience;
 import io.github.scwunge.madscience.content.recipe.MergingRecipe;
 import io.github.scwunge.madscience.content.recipe.ProcessingRecipe;
+import io.github.scwunge.madscience.content.weapon.MagazineRecipes;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.item.crafting.RecipeManager;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.RecipeType;
+import net.minecraft.world.item.crafting.SimpleCraftingRecipeSerializer;
 import net.minecraft.world.item.crafting.SingleRecipeInput;
 import net.minecraft.world.level.Level;
 import net.neoforged.neoforge.registries.DeferredHolder;
@@ -38,6 +40,12 @@ public final class ModRecipes {
             TYPES.register("genome_merging", () -> RecipeType.simple(MadScience.id("genome_merging")));
     public static final DeferredHolder<RecipeSerializer<?>, RecipeSerializer<MergingRecipe>> MERGING_SERIALIZER =
             SERIALIZERS.register("genome_merging", MergingRecipe.Serializer::new);
+
+    /** Crafting grid: loading rounds into a pulse rifle magazine, and unloading them again. */
+    public static final DeferredHolder<RecipeSerializer<?>, RecipeSerializer<MagazineRecipes.Load>> MAGAZINE_LOAD =
+            SERIALIZERS.register("magazine_load", () -> new SimpleCraftingRecipeSerializer<>(MagazineRecipes.Load::new));
+    public static final DeferredHolder<RecipeSerializer<?>, RecipeSerializer<MagazineRecipes.Unload>> MAGAZINE_UNLOAD =
+            SERIALIZERS.register("magazine_unload", () -> new SimpleCraftingRecipeSerializer<>(MagazineRecipes.Unload::new));
 
     private ModRecipes() {
     }

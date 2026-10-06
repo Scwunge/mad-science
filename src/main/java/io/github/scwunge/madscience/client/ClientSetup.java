@@ -1,10 +1,15 @@
 package io.github.scwunge.madscience.client;
 
 import io.github.scwunge.madscience.MadScience;
+import io.github.scwunge.madscience.client.render.WeaponRenderers;
 import io.github.scwunge.madscience.content.item.TintedItem;
 import io.github.scwunge.madscience.registry.ModFluids;
 import io.github.scwunge.madscience.registry.ModItems;
+import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.util.FastColor;
 import net.minecraft.world.item.Item;
 import net.neoforged.api.distmarker.Dist;
@@ -44,6 +49,18 @@ public final class ClientSetup {
                 return ClientRegistry.itemRenderer();
             }
         }, ClientRegistry.machineItems());
+        event.registerItem(new IClientItemExtensions() {
+            @Override
+            public BlockEntityWithoutLevelRenderer getCustomRenderer() {
+                return WeaponRenderers.itemRenderer();
+            }
+
+            @Override
+            public HumanoidModel.ArmPose getArmPose(LivingEntity entity, InteractionHand hand, ItemStack stack) {
+                // the rifle is held up and aimed, like a loaded crossbow
+                return stack.is(ModItems.PULSE_RIFLE.get()) ? HumanoidModel.ArmPose.CROSSBOW_HOLD : null;
+            }
+        }, WeaponRenderers.items());
     }
 
     @SubscribeEvent

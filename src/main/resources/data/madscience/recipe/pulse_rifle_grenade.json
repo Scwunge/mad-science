@@ -1,0 +1,27 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "424",
+    "424",
+    "313"
+  ],
+  "key": {
+    "1": {
+      "item": "madscience:component_pulse_rifle_grenade_casing"
+    },
+    "2": {
+      "item": "minecraft:tnt"
+    },
+    "3": {
+      "tag": "c:gunpowders"
+    },
+    "4": {
+      "tag": "c:ingots/iron"
+    }
+  },
+  "result": {
+    "id": "madscience:pulse_rifle_grenade",
+    "count": 16
+  }
+}

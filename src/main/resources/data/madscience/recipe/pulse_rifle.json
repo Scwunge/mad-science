@@ -1,0 +1,42 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "123",
+    "654",
+    "789"
+  ],
+  "key": {
+    "1": {
+      "item": "madscience:component_pulse_rifle_barrel"
+    },
+    "2": {
+      "item": "madscience:component_pulse_rifle_bolt"
+    },
+    "3": {
+      "item": "madscience:component_pulse_rifle_receiver"
+    },
+    "4": {
+      "item": "madscience:component_pulse_rifle_trigger"
+    },
+    "5": {
+      "item": "madscience:component_screen"
+    },
+    "6": {
+      "item": "madscience:component_power_supply"
+    },
+    "7": {
+      "item": "madscience:component_cpu"
+    },
+    "8": {
+      "item": "madscience:circuit_diamond"
+    },
+    "9": {
+      "tag": "c:dyes/green"
+    }
+  },
+  "result": {
+    "id": "madscience:pulse_rifle",
+    "count": 1
+  }
+}

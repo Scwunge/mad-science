@@ -1,0 +1,30 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "454",
+    "424",
+    "313"
+  ],
+  "key": {
+    "1": {
+      "item": "madscience:component_pulse_rifle_bullet_casing"
+    },
+    "2": {
+      "item": "minecraft:tnt"
+    },
+    "3": {
+      "tag": "c:gunpowders"
+    },
+    "4": {
+      "item": "minecraft:terracotta"
+    },
+    "5": {
+      "tag": "c:obsidians"
+    }
+  },
+  "result": {
+    "id": "madscience:pulse_rifle_round",
+    "count": 64
+  }
+}

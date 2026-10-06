@@ -9,6 +9,8 @@ import io.github.scwunge.madscience.content.item.GenomeItem;
 import io.github.scwunge.madscience.content.item.MemoryReelItem;
 import io.github.scwunge.madscience.content.item.TooltipItem;
 import io.github.scwunge.madscience.content.item.TwoToneItem;
+import io.github.scwunge.madscience.content.weapon.MagazineItem;
+import io.github.scwunge.madscience.content.weapon.PulseRifleItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
 import net.neoforged.neoforge.registries.DeferredItem;
@@ -106,6 +108,20 @@ public final class ModItems {
     public static TwoToneItem combinedGenome(Gmo gmo) {
         return COMBINED_GENOMES.get(gmo).get();
     }
+
+    // pulse rifle
+    public static final DeferredItem<Item> RIFLE_BARREL = simple("component_pulse_rifle_barrel");
+    public static final DeferredItem<Item> RIFLE_BOLT = simple("component_pulse_rifle_bolt");
+    public static final DeferredItem<Item> RIFLE_RECEIVER = simple("component_pulse_rifle_receiver");
+    public static final DeferredItem<Item> RIFLE_TRIGGER = simple("component_pulse_rifle_trigger");
+    public static final DeferredItem<Item> BULLET_CASING = simple("component_pulse_rifle_bullet_casing");
+    public static final DeferredItem<Item> GRENADE_CASING = simple("component_pulse_rifle_grenade_casing");
+    public static final DeferredItem<PulseRifleItem> PULSE_RIFLE = add(REGISTER.register("pulse_rifle",
+            () -> new PulseRifleItem(new Item.Properties())));
+    public static final DeferredItem<MagazineItem> MAGAZINE = add(REGISTER.register("pulse_rifle_magazine",
+            () -> new MagazineItem(new Item.Properties())));
+    public static final DeferredItem<Item> ROUND = simple("pulse_rifle_round");
+    public static final DeferredItem<Item> GRENADE = simple("pulse_rifle_grenade");
 
     private ModItems() {
     }

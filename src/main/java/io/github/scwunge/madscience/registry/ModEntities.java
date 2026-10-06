@@ -9,6 +9,8 @@ import io.github.scwunge.madscience.content.entity.EnderslimeEntity;
 import io.github.scwunge.madscience.content.entity.ShoggothEntity;
 import io.github.scwunge.madscience.content.entity.WerewolfEntity;
 import io.github.scwunge.madscience.content.entity.WoolyCowEntity;
+import io.github.scwunge.madscience.content.weapon.PulseRifleGrenade;
+import io.github.scwunge.madscience.content.weapon.PulseRifleRound;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
@@ -45,6 +47,11 @@ public final class ModEntities {
             EntityType.Builder.of(AbominationEntity::new, MobCategory.MONSTER).sized(1.4F, 0.9F).eyeHeight(0.65F).fireImmune().clientTrackingRange(8));
     public static final DeferredHolder<EntityType<?>, EntityType<EnderSquidEntity>> ENDER_SQUID = register("ender_squid",
             EntityType.Builder.of(EnderSquidEntity::new, MobCategory.MONSTER).sized(0.6F, 2.9F).eyeHeight(2.55F).clientTrackingRange(8));
+
+    public static final DeferredHolder<EntityType<?>, EntityType<PulseRifleRound>> PULSE_RIFLE_ROUND = register("pulse_rifle_round",
+            EntityType.Builder.<PulseRifleRound>of(PulseRifleRound::new, MobCategory.MISC).sized(0.25F, 0.25F).clientTrackingRange(8).updateInterval(3));
+    public static final DeferredHolder<EntityType<?>, EntityType<PulseRifleGrenade>> PULSE_RIFLE_GRENADE = register("pulse_rifle_grenade",
+            EntityType.Builder.<PulseRifleGrenade>of(PulseRifleGrenade::new, MobCategory.MISC).sized(0.25F, 0.25F).clientTrackingRange(8).updateInterval(3));
 
     public static final DeferredItem<DeferredSpawnEggItem> WEREWOLF_EGG = egg("werewolf", WEREWOLF, Gmo.WEREWOLF);
     public static final DeferredItem<DeferredSpawnEggItem> CREEPER_COW_EGG = egg("creeper_cow", CREEPER_COW, Gmo.CREEPER_COW);
