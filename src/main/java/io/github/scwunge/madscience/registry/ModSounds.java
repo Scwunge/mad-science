@@ -60,6 +60,18 @@ public final class ModSounds {
     public static final DeferredHolder<SoundEvent, SoundEvent> CRYOTUBE_WORK = register("cryo_tube.work");
     public static final DeferredHolder<SoundEvent, SoundEvent> CRYOTUBE_STILLBIRTH = register("cryo_tube.stillbirth");
 
+    public static final DeferredHolder<SoundEvent, SoundEvent> SONICLOCATOR_PLACE = register("soniclocator.place");
+    public static final DeferredHolder<SoundEvent, SoundEvent> SONICLOCATOR_IDLE = register("soniclocator.idle");
+    public static final DeferredHolder<SoundEvent, SoundEvent> SONICLOCATOR_IDLE_CHARGED = register("soniclocator.idle_charged");
+    public static final DeferredHolder<SoundEvent, SoundEvent> SONICLOCATOR_THUMP_START = register("soniclocator.thump_start");
+    public static final DeferredHolder<SoundEvent, SoundEvent> SONICLOCATOR_THUMP_CHARGE = register("soniclocator.thump_charge");
+    public static final DeferredHolder<SoundEvent, SoundEvent> SONICLOCATOR_THUMP = register("soniclocator.thump");
+    public static final DeferredHolder<SoundEvent, SoundEvent> SONICLOCATOR_FINISH = register("soniclocator.finish");
+    public static final DeferredHolder<SoundEvent, SoundEvent> SONICLOCATOR_EMPTY = register("soniclocator.empty");
+    public static final DeferredHolder<SoundEvent, SoundEvent> SONICLOCATOR_COOLDOWN = register("soniclocator.cooldown");
+    public static final DeferredHolder<SoundEvent, SoundEvent> SONICLOCATOR_COOLDOWN_BEEP = register("soniclocator.cooldown_beep");
+    public static final DeferredHolder<SoundEvent, SoundEvent> SONICLOCATOR_EXPLODE = register("soniclocator.explode");
+
     private ModSounds() {
     }
 

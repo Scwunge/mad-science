@@ -208,6 +208,8 @@ MACHINES = {
     "thermosonic_bonder": ("thermosonicBonder", "Thermosonic Bonder",
                            "Used to electrically interconnect the all-important Silicon Wafers, Transistors, CPUs and RAM chips. Needs power and a redstone signal to heat up."),
     "cryotube": ("cryoTube", "Cryogenic Tube", "Harvests electrical power from villagers' memories! Needs a redstone signal, a villager spawn egg, a data reel and a nether star."),
+    "soniclocator": ("soniclocator", "Soniclocator Device",
+                     "Replaces target blocks in a given chunk with gravel, and keeps the target block. Needs power and a redstone signal."),
     "clay_furnace": ("clayFurnace", "Clay Furnace",
                      "Ancient technology that can give a source block from a single ore. Requires a block of coal and to be lit on fire."),
 }
@@ -396,6 +398,9 @@ def machine_recipes():
         "5": "#c:storage_blocks/diamond"})
     shaped("cryotube", m("cryotube"), ["121", "131", "141"], {
         "1": "#c:storage_blocks/iron", "2": m("circuit_ender_eye"), "3": m("component_computer"), "4": m("component_power_supply")})
+    shaped("soniclocator", m("soniclocator"), ["111", "323", "545"], {
+        "1": m("component_thumper"), "2": m("component_screen"), "3": m("component_computer"), "4": m("component_power_supply"),
+        "5": m("circuit_ender_eye")})
     shaped("clay_furnace", m("clay_furnace"), ["111", "121", "111"], {"1": "minecraft:terracotta", "2": "minecraft:furnace"})
     # early-game help for the Thermosonic Bonder's nether star: mutant DNA over a skull in soul sand gives a wither skeleton egg
     shaped("wither_skeleton_spawn_egg", "minecraft:wither_skeleton_spawn_egg", ["212", "232", "242"], {
@@ -512,6 +517,7 @@ def gui_lang():
         "gui.madscience.hatching_percent": "Hatching %s %%",
         "gui.madscience.health_percent": "Health %s %%",
         "gui.madscience.neural_percent": "Neural %s %%",
+        "gui.madscience.soniclocator_targets": "Targets left in chunk: %s (after %s thumps)",
         "gui.madscience.clay_furnace_hint": "Light with flint and steel. Hit it when it stops burning, wait for it to cool, then hit it again.",
         "gui.madscience.millibuckets": "%s mB",
         "gui.madscience.place_empty_bucket": "Place empty bucket",

@@ -11,6 +11,7 @@ import io.github.scwunge.madscience.content.item.MemoryReelItem;
 import io.github.scwunge.madscience.content.machine.TallMachineBlock;
 import io.github.scwunge.madscience.content.machine.clayfurnace.ClayFurnaceBlockEntity;
 import io.github.scwunge.madscience.content.machine.cryotube.CryotubeBlockEntity;
+import io.github.scwunge.madscience.content.machine.soniclocator.SoniclocatorBlockEntity;
 import io.github.scwunge.madscience.content.machine.duplicator.DuplicatorBlockEntity;
 import io.github.scwunge.madscience.content.machine.freezer.FreezerBlockEntity;
 import io.github.scwunge.madscience.content.machine.incubator.IncubatorBlockEntity;
@@ -242,6 +243,9 @@ public final class MachineTests {
         block.setPlacedBy(helper.getLevel(), abs, helper.getLevel().getBlockState(abs), null, ItemStack.EMPTY);
         @SuppressWarnings("unchecked")
         T machine = (T) helper.getBlockEntity(POS);
+        if (machine.energy() != null) {
+            machine.energy().setEnergy(machine.energy().getMaxEnergyStored());
+        }
         return machine;
     }
 
@@ -271,6 +275,50 @@ public final class MachineTests {
             helper.assertTrue(!tube.items().getStackInSlot(CryotubeBlockEntity.STAR).isEmpty(), "the nether star is a catalyst, not used up");
         });
     }
+
+    // separate batches: two Soniclocators running at once would blow each other up (the conflict rule)
+    @GameTest(template = ItemTests.EMPTY, timeoutTicks = 1200, batch = "soniclocator_a")
+    public static void soniclocatorPullsTargetFromChunk(GameTestHelper helper) {
+        BlockPos ore = POS.below();
+        helper.setBlock(ore, Blocks.IRON_ORE);
+        helper.setBlock(new BlockPos(1, 1, 0), Blocks.REDSTONE_BLOCK);
+        SoniclocatorBlockEntity sonic = placeTall(helper, ModBlocks.SONICLOCATOR.get());
+        sonic.items().setStackInSlot(SoniclocatorBlockEntity.GRAVEL_IN, new ItemStack(Items.GRAVEL, 4));
+        sonic.items().setStackInSlot(SoniclocatorBlockEntity.TARGET, new ItemStack(Items.IRON_ORE));
+        helper.succeedWhen(() -> {
+            helper.assertTrue(!sonic.items().getStackInSlot(SoniclocatorBlockEntity.OUTPUT).isEmpty(), "state " + sonic.state() + " charge " + sonic.charge()
+                    + " energy " + sonic.energyStored() + " redstone " + sonic.isRedstonePowered() + " removed " + sonic.isRemoved());
+            assertSlot(helper, sonic, SoniclocatorBlockEntity.OUTPUT, new ItemStack(Items.IRON_ORE));
+            helper.assertBlockPresent(Blocks.GRAVEL, ore);
+            assertSlot(helper, sonic, SoniclocatorBlockEntity.GRAVEL_IN, new ItemStack(Items.GRAVEL, 3));
+        });
+    }
+
+    @GameTest(template = ItemTests.EMPTY, timeoutTicks = 1200, batch = "soniclocator_b")
+    public static void soniclocatorRespectsProtection(GameTestHelper helper) {
+        BlockPos ore = POS.below();
+        helper.setBlock(ore, Blocks.GOLD_ORE);
+        helper.setBlock(new BlockPos(1, 1, 0), Blocks.REDSTONE_BLOCK);
+        SoniclocatorBlockEntity sonic = placeTall(helper, ModBlocks.SONICLOCATOR.get());
+        sonic.items().setStackInSlot(SoniclocatorBlockEntity.GRAVEL_IN, new ItemStack(Items.GRAVEL, 4));
+        sonic.items().setStackInSlot(SoniclocatorBlockEntity.TARGET, new ItemStack(Items.GOLD_ORE));
+        BlockPos absOre = helper.absolutePos(ore);
+        // stand-in for a claim mod: nobody may break this block
+        java.util.function.Consumer<net.neoforged.neoforge.event.level.BlockEvent.BreakEvent> guard = event -> {
+            if (event.getPos().equals(absOre)) {
+                event.setCanceled(true);
+            }
+        };
+        net.neoforged.neoforge.common.NeoForge.EVENT_BUS.addListener(guard);
+        helper.runAfterDelay(MAX_SONIC_WAIT, () -> {
+            net.neoforged.neoforge.common.NeoForge.EVENT_BUS.unregister(guard);
+            helper.assertBlockPresent(Blocks.GOLD_ORE, ore);
+            helper.assertTrue(sonic.items().getStackInSlot(SoniclocatorBlockEntity.OUTPUT).isEmpty(), "took a protected block");
+            helper.succeed();
+        });
+    }
+
+    private static final int MAX_SONIC_WAIT = SoniclocatorBlockEntity.MAX_CHARGE + 60;
 
     @GameTest(template = ItemTests.EMPTY, timeoutTicks = 300)
     public static void dnaExtractorNeedsPower(GameTestHelper helper) {

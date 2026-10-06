@@ -75,6 +75,13 @@ public class MachineBlock extends BaseEntityBlock {
     }
 
     @Override
+    public void setPlacedBy(Level level, BlockPos pos, BlockState state, @Nullable net.minecraft.world.entity.LivingEntity placer, ItemStack stack) {
+        if (placer instanceof Player player && level.getBlockEntity(pos) instanceof MachineBlockEntity machine) {
+            machine.setOwner(player.getUUID());
+        }
+    }
+
+    @Override
     protected BlockState rotate(BlockState state, Rotation rotation) {
         return state.setValue(FACING, rotation.rotate(state.getValue(FACING)));
     }

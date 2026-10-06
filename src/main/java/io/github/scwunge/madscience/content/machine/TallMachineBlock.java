@@ -69,6 +69,7 @@ public class TallMachineBlock extends MachineBlock {
 
     @Override
     public void setPlacedBy(Level level, BlockPos pos, BlockState state, @Nullable LivingEntity placer, ItemStack stack) {
+        super.setPlacedBy(level, pos, state, placer, stack);
         for (int i = 1; i < height; i++) {
             level.setBlock(pos.above(i), state.setValue(PART, i), 3);
         }

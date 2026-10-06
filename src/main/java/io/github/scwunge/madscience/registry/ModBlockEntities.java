@@ -12,6 +12,7 @@ import io.github.scwunge.madscience.content.machine.incubator.IncubatorBlockEnti
 import io.github.scwunge.madscience.content.machine.mainframe.MainframeBlockEntity;
 import io.github.scwunge.madscience.content.machine.sanitizer.SanitizerBlockEntity;
 import io.github.scwunge.madscience.content.machine.sequencer.SequencerBlockEntity;
+import io.github.scwunge.madscience.content.machine.soniclocator.SoniclocatorBlockEntity;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -45,6 +46,8 @@ public final class ModBlockEntities {
 
     public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<CryotubeBlockEntity>> CRYOTUBE =
             register("cryotube", CryotubeBlockEntity::new, ModBlocks.CRYOTUBE);
+    public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<SoniclocatorBlockEntity>> SONICLOCATOR =
+            register("soniclocator", SoniclocatorBlockEntity::new, ModBlocks.SONICLOCATOR);
     public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<AbominationEggBlockEntity>> ABOMINATION_EGG =
             register("abomination_egg", AbominationEggBlockEntity::new, ModBlocks.ABOMINATION_EGG);
 

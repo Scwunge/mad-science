@@ -49,6 +49,34 @@ public abstract class MachineBlockEntity extends BlockEntity implements MenuProv
     /** Whether the machine is working; drives the animated textures and sounds on the client. */
     private boolean active;
 
+    /** Who placed the machine; machines that change the world act as this player, so claims apply. */
+    @Nullable
+    private java.util.UUID owner;
+
+    public void setOwner(@Nullable java.util.UUID owner) {
+        this.owner = owner;
+        setChanged();
+    }
+
+    @Nullable
+    public java.util.UUID owner() {
+        return owner;
+    }
+
+    /** A stand-in player for the owner, for permission checks like block-break events. */
+    protected net.minecraft.world.entity.player.Player actingPlayer(net.minecraft.server.level.ServerLevel level) {
+        com.mojang.authlib.GameProfile profile = owner == null
+                ? new com.mojang.authlib.GameProfile(java.util.UUID.nameUUIDFromBytes("madscience".getBytes()), "[Mad Science]")
+                : new com.mojang.authlib.GameProfile(owner, "[Mad Science]");
+        return net.neoforged.neoforge.common.util.FakePlayerFactory.get(level, profile);
+    }
+
+    /** Whether the owner may break the block at {@code pos} (claims and protection mods get their say). */
+    protected boolean mayBreak(net.minecraft.server.level.ServerLevel level, BlockPos pos) {
+        var event = new net.neoforged.neoforge.event.level.BlockEvent.BreakEvent(level, pos, level.getBlockState(pos), actingPlayer(level));
+        return !net.neoforged.neoforge.common.NeoForge.EVENT_BUS.post(event).isCanceled();
+    }
+
     protected MachineBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state, int slots,
                                  int energyCapacity, int energyInput, int energyOutput) {
         super(type, pos, state);
@@ -295,10 +323,14 @@ public abstract class MachineBlockEntity extends BlockEntity implements MenuProv
             tag.put("Energy", energy.serializeNBT(registries));
         }
         tag.putBoolean("Active", active);
+        if (owner != null) {
+            tag.putUUID("Owner", owner);
+        }
     }
 
     @Override
     protected void loadAdditional(CompoundTag tag, HolderLookup.Provider registries) {
+        owner = tag.hasUUID("Owner") ? tag.getUUID("Owner") : null;
         super.loadAdditional(tag, registries);
         if (tag.contains("Items")) {
             // load into a scratch handler so a save from a version with a different slot count can't resize ours

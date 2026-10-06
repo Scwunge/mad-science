@@ -67,4 +67,26 @@ public final class SimpleMachineScreens {
             tip(72, 15, 28, 28, Component.translatable("gui.madscience.clay_furnace_hint"));
         }
     }
+
+    public static class Soniclocator extends MachineScreen {
+        public Soniclocator(MachineMenu menu, Inventory inventory, Component title) {
+            super(menu, inventory, title, "soniclocator");
+        }
+
+        @Override
+        protected void drawGauges(GuiGraphics graphics) {
+            blitUp(graphics, 86, 60, 176, 0, 14, 14, scaled(value(0), value(1), 14));
+            int cold = 40 - scaled(value(2), value(3), 40);
+            if (cold > 0) {
+                graphics.blit(texture, leftPos + 88, topPos + 18, 176, 14, 18, cold);
+            }
+        }
+
+        @Override
+        protected void addTooltips() {
+            tip(86, 62, 14, 14, percent("gui.madscience.energy_percent", value(0), value(1)), energyLine(value(0), value(1)));
+            tip(88, 18, 18, 40, percent("gui.madscience.progress_percent", value(2), value(3)),
+                    Component.translatable("gui.madscience.soniclocator_targets", value(4), value(5)));
+        }
+    }
 }

@@ -18,6 +18,8 @@ public final class MadConfig {
     public static final ModConfigSpec.IntValue DECAY_DELAY_SECONDS;
     public static final ModConfigSpec.IntValue CLAY_FURNACE_SECONDS;
     public static final ModConfigSpec.IntValue CRYOTUBE_FE_PER_NEURON;
+    public static final ModConfigSpec.IntValue SONICLOCATOR_CONFLICT_RANGE;
+    public static final ModConfigSpec.IntValue SONICLOCATOR_SCAN_TOP;
     public static final ModConfigSpec.BooleanValue ABOMINATION_LAYS_EGGS;
     public static final ModConfigSpec.BooleanValue ABOMINATION_TELEPORTS;
     public static final ModConfigSpec.BooleanValue PULSE_RIFLE_ENABLED;
@@ -37,6 +39,11 @@ public final class MadConfig {
         CRYOTUBE_FE_PER_NEURON = BUILDER.comment("FE per tick the Cryogenic Tube makes for each point of neural activity (0 to 512, by memory).",
                         "The original's Universal Electricity numbers don't translate to FE, so this is a balance choice.")
                 .defineInRange("cryotubeFePerNeuron", 2, 0, 1000);
+        SONICLOCATOR_CONFLICT_RANGE = BUILDER.comment("If two Soniclocators thump within this many blocks of each other, both explode (like the original).",
+                        "0 turns this off. Explosions still respect claims and protection mods.")
+                .defineInRange("soniclocatorConflictRange", 2600, 0, 30_000_000);
+        SONICLOCATOR_SCAN_TOP = BUILDER.comment("Highest Y level the Soniclocator searches (the original searched up to 127).")
+                .defineInRange("soniclocatorScanTop", 127, -64, 320);
         BUILDER.pop();
 
         BUILDER.push("mobs");

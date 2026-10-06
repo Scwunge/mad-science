@@ -62,6 +62,7 @@ public final class ClientRegistry {
     public static final ModelLayerLocation BONDER = layer("thermosonic_bonder");
     public static final ModelLayerLocation CLAY_FURNACE = layer("clay_furnace");
     public static final ModelLayerLocation CRYOTUBE = layer("cryotube");
+    public static final ModelLayerLocation SONICLOCATOR = layer("soniclocator");
 
     /** Machine items drawn with their block model: item, layer, texture. */
     private record MachineItem(Supplier<? extends Block> block, ModelLayerLocation layer, ResourceLocation texture, float scale) {
@@ -80,7 +81,8 @@ public final class ClientRegistry {
             new MachineItem(ModBlocks.DUPLICATOR, DUPLICATOR, modelTexture("duplicator", "off")),
             new MachineItem(ModBlocks.BONDER, BONDER, modelTexture("thermosonic_bonder", "off")),
             new MachineItem(ModBlocks.CLAY_FURNACE, CLAY_FURNACE, modelTexture("clay_furnace", "idle")),
-            new MachineItem(ModBlocks.CRYOTUBE, CRYOTUBE, modelTexture("cryotube", "on"), 0.45F));
+            new MachineItem(ModBlocks.CRYOTUBE, CRYOTUBE, modelTexture("cryotube", "on"), 0.45F),
+            new MachineItem(ModBlocks.SONICLOCATOR, SONICLOCATOR, modelTexture("soniclocator", "off"), 0.4F));
 
     private ClientRegistry() {
     }
@@ -106,6 +108,7 @@ public final class ClientRegistry {
         event.registerLayerDefinition(BONDER, BonderModel::create);
         event.registerLayerDefinition(CLAY_FURNACE, ClayFurnaceModel::create);
         event.registerLayerDefinition(CRYOTUBE, CryotubeModel::create);
+        event.registerLayerDefinition(SONICLOCATOR, io.github.scwunge.madscience.client.model.SoniclocatorModel::create);
     }
 
     @SubscribeEvent
@@ -169,6 +172,7 @@ public final class ClientRegistry {
                 }));
 
         event.registerBlockEntityRenderer(ModBlockEntities.CLAY_FURNACE.get(), ClayFurnaceRenderer::new);
+        event.registerBlockEntityRenderer(ModBlockEntities.SONICLOCATOR.get(), io.github.scwunge.madscience.client.render.SoniclocatorRenderer::new);
 
         ResourceLocation cryotubeOff = modelTexture("cryotube", "off");
         ResourceLocation cryotubeOn = modelTexture("cryotube", "on");
@@ -204,6 +208,7 @@ public final class ClientRegistry {
         event.register(ModMenus.DUPLICATOR.get(), SimpleMachineScreens.Duplicator::new);
         event.register(ModMenus.CLAY_FURNACE.get(), SimpleMachineScreens.ClayFurnace::new);
         event.register(ModMenus.CRYOTUBE.get(), CryotubeScreen::new);
+        event.register(ModMenus.SONICLOCATOR.get(), SimpleMachineScreens.Soniclocator::new);
     }
 
     private static MachineItemRenderer itemRenderer;

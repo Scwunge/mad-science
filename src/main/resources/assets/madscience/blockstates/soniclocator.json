@@ -1,0 +1,13 @@
+{
+  "variants": {
+    "part=0": {
+      "model": "madscience:block/soniclocator"
+    },
+    "part=1": {
+      "model": "madscience:block/soniclocator"
+    },
+    "part=2": {
+      "model": "madscience:block/soniclocator"
+    }
+  }
+}

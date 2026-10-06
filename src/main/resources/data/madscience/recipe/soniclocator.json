@@ -1,0 +1,30 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "111",
+    "323",
+    "545"
+  ],
+  "key": {
+    "1": {
+      "item": "madscience:component_thumper"
+    },
+    "2": {
+      "item": "madscience:component_screen"
+    },
+    "3": {
+      "item": "madscience:component_computer"
+    },
+    "4": {
+      "item": "madscience:component_power_supply"
+    },
+    "5": {
+      "item": "madscience:circuit_ender_eye"
+    }
+  },
+  "result": {
+    "id": "madscience:soniclocator",
+    "count": 1
+  }
+}

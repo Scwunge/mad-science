@@ -21,6 +21,7 @@ public final class ModMenus {
     public static final DeferredHolder<MenuType<?>, MenuType<MachineMenu>> BONDER = machine("thermosonic_bonder");
     public static final DeferredHolder<MenuType<?>, MenuType<MachineMenu>> CLAY_FURNACE = machine("clay_furnace");
     public static final DeferredHolder<MenuType<?>, MenuType<MachineMenu>> CRYOTUBE = machine("cryotube");
+    public static final DeferredHolder<MenuType<?>, MenuType<MachineMenu>> SONICLOCATOR = machine("soniclocator");
 
     private ModMenus() {
     }
