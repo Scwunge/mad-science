@@ -106,6 +106,17 @@ public final class WeaponMachineTests {
         });
     }
 
+    /** A book made with /give or /data (pages are JSON text, as for any written book) reads the same as one written in game. */
+    @GameTest(template = ItemTests.EMPTY)
+    public static void cncReadsCommandMadeBooks(GameTestHelper helper) throws com.mojang.brigadier.exceptions.CommandSyntaxException {
+        var tag = net.minecraft.nbt.TagParser.parseTag(
+                "{id:\"minecraft:written_book\",count:1,components:{\"minecraft:written_book_content\":{title:\"Bolt\",author:\"Test\",pages:['\"pulse rifle bolt\"']}}}");
+        ItemStack book = ItemStack.parseOptional(helper.getLevel().registryAccess(), tag);
+        String page = CncMachineBlockEntity.firstPage(book);
+        helper.assertTrue(CncRecipe.decode(page).equals("pulse rifle bolt"), "page read as [" + page + "]");
+        helper.succeed();
+    }
+
     @GameTest(template = ItemTests.EMPTY)
     public static void cncBooksReadPlainTextOrBinary(GameTestHelper helper) {
         var manager = helper.getLevel().getRecipeManager();

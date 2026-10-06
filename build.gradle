@@ -110,6 +110,8 @@ tasks.withType(JavaCompile).configureEach {
 
 tasks.named('jar', Jar) {
     from('LICENSE') { rename { "${it}_madscience" } }
+    // the screenshot harness is for development runs only
+    exclude 'io/github/scwunge/madscience/client/dev/**'
     manifest.attributes([
             'Specification-Title'   : mod_id,
             'Specification-Vendor'  : 'Scwunge',

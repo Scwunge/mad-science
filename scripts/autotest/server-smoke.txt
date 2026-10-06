@@ -1,0 +1,130 @@
+# Same smoke test, joined to a dedicated server (the runner grants op over RCON after the player joins).
+wait 300
+cmd gamemode creative @s
+cmd difficulty normal
+cmd time set day
+cmd gamerule doDaylightCycle false
+cmd gamerule doMobSpawning false
+cmd fill 790 150 790 815 150 815 stone
+cmd fill 790 151 790 815 160 815 air
+cmd tp @s 800 151 800 0 0
+wait 80
+cmd clear @s
+cmd kill @e[type=!player,distance=..40]
+
+log --- creative tab items
+cmd give @s madscience:dna_extractor
+cmd give @s madscience:pulse_rifle
+cmd give @s madscience:lab_coat_body
+wait 10
+tap inventory
+wait 20
+screen
+screenshot ms-inventory
+close
+wait 10
+
+log --- pulse rifle: real attack key, at a zombie
+cmd clear @s
+cmd item replace entity @s weapon.mainhand with madscience:pulse_rifle[madscience:rifle={rounds:42,grenades:3,grenade_mode:false,magazine:true}]
+cmd summon minecraft:zombie 800 151 810 {NoAI:1b,PersistenceRequired:1b,Health:20f}
+look 0 0
+wait 20
+screenshot ms-rifle-held
+hold attack 50
+wait 25
+screenshot ms-rifle-firing
+wait 40
+cmd data get entity @s SelectedItem.components."madscience:rifle"
+cmd execute if entity @e[type=zombie,distance=..20] run say zombie still alive
+cmd execute unless entity @e[type=zombie,distance=..20] run say zombie killed by the rifle
+wait 10
+screenshot ms-rifle-after
+
+log --- grenade mode: use switches mode, one grenade per pull
+tap use
+wait 10
+cmd data get entity @s SelectedItem.components."madscience:rifle"
+look 0 12
+hold attack 30
+wait 60
+cmd data get entity @s SelectedItem.components."madscience:rifle"
+screenshot ms-grenade-crater
+wait 10
+
+log --- third person with the rifle
+tap togglePerspective
+wait 10
+screenshot ms-rifle-third-person
+tap togglePerspective
+tap togglePerspective
+wait 10
+
+log --- machines powered through their saved energy
+cmd fill 790 151 790 815 160 815 air replace minecraft:fire
+cmd fill 795 151 804 806 153 806 air
+cmd setblock 796 151 805 madscience:dna_extractor[facing=north]
+cmd setblock 799 151 805 madscience:magazine_loader[facing=north]
+cmd setblock 802 151 805 madscience:cnc_machine[facing=north]
+cmd setblock 805 151 805 madscience:soniclocator[facing=north]
+cmd setblock 799 151 806 minecraft:redstone_block
+cmd setblock 802 151 806 minecraft:redstone_block
+wait 40
+cmd data merge block 796 151 805 {Energy:1000000,Items:{Size:5,Items:[{Slot:0,id:"madscience:syringe_cow",count:4}]}}
+cmd data merge block 799 151 805 {Energy:250000,Items:{Size:14,Items:[{Slot:0,id:"madscience:pulse_rifle_magazine",count:2},{Slot:2,id:"madscience:pulse_rifle_round",count:64},{Slot:3,id:"madscience:pulse_rifle_round",count:64}]}}
+cmd data merge block 802 151 805 {Energy:250000,Tank:{Fluid:{id:"minecraft:water",amount:5000}},Items:{Size:5,Items:[{Slot:1,id:"minecraft:iron_block",count:2},{Slot:2,id:"minecraft:written_book",count:1,components:{"minecraft:written_book_content":{title:"Bolt",author:"Test",pages:['"pulse rifle bolt"']}}}]}}
+cmd tp @s 800.5 151 801.5 0 15
+wait 120
+screenshot ms-machines
+do use_block {"x":796,"y":151,"z":805}
+wait 30
+screenshot ms-gui-dna-extractor
+close
+wait 10
+do use_block {"x":802,"y":151,"z":805}
+wait 30
+screenshot ms-gui-cnc
+close
+wait 10
+do use_block {"x":799,"y":151,"z":805}
+wait 30
+screenshot ms-gui-magazine-loader
+close
+wait 200
+cmd data get block 796 151 805 Items
+cmd data get block 799 151 805 Items
+cmd data get block 802 151 805 Progress
+
+log --- creatures
+cmd summon madscience:werewolf 794 151 793 {NoAI:1b,Rotation:[0f,0f]}
+cmd summon madscience:creeper_cow 796 151 793 {NoAI:1b,Rotation:[0f,0f]}
+cmd summon madscience:enderslime 798 151 793 {NoAI:1b,Rotation:[0f,0f]}
+cmd summon madscience:wooly_cow 800 151 793 {NoAI:1b,Rotation:[0f,0f]}
+cmd summon madscience:shoggoth 802 151 793 {NoAI:1b,Rotation:[0f,0f]}
+cmd summon madscience:abomination 804 151 793 {NoAI:1b,Rotation:[0f,0f]}
+cmd summon madscience:ender_squid 806 151 793 {NoAI:1b,Rotation:[0f,0f]}
+cmd tp @s 800.5 152 800.5 180 10
+wait 60
+screenshot ms-creatures
+
+log --- warning sign and lab coat
+cmd kill @e[type=!player,distance=..40]
+cmd fill 795 151 804 806 153 806 air
+cmd setblock 800 152 803 minecraft:stone
+cmd item replace entity @s weapon.mainhand with madscience:warning_sign
+cmd item replace entity @s armor.head with madscience:lab_coat_goggles
+cmd item replace entity @s armor.chest with madscience:lab_coat_body
+cmd item replace entity @s armor.legs with madscience:lab_coat_leggings
+cmd tp @s 800.5 151 801.5 0 10
+wait 20
+tap use
+wait 20
+screenshot ms-warning-sign
+tap togglePerspective
+tap togglePerspective
+wait 10
+screenshot ms-lab-coat
+tap togglePerspective
+wait 10
+log --- done
+quit

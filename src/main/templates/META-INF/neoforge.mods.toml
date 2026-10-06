@@ -11,6 +11,7 @@ modId = "${mod_id}"
 version = "${mod_version}"
 displayName = "${mod_name}"
 displayURL = "https://github.com/Scwunge/mad-science"
+logoFile = "madscience_logo.png"
 authors = "Scwunge (port); original by Maxwolf Goodliffe, Fox Diller and Prowler"
 credits = "Original Mad Science by Maxwolf Goodliffe and Fox Diller, art by Prowler. Mob ideas by Bart74, Deuce_Loosely, monodemono, Pyrobrine and TheTechnician."
 description = '''
