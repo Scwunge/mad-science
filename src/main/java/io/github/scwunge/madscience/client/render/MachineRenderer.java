@@ -51,6 +51,13 @@ public class MachineRenderer<T extends MachineBlockEntity> implements BlockEntit
         pose.popPose();
     }
 
+    /** Tall machines draw above their block, so they mustn't be culled by its box alone. */
+    @Override
+    public net.minecraft.world.phys.AABB getRenderBoundingBox(T machine) {
+        int height = machine.getBlockState().getBlock() instanceof io.github.scwunge.madscience.content.machine.TallMachineBlock tall ? tall.height() : 1;
+        return net.minecraft.world.phys.AABB.encapsulatingFullBlocks(machine.getBlockPos().offset(-1, 0, -1), machine.getBlockPos().offset(1, height, 1));
+    }
+
     /** Moves the model to its spot in the block: the centre, unless the original placed it differently. */
     protected void place(T machine, PoseStack pose) {
         pose.translate(0.5, 0.5, 0.5);

@@ -52,6 +52,14 @@ public final class ModSounds {
     public static final DeferredHolder<SoundEvent, SoundEvent> WOOLY_COW_HURT = register("wooly_cow.hurt");
     public static final DeferredHolder<SoundEvent, SoundEvent> WOOLY_COW_STEP = register("wooly_cow.step");
 
+    public static final DeferredHolder<SoundEvent, SoundEvent> CRYOTUBE_IDLE = register("cryo_tube.idle");
+    public static final DeferredHolder<SoundEvent, SoundEvent> CRYOTUBE_OFF = register("cryo_tube.off");
+    public static final DeferredHolder<SoundEvent, SoundEvent> CRYOTUBE_CRACK_EGG = register("cryo_tube.crack_egg");
+    public static final DeferredHolder<SoundEvent, SoundEvent> CRYOTUBE_HATCHING = register("cryo_tube.hatching");
+    public static final DeferredHolder<SoundEvent, SoundEvent> CRYOTUBE_HATCH = register("cryo_tube.hatch");
+    public static final DeferredHolder<SoundEvent, SoundEvent> CRYOTUBE_WORK = register("cryo_tube.work");
+    public static final DeferredHolder<SoundEvent, SoundEvent> CRYOTUBE_STILLBIRTH = register("cryo_tube.stillbirth");
+
     private ModSounds() {
     }
 

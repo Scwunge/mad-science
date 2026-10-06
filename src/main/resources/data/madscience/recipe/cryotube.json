@@ -1,0 +1,27 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "121",
+    "131",
+    "141"
+  ],
+  "key": {
+    "1": {
+      "tag": "c:storage_blocks/iron"
+    },
+    "2": {
+      "item": "madscience:circuit_ender_eye"
+    },
+    "3": {
+      "item": "madscience:component_computer"
+    },
+    "4": {
+      "item": "madscience:component_power_supply"
+    }
+  },
+  "result": {
+    "id": "madscience:cryotube",
+    "count": 1
+  }
+}

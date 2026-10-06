@@ -207,6 +207,7 @@ MACHINES = {
     "duplicator": ("dataDuplicator", "Data Reel Duplicator", "Creates copies of any data reel. Needs a redstone signal."),
     "thermosonic_bonder": ("thermosonicBonder", "Thermosonic Bonder",
                            "Used to electrically interconnect the all-important Silicon Wafers, Transistors, CPUs and RAM chips. Needs power and a redstone signal to heat up."),
+    "cryotube": ("cryoTube", "Cryogenic Tube", "Harvests electrical power from villagers' memories! Needs a redstone signal, a villager spawn egg, a data reel and a nether star."),
     "clay_furnace": ("clayFurnace", "Clay Furnace",
                      "Ancient technology that can give a source block from a single ore. Requires a block of coal and to be lit on fire."),
 }
@@ -327,6 +328,9 @@ def simple_blocks():
     shaped("component_thumper", m("component_thumper"), ["535", "212", "222"], {
         "1": m("component_power_supply"), "2": m("enderslime_block"), "3": "#c:storage_blocks/redstone", "5": "minecraft:piston"})
 
+# machines more than one block tall (the original's "ghost blocks")
+TALL_MACHINES = {"cryotube": 3, "soniclocator": 3, "magazine_loader": 2, "cnc_machine": 2}
+
 # Item display transforms for machine items drawn by the block entity model renderer.
 MACHINE_ITEM_DISPLAY = {
     "gui": {"rotation": [30, 225, 0], "translation": [0, 0, 0], "scale": [0.625, 0.625, 0.625]},
@@ -346,7 +350,11 @@ def machines():
                 copy_texture(png, ASSETS / f"textures/model/{mid}/{png.name.lower()}")
             copy_texture(ORIG / f"textures/gui/{orig}.png", ASSETS / f"textures/gui/{mid}.png")
             copy_texture(ORIG / f"textures/blocks/{orig}.png", ASSETS / f"textures/block/{mid}.png")
-        write_json(ASSETS / f"blockstates/{mid}.json", {"variants": {"": {"model": f"{MOD}:block/{mid}"}}})
+        tall = TALL_MACHINES.get(mid, 1)
+        if tall > 1:
+            write_json(ASSETS / f"blockstates/{mid}.json", {"variants": {f"part={i}": {"model": f"{MOD}:block/{mid}"} for i in range(3)}})
+        else:
+            write_json(ASSETS / f"blockstates/{mid}.json", {"variants": {"": {"model": f"{MOD}:block/{mid}"}}})
         write_json(ASSETS / f"models/block/{mid}.json", {"textures": {"particle": f"{MOD}:block/{mid}"}})
         write_json(ASSETS / f"models/item/{mid}.json", {"parent": "minecraft:builtin/entity", "gui_light": "side",
                                                         "textures": {"particle": f"{MOD}:block/{mid}"}, "display": MACHINE_ITEM_DISPLAY})
@@ -355,7 +363,8 @@ def machines():
         write_json(DATA / f"loot_table/blocks/{mid}.json", {
             "type": "minecraft:block",
             "pools": [{"rolls": 1, "entries": [{"type": "minecraft:item", "name": drop}],
-                       "conditions": [{"condition": "minecraft:survives_explosion"}]}]})
+                       "conditions": [{"condition": "minecraft:survives_explosion"}] + ([
+                           {"condition": "minecraft:block_state_property", "block": f"{MOD}:{mid}", "properties": {"part": "0"}}] if tall > 1 else [])}]})
         lang[f"block.{MOD}.{mid}"] = english
         lang[f"block.{MOD}.{mid}.tooltip"] = lore
         pickaxe.append(f"{MOD}:{mid}")
@@ -385,6 +394,8 @@ def machine_recipes():
     shaped("thermosonic_bonder", m("thermosonic_bonder"), ["343", "353", "121"], {
         "1": "minecraft:glowstone", "2": "minecraft:beacon", "3": "#c:storage_blocks/iron", "4": "#c:storage_blocks/redstone",
         "5": "#c:storage_blocks/diamond"})
+    shaped("cryotube", m("cryotube"), ["121", "131", "141"], {
+        "1": "#c:storage_blocks/iron", "2": m("circuit_ender_eye"), "3": m("component_computer"), "4": m("component_power_supply")})
     shaped("clay_furnace", m("clay_furnace"), ["111", "121", "111"], {"1": "minecraft:terracotta", "2": "minecraft:furnace"})
     # early-game help for the Thermosonic Bonder's nether star: mutant DNA over a skull in soul sand gives a wither skeleton egg
     shaped("wither_skeleton_spawn_egg", "minecraft:wither_skeleton_spawn_egg", ["212", "232", "242"], {
@@ -460,6 +471,22 @@ def processing_recipes():
             "type": f"{MOD}:incubating", "input": {"item": f"{MOD}:genome_{gid}"}, "result": {"id": result}})
 
 
+MEMORIES = {
+    "priest": "Filled with huge gaps of data and very minimal flow of ideas.",
+    "farmer": "Data set is filled with the same repeating patterns over and over.",
+    "butcher": "Good data with input from a variety of sources, only a few ideas.",
+    "blacksmith": "High quality data and many ideas and experiences.",
+    "librarian": "Best data recorded, each bit is unique and packed with ideas and experiences out of this world.",
+}
+
+
+def memory_items():
+    for mid, lore in MEMORIES.items():
+        item_model(f"memory_{mid}", ["data_reel_layer_1", "data_reel_layer_2", "data_reel_overlay"])
+        lang[f"item.{MOD}.memory_{mid}"] = f"{mid.title()} Memory Reel"
+        lang[f"item.{MOD}.memory_{mid}.tooltip"] = lore
+
+
 def gmo_items():
     reel_layers = ["data_reel_layer_1", "data_reel_layer_2", "data_reel_overlay"]
     genomes = [f"{MOD}:genome_{sid}" for sid in SPECIES] + [f"{MOD}:genome_{gid}" for gid in GMOS]
@@ -469,7 +496,7 @@ def gmo_items():
         lang[f"item.{MOD}.genome_{gid}.tooltip"] = "Combined genome. Write it onto an egg in a Genome Incubator to bring it to life."
     write_json(DATA / "tags/item/genomes.json", {"replace": False, "values": genomes})
     # memory reels join this tag when the Cryogenic Tube is ported
-    write_json(DATA / "tags/item/data_reels.json", {"replace": False, "values": ["#madscience:genomes"]})
+    write_json(DATA / "tags/item/data_reels.json", {"replace": False, "values": ["#madscience:genomes"] + [f"{MOD}:memory_{m}" for m in MEMORIES]})
     bloodwork = [f"{MOD}:syringe_mutant"] + [f"{MOD}:syringe_{s}" for s, (_, syr, _) in SPECIES.items() if syr] \
         + [f"{MOD}:dna_{s}" for s, (_, _, smp) in SPECIES.items() if smp]
     write_json(DATA / "tags/item/bloodwork.json", {"replace": False, "values": bloodwork})
@@ -482,6 +509,9 @@ def gui_lang():
         "gui.madscience.progress": "%s / %s",
         "gui.madscience.progress_percent": "Progress %s %%",
         "gui.madscience.heat_percent": "Heat %s %%",
+        "gui.madscience.hatching_percent": "Hatching %s %%",
+        "gui.madscience.health_percent": "Health %s %%",
+        "gui.madscience.neural_percent": "Neural %s %%",
         "gui.madscience.clay_furnace_hint": "Light with flint and steel. Hit it when it stops burning, wait for it to cool, then hit it again.",
         "gui.madscience.millibuckets": "%s mB",
         "gui.madscience.place_empty_bucket": "Place empty bucket",
@@ -648,6 +678,7 @@ machines()
 machine_recipes()
 entities()
 simple_blocks()
+memory_items()
 processing_recipes()
 gmo_items()
 gui_lang()

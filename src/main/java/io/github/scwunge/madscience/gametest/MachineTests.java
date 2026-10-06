@@ -7,7 +7,10 @@ import io.github.scwunge.madscience.content.machine.dnaextractor.DnaExtractorBlo
 import io.github.scwunge.madscience.content.Gmo;
 import io.github.scwunge.madscience.content.item.DecayingItem;
 import io.github.scwunge.madscience.content.machine.bonder.BonderBlockEntity;
+import io.github.scwunge.madscience.content.item.MemoryReelItem;
+import io.github.scwunge.madscience.content.machine.TallMachineBlock;
 import io.github.scwunge.madscience.content.machine.clayfurnace.ClayFurnaceBlockEntity;
+import io.github.scwunge.madscience.content.machine.cryotube.CryotubeBlockEntity;
 import io.github.scwunge.madscience.content.machine.duplicator.DuplicatorBlockEntity;
 import io.github.scwunge.madscience.content.machine.freezer.FreezerBlockEntity;
 import io.github.scwunge.madscience.content.machine.incubator.IncubatorBlockEntity;
@@ -232,6 +235,43 @@ public final class MachineTests {
         });
     }
 
+    /** Places a tall machine the way a player would, so its upper parts exist. */
+    static <T extends MachineBlockEntity> T placeTall(GameTestHelper helper, TallMachineBlock block) {
+        helper.setBlock(POS, block);
+        BlockPos abs = helper.absolutePos(POS);
+        block.setPlacedBy(helper.getLevel(), abs, helper.getLevel().getBlockState(abs), null, ItemStack.EMPTY);
+        @SuppressWarnings("unchecked")
+        T machine = (T) helper.getBlockEntity(POS);
+        return machine;
+    }
+
+    @GameTest(template = ItemTests.EMPTY)
+    public static void tallMachinesComeApartTogether(GameTestHelper helper) {
+        placeTall(helper, ModBlocks.CRYOTUBE.get());
+        helper.assertBlockPresent(ModBlocks.CRYOTUBE.get(), POS.above(2));
+        helper.setBlock(POS.above(), Blocks.AIR);
+        helper.assertBlockNotPresent(ModBlocks.CRYOTUBE.get(), POS);
+        helper.assertBlockNotPresent(ModBlocks.CRYOTUBE.get(), POS.above(2));
+        helper.succeed();
+    }
+
+    @GameTest(template = ItemTests.EMPTY, timeoutTicks = 30000)
+    public static void cryotubeGrowsSubjectAndRecordsMemory(GameTestHelper helper) {
+        helper.setBlock(new BlockPos(1, 1, 0), Blocks.REDSTONE_BLOCK);
+        CryotubeBlockEntity tube = placeTall(helper, ModBlocks.CRYOTUBE.get());
+        tube.energy().setEnergy(0);
+        tube.items().setStackInSlot(CryotubeBlockEntity.EGG_IN, new ItemStack(Items.VILLAGER_SPAWN_EGG, 16));
+        tube.items().setStackInSlot(CryotubeBlockEntity.REEL_IN, new ItemStack(ModItems.EMPTY_DATA_REEL.get()));
+        tube.items().setStackInSlot(CryotubeBlockEntity.STAR, new ItemStack(Items.NETHER_STAR));
+        boolean[] madePower = {false};
+        helper.onEachTick(() -> madePower[0] |= tube.energy().getEnergyStored() > 0);
+        helper.succeedWhen(() -> {
+            helper.assertTrue(tube.items().getStackInSlot(CryotubeBlockEntity.MEMORY_OUT).getItem() instanceof MemoryReelItem, "no memory reel yet");
+            helper.assertTrue(madePower[0], "the living subject should have made power");
+            helper.assertTrue(!tube.items().getStackInSlot(CryotubeBlockEntity.STAR).isEmpty(), "the nether star is a catalyst, not used up");
+        });
+    }
+
     @GameTest(template = ItemTests.EMPTY, timeoutTicks = 300)
     public static void dnaExtractorNeedsPower(GameTestHelper helper) {
         DnaExtractorBlockEntity extractor = place(helper, ModBlocks.DNA_EXTRACTOR.get());
@@ -243,3 +283,4 @@ public final class MachineTests {
         });
     }
 }
+

@@ -4,6 +4,7 @@ import io.github.scwunge.madscience.MadScience;
 import io.github.scwunge.madscience.content.block.AbominationEggBlockEntity;
 import io.github.scwunge.madscience.content.machine.bonder.BonderBlockEntity;
 import io.github.scwunge.madscience.content.machine.clayfurnace.ClayFurnaceBlockEntity;
+import io.github.scwunge.madscience.content.machine.cryotube.CryotubeBlockEntity;
 import io.github.scwunge.madscience.content.machine.dnaextractor.DnaExtractorBlockEntity;
 import io.github.scwunge.madscience.content.machine.duplicator.DuplicatorBlockEntity;
 import io.github.scwunge.madscience.content.machine.freezer.FreezerBlockEntity;
@@ -42,6 +43,8 @@ public final class ModBlockEntities {
     public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<ClayFurnaceBlockEntity>> CLAY_FURNACE =
             register("clay_furnace", ClayFurnaceBlockEntity::new, ModBlocks.CLAY_FURNACE);
 
+    public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<CryotubeBlockEntity>> CRYOTUBE =
+            register("cryotube", CryotubeBlockEntity::new, ModBlocks.CRYOTUBE);
     public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<AbominationEggBlockEntity>> ABOMINATION_EGG =
             register("abomination_egg", AbominationEggBlockEntity::new, ModBlocks.ABOMINATION_EGG);
 

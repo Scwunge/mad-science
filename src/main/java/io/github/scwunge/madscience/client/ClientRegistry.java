@@ -3,6 +3,7 @@ package io.github.scwunge.madscience.client;
 import io.github.scwunge.madscience.MadScience;
 import io.github.scwunge.madscience.client.model.BonderModel;
 import io.github.scwunge.madscience.client.model.ClayFurnaceModel;
+import io.github.scwunge.madscience.client.model.CryotubeModel;
 import io.github.scwunge.madscience.client.model.DnaExtractorModel;
 import io.github.scwunge.madscience.client.model.DuplicatorModel;
 import io.github.scwunge.madscience.client.model.FreezerModel;
@@ -13,7 +14,9 @@ import io.github.scwunge.madscience.client.model.SequencerModel;
 import io.github.scwunge.madscience.client.render.ClayFurnaceRenderer;
 import io.github.scwunge.madscience.client.render.MachineItemRenderer;
 import io.github.scwunge.madscience.client.render.MachineRenderer;
+import io.github.scwunge.madscience.client.screen.CryotubeScreen;
 import io.github.scwunge.madscience.client.screen.DnaExtractorScreen;
+import io.github.scwunge.madscience.content.machine.cryotube.CryotubeBlockEntity;
 import io.github.scwunge.madscience.client.screen.HeatedMachineScreen;
 import io.github.scwunge.madscience.client.screen.MainframeScreen;
 import io.github.scwunge.madscience.client.screen.SanitizerScreen;
@@ -58,9 +61,13 @@ public final class ClientRegistry {
     public static final ModelLayerLocation DUPLICATOR = layer("duplicator");
     public static final ModelLayerLocation BONDER = layer("thermosonic_bonder");
     public static final ModelLayerLocation CLAY_FURNACE = layer("clay_furnace");
+    public static final ModelLayerLocation CRYOTUBE = layer("cryotube");
 
     /** Machine items drawn with their block model: item, layer, texture. */
-    private record MachineItem(Supplier<? extends Block> block, ModelLayerLocation layer, ResourceLocation texture) {
+    private record MachineItem(Supplier<? extends Block> block, ModelLayerLocation layer, ResourceLocation texture, float scale) {
+        MachineItem(Supplier<? extends Block> block, ModelLayerLocation layer, ResourceLocation texture) {
+            this(block, layer, texture, 1.0F);
+        }
     }
 
     private static final List<MachineItem> MACHINE_ITEMS = List.of(
@@ -72,7 +79,8 @@ public final class ClientRegistry {
             new MachineItem(ModBlocks.FREEZER, FREEZER, modelTexture("freezer", "idle")),
             new MachineItem(ModBlocks.DUPLICATOR, DUPLICATOR, modelTexture("duplicator", "off")),
             new MachineItem(ModBlocks.BONDER, BONDER, modelTexture("thermosonic_bonder", "off")),
-            new MachineItem(ModBlocks.CLAY_FURNACE, CLAY_FURNACE, modelTexture("clay_furnace", "idle")));
+            new MachineItem(ModBlocks.CLAY_FURNACE, CLAY_FURNACE, modelTexture("clay_furnace", "idle")),
+            new MachineItem(ModBlocks.CRYOTUBE, CRYOTUBE, modelTexture("cryotube", "on"), 0.45F));
 
     private ClientRegistry() {
     }
@@ -97,6 +105,7 @@ public final class ClientRegistry {
         event.registerLayerDefinition(DUPLICATOR, DuplicatorModel::create);
         event.registerLayerDefinition(BONDER, BonderModel::create);
         event.registerLayerDefinition(CLAY_FURNACE, ClayFurnaceModel::create);
+        event.registerLayerDefinition(CRYOTUBE, CryotubeModel::create);
     }
 
     @SubscribeEvent
@@ -160,6 +169,18 @@ public final class ClientRegistry {
                 }));
 
         event.registerBlockEntityRenderer(ModBlockEntities.CLAY_FURNACE.get(), ClayFurnaceRenderer::new);
+
+        ResourceLocation cryotubeOff = modelTexture("cryotube", "off");
+        ResourceLocation cryotubeOn = modelTexture("cryotube", "on");
+        ResourceLocation[] cryotubeAlive = frames("cryotube", "alive_", 7);
+        ResourceLocation[] cryotubeDead = frames("cryotube", "dead_", 2);
+        event.registerBlockEntityRenderer(ModBlockEntities.CRYOTUBE.get(), ctx -> new MachineRenderer<CryotubeBlockEntity>(ctx, CRYOTUBE,
+                (be, pt) -> switch (be.state()) {
+                    case OFF -> cryotubeOff;
+                    case ON -> cryotubeOn;
+                    case ALIVE -> cryotubeAlive[MachineRenderer.frame(be, 7, 15)];
+                    case DEAD -> cryotubeDead[MachineRenderer.frame(be, 2, 15)];
+                }));
     }
 
     /** Renderer for a machine that shows "idle" when stopped and cycles work frames while active. */
@@ -182,6 +203,7 @@ public final class ClientRegistry {
         event.register(ModMenus.FREEZER.get(), SimpleMachineScreens.Freezer::new);
         event.register(ModMenus.DUPLICATOR.get(), SimpleMachineScreens.Duplicator::new);
         event.register(ModMenus.CLAY_FURNACE.get(), SimpleMachineScreens.ClayFurnace::new);
+        event.register(ModMenus.CRYOTUBE.get(), CryotubeScreen::new);
     }
 
     private static MachineItemRenderer itemRenderer;
@@ -191,7 +213,7 @@ public final class ClientRegistry {
         if (itemRenderer == null) {
             itemRenderer = new MachineItemRenderer();
             for (MachineItem entry : MACHINE_ITEMS) {
-                itemRenderer.add(entry.block().get().asItem(), entry.layer(), entry.texture(), 1.0F);
+                itemRenderer.add(entry.block().get().asItem(), entry.layer(), entry.texture(), entry.scale());
             }
         }
         return itemRenderer;

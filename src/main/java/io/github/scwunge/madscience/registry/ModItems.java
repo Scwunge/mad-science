@@ -6,6 +6,7 @@ import io.github.scwunge.madscience.content.Species;
 import io.github.scwunge.madscience.content.item.DecayingItem;
 import io.github.scwunge.madscience.content.item.EmptySyringeItem;
 import io.github.scwunge.madscience.content.item.GenomeItem;
+import io.github.scwunge.madscience.content.item.MemoryReelItem;
 import io.github.scwunge.madscience.content.item.TooltipItem;
 import io.github.scwunge.madscience.content.item.TwoToneItem;
 import net.minecraft.world.item.Item;
@@ -88,6 +89,18 @@ public final class ModItems {
             COMBINED_GENOMES.put(gmo, add(REGISTER.register("genome_" + gmo.getSerializedName(),
                     () -> new TwoToneItem(new Item.Properties().stacksTo(1), gmo.primaryColor(), gmo.secondaryColor()))));
         }
+    }
+
+    private static final Map<MemoryReelItem.Memory, DeferredItem<MemoryReelItem>> MEMORIES = new EnumMap<>(MemoryReelItem.Memory.class);
+
+    static {
+        for (MemoryReelItem.Memory memory : MemoryReelItem.Memory.values()) {
+            MEMORIES.put(memory, add(REGISTER.register(memory.id(), () -> new MemoryReelItem(new Item.Properties(), memory))));
+        }
+    }
+
+    public static MemoryReelItem memory(MemoryReelItem.Memory memory) {
+        return MEMORIES.get(memory).get();
     }
 
     public static TwoToneItem combinedGenome(Gmo gmo) {

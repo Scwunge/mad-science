@@ -1,6 +1,11 @@
 {
   "replace": false,
   "values": [
-    "#madscience:genomes"
+    "#madscience:genomes",
+    "madscience:memory_priest",
+    "madscience:memory_farmer",
+    "madscience:memory_butcher",
+    "madscience:memory_blacksmith",
+    "madscience:memory_librarian"
   ]
 }

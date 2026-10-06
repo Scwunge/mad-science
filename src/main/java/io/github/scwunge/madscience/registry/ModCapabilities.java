@@ -28,6 +28,7 @@ public final class ModCapabilities {
         machine(event, ModBlockEntities.DUPLICATOR.get());
         machine(event, ModBlockEntities.BONDER.get());
         event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, ModBlockEntities.CLAY_FURNACE.get(), MachineBlockEntity::sidedItemHandler);
+        machine(event, ModBlockEntities.CRYOTUBE.get());
     }
 
     /** Items (side rules applied) and energy for a machine. */

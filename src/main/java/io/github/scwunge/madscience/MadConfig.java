@@ -17,6 +17,7 @@ public final class MadConfig {
     public static final ModConfigSpec.BooleanValue DECAY_BLOODWORK;
     public static final ModConfigSpec.IntValue DECAY_DELAY_SECONDS;
     public static final ModConfigSpec.IntValue CLAY_FURNACE_SECONDS;
+    public static final ModConfigSpec.IntValue CRYOTUBE_FE_PER_NEURON;
     public static final ModConfigSpec.BooleanValue ABOMINATION_LAYS_EGGS;
     public static final ModConfigSpec.BooleanValue ABOMINATION_TELEPORTS;
     public static final ModConfigSpec.BooleanValue PULSE_RIFLE_ENABLED;
@@ -33,6 +34,9 @@ public final class MadConfig {
         BUILDER.push("machines");
         CLAY_FURNACE_SECONDS = BUILDER.comment("How long the Clay Furnace smoulders before the ore is done.")
                 .defineInRange("clayFurnaceSeconds", 420, 1, 36000);
+        CRYOTUBE_FE_PER_NEURON = BUILDER.comment("FE per tick the Cryogenic Tube makes for each point of neural activity (0 to 512, by memory).",
+                        "The original's Universal Electricity numbers don't translate to FE, so this is a balance choice.")
+                .defineInRange("cryotubeFePerNeuron", 2, 0, 1000);
         BUILDER.pop();
 
         BUILDER.push("mobs");
