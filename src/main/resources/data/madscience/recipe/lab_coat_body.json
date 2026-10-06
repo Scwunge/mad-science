@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "W W",
+    "WSW",
+    "WSW"
+  ],
+  "key": {
+    "W": {
+      "item": "minecraft:white_wool"
+    },
+    "S": {
+      "item": "minecraft:light_blue_wool"
+    }
+  },
+  "result": {
+    "id": "madscience:lab_coat_body",
+    "count": 1
+  }
+}

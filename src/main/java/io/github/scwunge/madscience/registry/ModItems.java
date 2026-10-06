@@ -6,11 +6,14 @@ import io.github.scwunge.madscience.content.Species;
 import io.github.scwunge.madscience.content.item.DecayingItem;
 import io.github.scwunge.madscience.content.item.EmptySyringeItem;
 import io.github.scwunge.madscience.content.item.GenomeItem;
+import io.github.scwunge.madscience.content.item.LabCoatItem;
 import io.github.scwunge.madscience.content.item.MemoryReelItem;
 import io.github.scwunge.madscience.content.item.TooltipItem;
 import io.github.scwunge.madscience.content.item.TwoToneItem;
+import io.github.scwunge.madscience.content.sign.WarningSignItem;
 import io.github.scwunge.madscience.content.weapon.MagazineItem;
 import io.github.scwunge.madscience.content.weapon.PulseRifleItem;
+import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
 import net.neoforged.neoforge.registries.DeferredItem;
@@ -122,6 +125,16 @@ public final class ModItems {
             () -> new MagazineItem(new Item.Properties())));
     public static final DeferredItem<Item> ROUND = simple("pulse_rifle_round");
     public static final DeferredItem<Item> GRENADE = simple("pulse_rifle_grenade");
+
+    // the scientist's look
+    public static final DeferredItem<LabCoatItem> LAB_COAT_GOGGLES = add(REGISTER.register("lab_coat_goggles",
+            () -> new LabCoatItem(ArmorItem.Type.HELMET, new Item.Properties())));
+    public static final DeferredItem<LabCoatItem> LAB_COAT_BODY = add(REGISTER.register("lab_coat_body",
+            () -> new LabCoatItem(ArmorItem.Type.CHESTPLATE, new Item.Properties())));
+    public static final DeferredItem<LabCoatItem> LAB_COAT_LEGGINGS = add(REGISTER.register("lab_coat_leggings",
+            () -> new LabCoatItem(ArmorItem.Type.LEGGINGS, new Item.Properties())));
+    public static final DeferredItem<WarningSignItem> WARNING_SIGN = add(REGISTER.register("warning_sign",
+            () -> new WarningSignItem(new Item.Properties())));
 
     private ModItems() {
     }

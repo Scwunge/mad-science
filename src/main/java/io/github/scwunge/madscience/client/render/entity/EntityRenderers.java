@@ -76,6 +76,7 @@ public final class EntityRenderers {
         event.registerEntityRenderer(ModEntities.ENDERSLIME.get(), ctx -> new TexturedSlimeRenderer(ctx, texture("enderslime", "enderslime")));
         event.registerEntityRenderer(ModEntities.SHOGGOTH.get(), ctx -> new TexturedSlimeRenderer(ctx, texture("shoggoth", "shoggoth")));
         event.registerEntityRenderer(ModEntities.ENDER_SQUID.get(), EnderSquidRenderer::new);
+        event.registerEntityRenderer(ModEntities.WARNING_SIGN.get(), WarningSignRenderer::new);
     }
 
     private static <T extends net.minecraft.world.entity.Mob, M extends EntityModel<T>> MobRenderer<T, M> simple(

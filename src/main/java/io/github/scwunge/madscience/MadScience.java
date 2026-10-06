@@ -1,6 +1,7 @@
 package io.github.scwunge.madscience;
 
 import com.mojang.logging.LogUtils;
+import io.github.scwunge.madscience.content.item.LabCoatItem;
 import io.github.scwunge.madscience.registry.ModBlockEntities;
 import io.github.scwunge.madscience.registry.ModBlocks;
 import io.github.scwunge.madscience.registry.ModCreativeTabs;
@@ -27,6 +28,7 @@ public class MadScience {
         ModDataComponents.REGISTER.register(modBus);
         ModBlocks.REGISTER.register(modBus);
         ModItems.REGISTER.register(modBus);
+        LabCoatItem.MATERIALS.register(modBus);
         ModFluids.TYPES.register(modBus);
         ModFluids.FLUIDS.register(modBus);
         ModBlockEntities.REGISTER.register(modBus);

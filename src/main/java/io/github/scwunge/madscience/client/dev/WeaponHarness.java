@@ -171,4 +171,50 @@ final class WeaponHarness {
             return 5;
         });
     }
+
+    /** A wall of warning signs, and the lab coat on an armour stand and on the player. */
+    static void lab() {
+        server(30, server -> {
+            var level = level(server);
+            var player = player(server);
+            var types = io.github.scwunge.madscience.content.sign.WarningSignType.values();
+            for (int i = 0; i < 9; i++) {
+                for (int row = 0; row < 3; row++) {
+                    BlockPos wall = new BlockPos(60 + i, Y + row, 12);
+                    level.setBlockAndUpdate(wall, Blocks.STONE.defaultBlockState());
+                    int index = row * 9 + i;
+                    if (index < types.length) {
+                        var sign = new io.github.scwunge.madscience.content.sign.WarningSignEntity(level, wall.north(), Direction.NORTH, player);
+                        sign.setSignType(types[index]);
+                        level.addFreshEntity(sign);
+                    }
+                }
+            }
+            var stand = new net.minecraft.world.entity.decoration.ArmorStand(level, 58.5, Y, 9.5);
+            stand.setYRot(180);
+            stand.setYBodyRot(180);
+            stand.setItemSlot(net.minecraft.world.entity.EquipmentSlot.HEAD, new ItemStack(ModItems.LAB_COAT_GOGGLES.get()));
+            stand.setItemSlot(net.minecraft.world.entity.EquipmentSlot.CHEST, new ItemStack(ModItems.LAB_COAT_BODY.get()));
+            stand.setItemSlot(net.minecraft.world.entity.EquipmentSlot.LEGS, new ItemStack(ModItems.LAB_COAT_LEGGINGS.get()));
+            level.addFreshEntity(stand);
+            look(player, 62, Y + 1.6, 6, 0, 8);
+        });
+        shot("warning-signs");
+        server(10, server -> {
+            var player = player(server);
+            player.setItemSlot(net.minecraft.world.entity.EquipmentSlot.HEAD, new ItemStack(ModItems.LAB_COAT_GOGGLES.get()));
+            player.setItemSlot(net.minecraft.world.entity.EquipmentSlot.CHEST, new ItemStack(ModItems.LAB_COAT_BODY.get()));
+            player.setItemSlot(net.minecraft.world.entity.EquipmentSlot.LEGS, new ItemStack(ModItems.LAB_COAT_LEGGINGS.get()));
+            look(player, 55.5, Y, 5.5, 0, 0);
+        });
+        add((mc, server) -> {
+            mc.options.setCameraType(CameraType.THIRD_PERSON_FRONT);
+            return 10;
+        });
+        shot("lab-coat");
+        add((mc, server) -> {
+            mc.options.setCameraType(CameraType.FIRST_PERSON);
+            return 5;
+        });
+    }
 }

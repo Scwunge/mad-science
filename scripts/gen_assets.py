@@ -89,6 +89,12 @@ SIMPLE = {
     "circuit_spider_eye": ("circuitSpiderEye", "Spider Eye Circuit Component", "Sensitive circuit that is used in monitoring and analysis of items not directly visible to the naked eye."),
     "syringe_empty": ("needleEmpty", "Empty Syringe", "Collects DNA samples from mobs or yourself! Hit a mob with it, or use it to draw your own blood."),
     "syringe_dirty": ("needleDirty", "Dirty Syringe", "Don't play with dirty needles!"),
+    "lab_coat_goggles": ("labCoatGoggles", "Safety Goggles", '"They do nothing!"'),
+    "lab_coat_body": ("labCoatBody", "Laboratory Coat Body", "Gives off the distinct signal that you are, in fact, a scientist."),
+    "lab_coat_leggings": ("labCoatLeggings", "Laboratory Coat Leggings",
+                          '"I soak my white socks in coffee, so I can wear them with brown pants and keep my feet from falling asleep."'),
+    "warning_sign": ("warningSign", "Warning Sign",
+                     "Contains several standardized symbols for harmful or dangerous materials. Sneak and hit a placed sign to change its symbol."),
 }
 
 # pulse rifle family: id -> (original texture name, English name, lore). The original's film-derived names (M41A and so on)
@@ -199,6 +205,10 @@ def weapon_item_model(name):
 
 def weapon_textures():
     if ORIG.exists():
+        # the coat is one 64x32 texture for every piece, so it serves as both armour layers
+        for layer in (1, 2):
+            copy_texture(ORIG / "models/labCoat/labCoat.png", ASSETS / f"textures/models/armor/lab_coat_layer_{layer}.png")
+        copy_texture(ORIG / "models/warningSign/warningSign.png", ASSETS / "textures/entity/warning_sign.png")
         for old, new in WEAPON_MODEL_TEXTURES.items():
             copy_texture(ORIG / f"models/{old}.png", ASSETS / f"textures/model/pulse_rifle/{new}.png")
 
@@ -694,6 +704,10 @@ def recipes():
         "5": "#c:obsidians"}, count=64)
     shaped("pulse_rifle_grenade", m("pulse_rifle_grenade"), ["424", "424", "313"], {
         "1": m("component_pulse_rifle_grenade_casing"), "2": "minecraft:tnt", "3": "#c:gunpowders", "4": "#c:ingots/iron"}, count=16)
+    shaped("lab_coat_body", m("lab_coat_body"), ["W W", "WSW", "WSW"], {"W": "minecraft:white_wool", "S": "minecraft:light_blue_wool"})
+    shaped("lab_coat_leggings", m("lab_coat_leggings"), ["PBP", "P P", "P P"], {"P": "minecraft:brown_wool", "B": "minecraft:black_wool"})
+    shaped("lab_coat_goggles", m("lab_coat_goggles"), ["SSS", "S S", "SGS"], {"S": "#c:strings", "G": "#c:glass_blocks/colorless"})
+    shaped("warning_sign", m("warning_sign"), ["WWW", "IPI", "WWW"], {"W": "minecraft:yellow_wool", "I": "#c:ingots/iron", "P": "minecraft:painting"})
     for special in ("magazine_load", "magazine_unload"):
         write_json(DATA / f"recipe/{special}.json", {"type": f"{MOD}:{special}", "category": "misc"})
 
@@ -793,6 +807,26 @@ def empty_structure(name, size=3):
     generated.append(path)
 
 
+# warning sign symbols, in the original's order, with its descriptions
+WARNING_SIGNS = {
+    "magnetic_field_1": "Magnetic field is active nearby", "explosible_region": "This area is an explosible region use extreme caution!",
+    "warning_auger": "Auger machine in operation nearby.", "corrosive": "Hazard symbol corrosive substances.",
+    "flammable": "Flammable substances!", "compressed_gas": "Hazard symbol gas bottles.", "hot_surface": "Hot surfaces nearby.",
+    "laser_beam": "Laser beam active in area.", "magnetic_field_2": "Strong magnetic field nearby.",
+    "optical_radiation": "Optical radiation present in area, use protection.", "explosive": "Explosive substances in area, use extreme caution!",
+    "poisonous": "Poisonous substances in area, risk of death!", "radioactive": "Radioactive substances or ionising radiation!",
+    "oxidising": "Oxidising substances will react with surrounding air!",
+    "electromagnetic_radiation": "Non-ionising electromagnetic radiation in current area.", "falling": "Risk of falling, watch your step!",
+    "biohazard": "Biological substances that pose bodily harm or death.", "battery": "Danger from batteries acid or explosions, wear protection!",
+    "remote_start": "Remotely started equipment in area, be aware of your surroundings!",
+    "finger_sandwich": "Risk of severe hand injury or disfigurement.", "slipping": "Wet surfaces, slipping hazard.",
+    "low_ceiling": "Low hanging ceiling, watch your step!", "pointy": "Pointy objects are within the present area, watch your step.",
+    "conveyor": "Conveyor belt system or tracks in immediate area.",
+    "entanglement": "Risk of entanglement and dismemberment, be aware of your surroundings!",
+    "generic_warning": "Generic warning symbol, be aware of your surroundings!",
+}
+
+
 def misc_lang():
     lang["itemGroup.madscience"] = "Mad Science"
     lang["tooltip.madscience.hold_shift"] = "Hold SHIFT for more information."
@@ -802,6 +836,12 @@ def misc_lang():
     lang["message.madscience.pulse_rifle_mode_rifle"] = "Rifle"
     lang["message.madscience.pulse_rifle_mode_grenade"] = "Grenade launcher"
     lang["message.madscience.pulse_rifle_disabled"] = "The Pulse Rifle is disabled on this server."
+    lang[f"entity.{MOD}.warning_sign"] = "Warning Sign"
+    lang["message.madscience.warning_sign_owned"] = "This warning sign belongs to %s."
+    lang["message.madscience.warning_sign_type"] = "%s/%s: %s"
+    lang["warning_sign.madscience.prefix"] = "Warning: %s"
+    for sign, text in WARNING_SIGNS.items():
+        lang[f"warning_sign.madscience.{sign}"] = text
     for entity in ("pulse_rifle_round", "pulse_rifle_grenade"):
         lang[f"entity.{MOD}.{entity}"] = WEAPON_ITEMS[entity][1]
 

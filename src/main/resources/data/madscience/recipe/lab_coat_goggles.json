@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "SSS",
+    "S S",
+    "SGS"
+  ],
+  "key": {
+    "S": {
+      "tag": "c:strings"
+    },
+    "G": {
+      "tag": "c:glass_blocks/colorless"
+    }
+  },
+  "result": {
+    "id": "madscience:lab_coat_goggles",
+    "count": 1
+  }
+}

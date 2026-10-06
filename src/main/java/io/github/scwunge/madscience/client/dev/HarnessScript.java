@@ -47,6 +47,9 @@ final class HarnessScript {
         if (only.isEmpty() || only.equals("weapons")) {
             WeaponHarness.machines();
         }
+        if (only.isEmpty() || only.equals("lab")) {
+            WeaponHarness.lab();
+        }
         if (!only.isEmpty()) {
             return;
         }
