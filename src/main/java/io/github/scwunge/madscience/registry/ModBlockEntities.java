@@ -4,11 +4,13 @@ import io.github.scwunge.madscience.MadScience;
 import io.github.scwunge.madscience.content.block.AbominationEggBlockEntity;
 import io.github.scwunge.madscience.content.machine.bonder.BonderBlockEntity;
 import io.github.scwunge.madscience.content.machine.clayfurnace.ClayFurnaceBlockEntity;
+import io.github.scwunge.madscience.content.machine.cnc.CncMachineBlockEntity;
 import io.github.scwunge.madscience.content.machine.cryotube.CryotubeBlockEntity;
 import io.github.scwunge.madscience.content.machine.dnaextractor.DnaExtractorBlockEntity;
 import io.github.scwunge.madscience.content.machine.duplicator.DuplicatorBlockEntity;
 import io.github.scwunge.madscience.content.machine.freezer.FreezerBlockEntity;
 import io.github.scwunge.madscience.content.machine.incubator.IncubatorBlockEntity;
+import io.github.scwunge.madscience.content.machine.magloader.MagazineLoaderBlockEntity;
 import io.github.scwunge.madscience.content.machine.mainframe.MainframeBlockEntity;
 import io.github.scwunge.madscience.content.machine.meatcube.MeatCubeBlockEntity;
 import io.github.scwunge.madscience.content.machine.sanitizer.SanitizerBlockEntity;
@@ -54,6 +56,10 @@ public final class ModBlockEntities {
             register("meat_cube", MeatCubeBlockEntity::new, ModBlocks.MEAT_CUBE);
     public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<VoxBoxBlockEntity>> VOX_BOX =
             register("vox_box", VoxBoxBlockEntity::new, ModBlocks.VOX_BOX);
+    public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<MagazineLoaderBlockEntity>> MAGAZINE_LOADER =
+            register("magazine_loader", MagazineLoaderBlockEntity::new, ModBlocks.MAGAZINE_LOADER);
+    public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<CncMachineBlockEntity>> CNC_MACHINE =
+            register("cnc_machine", CncMachineBlockEntity::new, ModBlocks.CNC_MACHINE);
     public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<AbominationEggBlockEntity>> ABOMINATION_EGG =
             register("abomination_egg", AbominationEggBlockEntity::new, ModBlocks.ABOMINATION_EGG);
 

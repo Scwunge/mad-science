@@ -1,6 +1,7 @@
 package io.github.scwunge.madscience.registry;
 
 import io.github.scwunge.madscience.MadScience;
+import io.github.scwunge.madscience.content.recipe.CncRecipe;
 import io.github.scwunge.madscience.content.recipe.MergingRecipe;
 import io.github.scwunge.madscience.content.recipe.ProcessingRecipe;
 import io.github.scwunge.madscience.content.weapon.MagazineRecipes;
@@ -40,6 +41,12 @@ public final class ModRecipes {
             TYPES.register("genome_merging", () -> RecipeType.simple(MadScience.id("genome_merging")));
     public static final DeferredHolder<RecipeSerializer<?>, RecipeSerializer<MergingRecipe>> MERGING_SERIALIZER =
             SERIALIZERS.register("genome_merging", MergingRecipe.Serializer::new);
+
+    /** CnC Machine: a block of iron cut to the part a written book names. */
+    public static final DeferredHolder<RecipeType<?>, RecipeType<CncRecipe>> CNC =
+            TYPES.register("cnc_machining", () -> RecipeType.simple(MadScience.id("cnc_machining")));
+    public static final DeferredHolder<RecipeSerializer<?>, RecipeSerializer<CncRecipe>> CNC_SERIALIZER =
+            SERIALIZERS.register("cnc_machining", CncRecipe.Serializer::new);
 
     /** Crafting grid: loading rounds into a pulse rifle magazine, and unloading them again. */
     public static final DeferredHolder<RecipeSerializer<?>, RecipeSerializer<MagazineRecipes.Load>> MAGAZINE_LOAD =

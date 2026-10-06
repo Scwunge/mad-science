@@ -1,0 +1,13 @@
+{
+  "variants": {
+    "part=0": {
+      "model": "madscience:block/magazine_loader"
+    },
+    "part=1": {
+      "model": "madscience:block/magazine_loader"
+    },
+    "part=2": {
+      "model": "madscience:block/magazine_loader"
+    }
+  }
+}

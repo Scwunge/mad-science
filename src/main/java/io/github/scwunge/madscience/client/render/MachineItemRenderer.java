@@ -16,10 +16,11 @@ import net.minecraft.world.item.ItemStack;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.function.Predicate;
 
 /** Draws machine items with their block models, like the original's item renderers. */
 public class MachineItemRenderer extends BlockEntityWithoutLevelRenderer {
-    private record Entry(ModelLayerLocation layer, ResourceLocation texture, float scale) {
+    private record Entry(ModelLayerLocation layer, ResourceLocation texture, float scale, Predicate<String> hidden) {
     }
 
     private final Map<Item, Entry> entries = new HashMap<>();
@@ -29,8 +30,16 @@ public class MachineItemRenderer extends BlockEntityWithoutLevelRenderer {
         super(Minecraft.getInstance().getBlockEntityRenderDispatcher(), Minecraft.getInstance().getEntityModels());
     }
 
-    public void add(Item item, ModelLayerLocation layer, ResourceLocation texture, float scale) {
-        entries.put(item, new Entry(layer, texture, scale));
+    public void add(Item item, ModelLayerLocation layer, ResourceLocation texture, float scale, Predicate<String> hidden) {
+        entries.put(item, new Entry(layer, texture, scale, hidden));
+    }
+
+    private static ModelPart bake(Entry entry) {
+        ModelPart model = Minecraft.getInstance().getEntityModels().bakeLayer(entry.layer());
+        for (Map.Entry<String, ModelPart> child : model.children.entrySet()) {
+            child.getValue().visible = !entry.hidden().test(child.getKey());
+        }
+        return model;
     }
 
     @Override
@@ -44,7 +53,7 @@ public class MachineItemRenderer extends BlockEntityWithoutLevelRenderer {
         if (entry == null) {
             return;
         }
-        ModelPart model = models.computeIfAbsent(stack.getItem(), item -> Minecraft.getInstance().getEntityModels().bakeLayer(entry.layer()));
+        ModelPart model = models.computeIfAbsent(stack.getItem(), item -> bake(entry));
         pose.pushPose();
         pose.translate(0.5, 0.5, 0.5);
         pose.scale(entry.scale(), entry.scale(), entry.scale());

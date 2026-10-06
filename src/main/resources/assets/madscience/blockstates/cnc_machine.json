@@ -1,0 +1,13 @@
+{
+  "variants": {
+    "part=0": {
+      "model": "madscience:block/cnc_machine"
+    },
+    "part=1": {
+      "model": "madscience:block/cnc_machine"
+    },
+    "part=2": {
+      "model": "madscience:block/cnc_machine"
+    }
+  }
+}

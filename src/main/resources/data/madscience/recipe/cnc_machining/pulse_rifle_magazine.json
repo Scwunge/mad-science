@@ -1,0 +1,8 @@
+{
+  "type": "madscience:cnc_machining",
+  "code": "pulse rifle magazine",
+  "result": {
+    "id": "madscience:pulse_rifle_magazine",
+    "count": 16
+  }
+}

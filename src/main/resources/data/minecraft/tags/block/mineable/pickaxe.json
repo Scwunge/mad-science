@@ -13,6 +13,8 @@
     "madscience:soniclocator",
     "madscience:meat_cube",
     "madscience:vox_box",
+    "madscience:magazine_loader",
+    "madscience:cnc_machine",
     "madscience:clay_furnace"
   ]
 }

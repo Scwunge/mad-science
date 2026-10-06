@@ -124,4 +124,30 @@ public final class SimpleMachineScreens {
             }
         }
     }
+
+    public static class MagazineLoader extends MachineScreen {
+        public MagazineLoader(MachineMenu menu, Inventory inventory, Component title) {
+            super(menu, inventory, title, "magazine_loader");
+        }
+
+        @Override
+        protected void drawGauges(GuiGraphics graphics) {
+            blitUp(graphics, 90, 55, 176, 0, 14, 14, scaled(value(0), value(1), 14));
+            blitRight(graphics, 108, 37, 176, 14, 27, 8, scaled(value(2), value(3), 27) + 1);
+        }
+
+        @Override
+        protected void addTooltips() {
+            tip(90, 55, 14, 14, percent("gui.madscience.energy_percent", value(0), value(1)), energyLine(value(0), value(1)));
+            tip(108, 37, 27, 8, percent("gui.madscience.progress_percent", value(2), value(3)),
+                    Component.translatable("gui.madscience.progress", value(2), value(3)),
+                    Component.translatable("gui.madscience.rounds_stored", value(4)));
+            if (menu.machine().items().getStackInSlot(0).isEmpty()) {
+                tip(89, 34, 16, 16, Component.translatable("gui.madscience.input_empty_magazines"));
+            }
+            if (menu.machine().items().getStackInSlot(1).isEmpty()) {
+                tip(143, 34, 16, 16, Component.translatable("gui.madscience.output_loaded_magazines"));
+            }
+        }
+    }
 }

@@ -1,0 +1,8 @@
+{
+  "type": "madscience:cnc_machining",
+  "code": "pulse rifle trigger",
+  "result": {
+    "id": "madscience:component_pulse_rifle_trigger",
+    "count": 1
+  }
+}

@@ -2,6 +2,8 @@ package io.github.scwunge.madscience.client;
 
 import io.github.scwunge.madscience.MadScience;
 import io.github.scwunge.madscience.client.model.BonderModel;
+import io.github.scwunge.madscience.client.model.CncMachineModel;
+import io.github.scwunge.madscience.client.model.MagazineLoaderModel;
 import io.github.scwunge.madscience.client.model.ClayFurnaceModel;
 import io.github.scwunge.madscience.client.model.CryotubeModel;
 import io.github.scwunge.madscience.client.model.DnaExtractorModel;
@@ -12,9 +14,12 @@ import io.github.scwunge.madscience.client.model.MainframeModel;
 import io.github.scwunge.madscience.client.model.SanitizerModel;
 import io.github.scwunge.madscience.client.model.SequencerModel;
 import io.github.scwunge.madscience.client.render.ClayFurnaceRenderer;
+import io.github.scwunge.madscience.client.render.CncMachineRenderer;
+import io.github.scwunge.madscience.client.render.MagazineLoaderRenderer;
 import io.github.scwunge.madscience.client.render.MachineItemRenderer;
 import io.github.scwunge.madscience.client.render.MachineRenderer;
 import io.github.scwunge.madscience.client.render.WeaponRenderers;
+import io.github.scwunge.madscience.client.screen.CncMachineScreen;
 import io.github.scwunge.madscience.client.screen.CryotubeScreen;
 import io.github.scwunge.madscience.client.screen.DnaExtractorScreen;
 import io.github.scwunge.madscience.content.machine.cryotube.CryotubeBlockEntity;
@@ -48,6 +53,7 @@ import net.neoforged.neoforge.client.event.RegisterMenuScreensEvent;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Predicate;
 import java.util.function.Supplier;
 
 /** Screens, block entity renderers, model layers and machine item renderers. */
@@ -66,11 +72,18 @@ public final class ClientRegistry {
     public static final ModelLayerLocation SONICLOCATOR = layer("soniclocator");
     public static final ModelLayerLocation MEAT_CUBE = layer("meat_cube");
     public static final ModelLayerLocation VOX_BOX = layer("vox_box");
+    public static final ModelLayerLocation MAGAZINE_LOADER = layer("magazine_loader");
+    public static final ModelLayerLocation CNC_MACHINE = layer("cnc_machine");
 
-    /** Machine items drawn with their block model: item, layer, texture. */
-    private record MachineItem(Supplier<? extends Block> block, ModelLayerLocation layer, ResourceLocation texture, float scale) {
+    /** Machine items drawn with their block model: item, layer, texture, scale, and parts only shown while working. */
+    private record MachineItem(Supplier<? extends Block> block, ModelLayerLocation layer, ResourceLocation texture, float scale,
+                               Predicate<String> hidden) {
         MachineItem(Supplier<? extends Block> block, ModelLayerLocation layer, ResourceLocation texture) {
             this(block, layer, texture, 1.0F);
+        }
+
+        MachineItem(Supplier<? extends Block> block, ModelLayerLocation layer, ResourceLocation texture, float scale) {
+            this(block, layer, texture, scale, part -> false);
         }
     }
 
@@ -87,7 +100,12 @@ public final class ClientRegistry {
             new MachineItem(ModBlocks.CRYOTUBE, CRYOTUBE, modelTexture("cryotube", "on"), 0.45F),
             new MachineItem(ModBlocks.SONICLOCATOR, SONICLOCATOR, modelTexture("soniclocator", "off"), 0.4F),
             new MachineItem(ModBlocks.MEAT_CUBE, MEAT_CUBE, modelTexture("meat_cube", "meatcube_0")),
-            new MachineItem(ModBlocks.VOX_BOX, VOX_BOX, modelTexture("vox_box", "voxbox0")));
+            new MachineItem(ModBlocks.VOX_BOX, VOX_BOX, modelTexture("vox_box", "voxbox0")),
+            // the originals drew just the bare machine as an item
+            new MachineItem(ModBlocks.MAGAZINE_LOADER, MAGAZINE_LOADER, modelTexture("magazine_loader", "empty"), 0.22F,
+                    part -> part.contains("_")),
+            new MachineItem(ModBlocks.CNC_MACHINE, CNC_MACHINE, modelTexture("cnc_machine", "off"), 0.45F,
+                    part -> part.contains("_") && !part.startsWith("screen") && !part.equals("press0_press0")));
 
     private ClientRegistry() {
     }
@@ -116,6 +134,8 @@ public final class ClientRegistry {
         event.registerLayerDefinition(SONICLOCATOR, io.github.scwunge.madscience.client.model.SoniclocatorModel::create);
         event.registerLayerDefinition(MEAT_CUBE, io.github.scwunge.madscience.client.model.MeatCubeModel::create);
         event.registerLayerDefinition(VOX_BOX, io.github.scwunge.madscience.client.model.VoxBoxModel::create);
+        event.registerLayerDefinition(MAGAZINE_LOADER, MagazineLoaderModel::create);
+        event.registerLayerDefinition(CNC_MACHINE, CncMachineModel::create);
         WeaponRenderers.layers(event);
     }
 
@@ -183,6 +203,8 @@ public final class ClientRegistry {
         event.registerBlockEntityRenderer(ModBlockEntities.CLAY_FURNACE.get(), ClayFurnaceRenderer::new);
         event.registerBlockEntityRenderer(ModBlockEntities.SONICLOCATOR.get(), io.github.scwunge.madscience.client.render.SoniclocatorRenderer::new);
         event.registerBlockEntityRenderer(ModBlockEntities.MEAT_CUBE.get(), io.github.scwunge.madscience.client.render.MeatCubeRenderer::new);
+        event.registerBlockEntityRenderer(ModBlockEntities.MAGAZINE_LOADER.get(), MagazineLoaderRenderer::new);
+        event.registerBlockEntityRenderer(ModBlockEntities.CNC_MACHINE.get(), CncMachineRenderer::new);
         ResourceLocation voxIdle = modelTexture("vox_box", "voxbox0");
         ResourceLocation voxTalking = modelTexture("vox_box", "voxbox1");
         event.registerBlockEntityRenderer(ModBlockEntities.VOX_BOX.get(), ctx -> new MachineRenderer<io.github.scwunge.madscience.content.machine.voxbox.VoxBoxBlockEntity>(ctx, VOX_BOX,
@@ -225,6 +247,8 @@ public final class ClientRegistry {
         event.register(ModMenus.SONICLOCATOR.get(), SimpleMachineScreens.Soniclocator::new);
         event.register(ModMenus.MEAT_CUBE.get(), SimpleMachineScreens.MeatCube::new);
         event.register(ModMenus.VOX_BOX.get(), SimpleMachineScreens.VoxBox::new);
+        event.register(ModMenus.MAGAZINE_LOADER.get(), SimpleMachineScreens.MagazineLoader::new);
+        event.register(ModMenus.CNC_MACHINE.get(), CncMachineScreen::new);
     }
 
     private static MachineItemRenderer itemRenderer;
@@ -234,7 +258,7 @@ public final class ClientRegistry {
         if (itemRenderer == null) {
             itemRenderer = new MachineItemRenderer();
             for (MachineItem entry : MACHINE_ITEMS) {
-                itemRenderer.add(entry.block().get().asItem(), entry.layer(), entry.texture(), entry.scale());
+                itemRenderer.add(entry.block().get().asItem(), entry.layer(), entry.texture(), entry.scale(), entry.hidden());
             }
         }
         return itemRenderer;
@@ -249,7 +273,7 @@ public final class ClientRegistry {
         return items.toArray(Item[]::new);
     }
 
-    static ResourceLocation[] frames(String machine, String prefix, int count) {
+    public static ResourceLocation[] frames(String machine, String prefix, int count) {
         ResourceLocation[] frames = new ResourceLocation[count];
         for (int i = 0; i < count; i++) {
             frames[i] = modelTexture(machine, prefix + i);

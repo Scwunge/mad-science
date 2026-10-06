@@ -80,6 +80,22 @@ public final class ModSounds {
 
     public static final DeferredHolder<SoundEvent, SoundEvent> VOX_BOX_CHIME = register("vox_box.chime");
 
+    public static final DeferredHolder<SoundEvent, SoundEvent> MAGAZINE_LOADER_INSERT = register("magazine_loader.insert_magazine");
+    public static final DeferredHolder<SoundEvent, SoundEvent> MAGAZINE_LOADER_LOADING = register("magazine_loader.loading");
+    public static final DeferredHolder<SoundEvent, SoundEvent> MAGAZINE_LOADER_PUSH_START = register("magazine_loader.push_start");
+    public static final DeferredHolder<SoundEvent, SoundEvent> MAGAZINE_LOADER_PUSH_STEP = register("magazine_loader.push_step");
+    public static final DeferredHolder<SoundEvent, SoundEvent> MAGAZINE_LOADER_PUSH_STOP = register("magazine_loader.push_stop");
+    public static final DeferredHolder<SoundEvent, SoundEvent> CNC_FINISH_CRUSHING = register("cnc_machine.finish_crushing");
+    public static final DeferredHolder<SoundEvent, SoundEvent> CNC_FINISHED = register("cnc_machine.finished");
+    public static final DeferredHolder<SoundEvent, SoundEvent> CNC_INSERT_IRON_BLOCK = register("cnc_machine.insert_iron_block");
+    public static final DeferredHolder<SoundEvent, SoundEvent> CNC_INVALID_BOOK = register("cnc_machine.invalid_book");
+    public static final DeferredHolder<SoundEvent, SoundEvent> CNC_POWER_ON = register("cnc_machine.power_on");
+    public static final DeferredHolder<SoundEvent, SoundEvent> CNC_PRESS = register("cnc_machine.press");
+    public static final DeferredHolder<SoundEvent, SoundEvent> CNC_PRESS_STOP = register("cnc_machine.press_stop");
+    public static final DeferredHolder<SoundEvent, SoundEvent> CNC_PRESSING_WORK = register("cnc_machine.pressing_work");
+    public static final DeferredHolder<SoundEvent, SoundEvent> CNC_WATER_FLOW = register("cnc_machine.water_flow");
+    public static final DeferredHolder<SoundEvent, SoundEvent> CNC_WATER_WORK = register("cnc_machine.water_work");
+
     public static final DeferredHolder<SoundEvent, SoundEvent> PULSE_RIFLE_FIRE = register("pulse_rifle.fire");
     public static final DeferredHolder<SoundEvent, SoundEvent> PULSE_RIFLE_EMPTY = register("pulse_rifle.empty");
     public static final DeferredHolder<SoundEvent, SoundEvent> PULSE_RIFLE_RELOAD = register("pulse_rifle.reload");

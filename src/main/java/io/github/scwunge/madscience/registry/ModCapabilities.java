@@ -31,6 +31,9 @@ public final class ModCapabilities {
         machine(event, ModBlockEntities.CRYOTUBE.get());
         machine(event, ModBlockEntities.SONICLOCATOR.get());
         machine(event, ModBlockEntities.VOX_BOX.get());
+        machine(event, ModBlockEntities.MAGAZINE_LOADER.get());
+        machine(event, ModBlockEntities.CNC_MACHINE.get());
+        event.registerBlockEntity(Capabilities.FluidHandler.BLOCK, ModBlockEntities.CNC_MACHINE.get(), (be, side) -> be.fluidHandler(side));
         event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, ModBlockEntities.MEAT_CUBE.get(), MachineBlockEntity::sidedItemHandler);
         event.registerBlockEntity(Capabilities.FluidHandler.BLOCK, ModBlockEntities.MEAT_CUBE.get(), (be, side) -> be.fluidHandler(side));
     }

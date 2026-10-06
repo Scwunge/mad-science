@@ -5,6 +5,7 @@ import io.github.scwunge.madscience.content.weapon.RifleState;
 import io.github.scwunge.madscience.content.weapon.RifleTrigger;
 import io.github.scwunge.madscience.registry.ModDataComponents;
 import io.github.scwunge.madscience.registry.ModItems;
+import io.github.scwunge.madscience.content.machine.MachineMenu;
 import net.minecraft.client.CameraType;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -102,5 +103,72 @@ final class WeaponHarness {
             look(player(server), 41, Y + 1.2, 3, 0, 25);
         });
         shot("weapons-on-ground");
+    }
+
+    /** The Magazine Loader and CnC Machine at work, their GUIs, and their items in the hotbar. */
+    static void machines() {
+        BlockPos loaderPos = new BlockPos(52, Y, 6);
+        BlockPos cncPos = new BlockPos(55, Y, 6);
+        server(20, server -> {
+            var level = level(server);
+            var player = player(server);
+            level.getEntitiesOfClass(net.minecraft.world.entity.Entity.class, new net.minecraft.world.phys.AABB(30, Y - 2, 0, 60, Y + 6, 12),
+                    e -> !(e instanceof net.minecraft.world.entity.player.Player)).forEach(net.minecraft.world.entity.Entity::discard);
+            for (BlockPos pos : List.of(loaderPos, cncPos)) {
+                level.setBlockAndUpdate(pos.south(), Blocks.REDSTONE_BLOCK.defaultBlockState());
+            }
+            var loaderBlock = io.github.scwunge.madscience.registry.ModBlocks.MAGAZINE_LOADER.get();
+            var loader = (io.github.scwunge.madscience.content.machine.magloader.MagazineLoaderBlockEntity) HarnessScript.place(level, loaderPos, loaderBlock, Direction.NORTH);
+            loaderBlock.setPlacedBy(level, loaderPos, level.getBlockState(loaderPos), player, ItemStack.EMPTY);
+            loader.items().setStackInSlot(2, new ItemStack(ModItems.ROUND.get(), 64));
+            loader.items().setStackInSlot(3, new ItemStack(ModItems.ROUND.get(), 64));
+            loader.items().setStackInSlot(0, new ItemStack(ModItems.MAGAZINE.get(), 4));
+            var cncBlock = io.github.scwunge.madscience.registry.ModBlocks.CNC_MACHINE.get();
+            var cnc = (io.github.scwunge.madscience.content.machine.cnc.CncMachineBlockEntity) HarnessScript.place(level, cncPos, cncBlock, Direction.NORTH);
+            cncBlock.setPlacedBy(level, cncPos, level.getBlockState(cncPos), player, ItemStack.EMPTY);
+            cnc.tank().fill(new net.neoforged.neoforge.fluids.FluidStack(net.minecraft.world.level.material.Fluids.WATER, 5000),
+                    net.neoforged.neoforge.fluids.capability.IFluidHandler.FluidAction.EXECUTE);
+            cnc.items().setStackInSlot(1, new ItemStack(net.minecraft.world.item.Items.IRON_BLOCK, 4));
+            ItemStack book = new ItemStack(net.minecraft.world.item.Items.WRITTEN_BOOK);
+            book.set(net.minecraft.core.component.DataComponents.WRITTEN_BOOK_CONTENT, new net.minecraft.world.item.component.WrittenBookContent(
+                    net.minecraft.server.network.Filterable.passThrough("Barrel"), "Scientist", 0,
+                    List.of(net.minecraft.server.network.Filterable.passThrough(net.minecraft.network.chat.Component.literal(
+                            io.github.scwunge.madscience.content.recipe.CncRecipe.toBinary("pulse rifle barrel")))), true));
+            cnc.items().setStackInSlot(2, book);
+            player.getInventory().setItem(0, new ItemStack(loaderBlock));
+            player.getInventory().setItem(1, new ItemStack(cncBlock));
+            player.getInventory().selected = 0;
+            look(player, 53.5, Y + 0.8, 3.2, 0, 15);
+        });
+        shot("loader-cnc-start");
+        server(60, server -> look(player(server), cncPos.getX() + 0.5, Y + 1.1, cncPos.getZ() - 1.4, 0, 30));
+        shot("cnc-pressing");
+        add((mc, server) -> 400);
+        shot("cnc-water");
+        add((mc, server) -> {
+            var cnc = (io.github.scwunge.madscience.content.machine.cnc.CncMachineBlockEntity) mc.level.getBlockEntity(cncPos);
+            check("client sees the CnC cutting (" + cnc.status() + ", progress " + cnc.progress() + ", iron " + cnc.hasIron() + ")",
+                    cnc.status() == io.github.scwunge.madscience.content.machine.cnc.CncMachineBlockEntity.Status.WORKING && cnc.progress() > 0);
+            return 1;
+        });
+        server(5, server -> {
+            var cnc = (io.github.scwunge.madscience.content.machine.cnc.CncMachineBlockEntity) level(server).getBlockEntity(cncPos);
+            check("CnC machine is cutting (" + cnc.status() + ", step " + cnc.stage() + ")",
+                    cnc.status() == io.github.scwunge.madscience.content.machine.cnc.CncMachineBlockEntity.Status.WORKING);
+            look(player(server), loaderPos.getX() + 0.5, Y + 1.1, loaderPos.getZ() - 1.4, 0, 30);
+        });
+        shot("loader-closeup");
+        server(20, server -> MachineMenu.open(player(server), (io.github.scwunge.madscience.content.machine.MachineBlockEntity) level(server).getBlockEntity(loaderPos)));
+        shot("gui-magazine_loader");
+        add((mc, server) -> {
+            mc.player.closeContainer();
+            return 5;
+        });
+        server(20, server -> MachineMenu.open(player(server), (io.github.scwunge.madscience.content.machine.MachineBlockEntity) level(server).getBlockEntity(cncPos)));
+        shot("gui-cnc_machine");
+        add((mc, server) -> {
+            mc.player.closeContainer();
+            return 5;
+        });
     }
 }

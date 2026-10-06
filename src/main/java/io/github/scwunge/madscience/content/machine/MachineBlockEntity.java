@@ -313,6 +313,12 @@ public abstract class MachineBlockEntity extends BlockEntity implements MenuProv
         return ClientboundBlockEntityDataPacket.create(this);
     }
 
+    /** Update packets carry {@link #writeClientData} only; read them the same way (the default goes through the save loader). */
+    @Override
+    public void onDataPacket(net.minecraft.network.Connection connection, ClientboundBlockEntityDataPacket packet, HolderLookup.Provider registries) {
+        readClientData(packet.getTag(), registries);
+    }
+
     // ---- saving ----
 
     @Override

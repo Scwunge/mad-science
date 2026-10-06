@@ -1,0 +1,33 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "456",
+    "212",
+    "232"
+  ],
+  "key": {
+    "1": {
+      "tag": "minecraft:sand"
+    },
+    "2": {
+      "tag": "c:obsidians"
+    },
+    "3": {
+      "item": "madscience:component_power_supply"
+    },
+    "4": {
+      "item": "madscience:circuit_emerald"
+    },
+    "5": {
+      "item": "minecraft:piston"
+    },
+    "6": {
+      "item": "madscience:component_cpu"
+    }
+  },
+  "result": {
+    "id": "madscience:cnc_machine",
+    "count": 1
+  }
+}

@@ -282,6 +282,10 @@ MACHINES = {
                   "[Slime + Pig, Chicken or Cow] Punch it for meat. Feed it Liquid Mutant DNA to grow the meat back."),
     "vox_box": ("voxBox", "Announcement System",
                 "Public address system for relaying announcements. Put a written book in and give it power and a redstone pulse."),
+    "magazine_loader": ("magLoader", "Magazine Loader",
+                        "Automatically loads rounds into empty Pulse Rifle magazines, 95 at a time. Requires power and a redstone signal to operate."),
+    "cnc_machine": ("cncMachine", "CnC Machine",
+                    "Computer Numerical Control: cuts blocks of iron into weapon parts, programmed by a written book naming the part (in plain text or binary). Needs water, power and a redstone signal."),
     "clay_furnace": ("clayFurnace", "Clay Furnace",
                      "Ancient technology that can give a source block from a single ore. Requires a block of coal and to be lit on fire."),
 }
@@ -477,6 +481,22 @@ def machine_recipes():
     shaped("vox_box", m("vox_box"), ["121", "465", "131"], {
         "1": m("component_case"), "2": m("component_computer"), "3": m("component_power_supply"), "4": m("circuit_spider_eye"),
         "5": m("circuit_ender_eye"), "6": "minecraft:jukebox"})
+    shaped("magazine_loader", m("magazine_loader"), [" 1 ", " 2 ", "435"], {
+        "1": "minecraft:hopper", "2": "minecraft:piston", "3": "minecraft:dispenser", "4": m("component_power_supply"),
+        "5": m("circuit_comparator")})
+    # the original asked for a full stack of sand in each sand slot; recipes can only take one
+    shaped("cnc_machine", m("cnc_machine"), ["456", "212", "232"], {
+        "1": "#minecraft:sand", "2": "#c:obsidians", "3": m("component_power_supply"), "4": m("circuit_emerald"),
+        "5": "minecraft:piston", "6": m("component_cpu")})
+    # what the CnC Machine cuts, by the words on the book's first page (the original used "m41a ..." phrases)
+    for code, result, count in [
+        ("pulse rifle barrel", "component_pulse_rifle_barrel", 1), ("pulse rifle bolt", "component_pulse_rifle_bolt", 1),
+        ("pulse rifle receiver", "component_pulse_rifle_receiver", 1), ("pulse rifle trigger", "component_pulse_rifle_trigger", 1),
+        ("pulse rifle magazine", "pulse_rifle_magazine", 16), ("pulse rifle bullets", "component_pulse_rifle_bullet_casing", 64),
+        ("pulse rifle grenades", "component_pulse_rifle_grenade_casing", 32),
+    ]:
+        write_json(DATA / f"recipe/cnc_machining/{result}.json", {
+            "type": f"{MOD}:cnc_machining", "code": code, "result": {"id": m(result), "count": count}})
     shaped("clay_furnace", m("clay_furnace"), ["111", "121", "111"], {"1": "minecraft:terracotta", "2": "minecraft:furnace"})
     # early-game help for the Thermosonic Bonder's nether star: mutant DNA over a skull in soul sand gives a wither skeleton egg
     shaped("wither_skeleton_spawn_egg", "minecraft:wither_skeleton_spawn_egg", ["212", "232", "242"], {
@@ -601,6 +621,16 @@ def gui_lang():
         "gui.madscience.millibuckets": "%s mB",
         "gui.madscience.place_empty_bucket": "Place empty bucket",
         "gui.madscience.place_water_bucket": "Place water bucket",
+        "gui.madscience.rounds_stored": "%s rounds stored",
+        "gui.madscience.input_empty_magazines": "Input empty magazine(s)",
+        "gui.madscience.output_loaded_magazines": "Output filled magazine(s)",
+        "gui.madscience.input_water_bucket": "Input water bucket",
+        "gui.madscience.input_iron_block": "Input block of iron",
+        "gui.madscience.input_cnc_book": "Input written book naming the part",
+        "gui.madscience.cnc.offline": "OFFLINE",
+        "gui.madscience.cnc.not_ready": "NOT READY",
+        "gui.madscience.cnc.need_water": "NEED WATER",
+        "gui.madscience.cnc.invalid_book": "INVALID BOOK",
     })
 
 
