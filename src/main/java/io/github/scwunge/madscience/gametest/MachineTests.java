@@ -12,6 +12,7 @@ import io.github.scwunge.madscience.content.machine.TallMachineBlock;
 import io.github.scwunge.madscience.content.machine.clayfurnace.ClayFurnaceBlockEntity;
 import io.github.scwunge.madscience.content.machine.cryotube.CryotubeBlockEntity;
 import io.github.scwunge.madscience.content.machine.meatcube.MeatCubeBlockEntity;
+import io.github.scwunge.madscience.content.machine.voxbox.VoxBoxBlockEntity;
 import io.github.scwunge.madscience.content.machine.soniclocator.SoniclocatorBlockEntity;
 import io.github.scwunge.madscience.content.machine.duplicator.DuplicatorBlockEntity;
 import io.github.scwunge.madscience.content.machine.freezer.FreezerBlockEntity;
@@ -324,6 +325,23 @@ public final class MachineTests {
             helper.assertTrue(cube.meat() == MeatCubeBlockEntity.MAX_MEAT, "did not regrow, meat " + cube.meat());
             helper.assertTrue(cube.tank().getFluidAmount() == 750, "regrowing one chunk should use 250 mB");
             assertSlot(helper, cube, MeatCubeBlockEntity.BUCKET_OUT, new ItemStack(Items.BUCKET));
+        });
+    }
+
+    @GameTest(template = ItemTests.EMPTY)
+    public static void voxBoxReadsBookOnRedstonePulse(GameTestHelper helper) {
+        VoxBoxBlockEntity vox = place(helper, ModBlocks.VOX_BOX.get());
+        ItemStack book = new ItemStack(Items.WRITTEN_BOOK);
+        book.set(net.minecraft.core.component.DataComponents.WRITTEN_BOOK_CONTENT, new net.minecraft.world.item.component.WrittenBookContent(
+                net.minecraft.server.network.Filterable.passThrough("Notice"), "Scientist", 0,
+                java.util.List.of(net.minecraft.server.network.Filterable.passThrough(net.minecraft.network.chat.Component.literal("Evacuate  the\nlab"))), true));
+        vox.items().setStackInSlot(VoxBoxBlockEntity.BOOK, book);
+        helper.assertTrue("Evacuate the lab".equals(vox.announcement()), "read " + vox.announcement());
+        int before = vox.energyStored();
+        helper.setBlock(new BlockPos(1, 1, 0), Blocks.REDSTONE_BLOCK);
+        helper.succeedWhen(() -> {
+            helper.assertTrue(vox.isActive(), "should be talking");
+            helper.assertTrue(vox.energyStored() < before, "talking should use power");
         });
     }
 

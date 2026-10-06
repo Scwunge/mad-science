@@ -48,6 +48,8 @@ public final class ModBlocks {
             () -> new TallMachineBlock(machineProperties(), ModBlockEntities.SONICLOCATOR, 3));
     public static final DeferredBlock<MeatCubeBlock> MEAT_CUBE = machine("meat_cube",
             () -> new MeatCubeBlock(BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_RED).strength(5.0F).sound(SoundType.SLIME_BLOCK).noOcclusion()));
+    public static final DeferredBlock<MachineBlock> VOX_BOX = machine("vox_box",
+            () -> new MachineBlock(machineProperties(), ModBlockEntities.VOX_BOX));
     public static final DeferredBlock<AbominationEggBlock> ABOMINATION_EGG = machine("abomination_egg",
             () -> new AbominationEggBlock(BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_BLACK).strength(5.0F, 1.0F)
                     .ignitedByLava().noOcclusion().lightLevel(state -> 1).pushReaction(net.minecraft.world.level.material.PushReaction.DESTROY)));

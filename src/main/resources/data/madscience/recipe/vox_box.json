@@ -1,0 +1,33 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "121",
+    "465",
+    "131"
+  ],
+  "key": {
+    "1": {
+      "item": "madscience:component_case"
+    },
+    "2": {
+      "item": "madscience:component_computer"
+    },
+    "3": {
+      "item": "madscience:component_power_supply"
+    },
+    "4": {
+      "item": "madscience:circuit_spider_eye"
+    },
+    "5": {
+      "item": "madscience:circuit_ender_eye"
+    },
+    "6": {
+      "item": "minecraft:jukebox"
+    }
+  },
+  "result": {
+    "id": "madscience:vox_box",
+    "count": 1
+  }
+}

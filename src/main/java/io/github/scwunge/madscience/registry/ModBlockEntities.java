@@ -14,6 +14,7 @@ import io.github.scwunge.madscience.content.machine.meatcube.MeatCubeBlockEntity
 import io.github.scwunge.madscience.content.machine.sanitizer.SanitizerBlockEntity;
 import io.github.scwunge.madscience.content.machine.sequencer.SequencerBlockEntity;
 import io.github.scwunge.madscience.content.machine.soniclocator.SoniclocatorBlockEntity;
+import io.github.scwunge.madscience.content.machine.voxbox.VoxBoxBlockEntity;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -51,6 +52,8 @@ public final class ModBlockEntities {
             register("soniclocator", SoniclocatorBlockEntity::new, ModBlocks.SONICLOCATOR);
     public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<MeatCubeBlockEntity>> MEAT_CUBE =
             register("meat_cube", MeatCubeBlockEntity::new, ModBlocks.MEAT_CUBE);
+    public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<VoxBoxBlockEntity>> VOX_BOX =
+            register("vox_box", VoxBoxBlockEntity::new, ModBlocks.VOX_BOX);
     public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<AbominationEggBlockEntity>> ABOMINATION_EGG =
             register("abomination_egg", AbominationEggBlockEntity::new, ModBlocks.ABOMINATION_EGG);
 

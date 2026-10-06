@@ -78,6 +78,8 @@ public final class ModSounds {
     public static final DeferredHolder<SoundEvent, SoundEvent> MEAT_CUBE_HEARTBEAT = register("meat_cube.heartbeat");
     public static final DeferredHolder<SoundEvent, SoundEvent> MEAT_CUBE_BELLY = register("meat_cube.belly");
 
+    public static final DeferredHolder<SoundEvent, SoundEvent> VOX_BOX_CHIME = register("vox_box.chime");
+
     private ModSounds() {
     }
 

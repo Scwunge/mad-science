@@ -212,6 +212,8 @@ MACHINES = {
                      "Replaces target blocks in a given chunk with gravel, and keeps the target block. Needs power and a redstone signal."),
     "meat_cube": ("meatCube", "Disgusting Meat Cube",
                   "[Slime + Pig, Chicken or Cow] Punch it for meat. Feed it Liquid Mutant DNA to grow the meat back."),
+    "vox_box": ("voxBox", "Announcement System",
+                "Public address system for relaying announcements. Put a written book in and give it power and a redstone pulse."),
     "clay_furnace": ("clayFurnace", "Clay Furnace",
                      "Ancient technology that can give a source block from a single ore. Requires a block of coal and to be lit on fire."),
 }
@@ -404,6 +406,9 @@ def machine_recipes():
     shaped("soniclocator", m("soniclocator"), ["111", "323", "545"], {
         "1": m("component_thumper"), "2": m("component_screen"), "3": m("component_computer"), "4": m("component_power_supply"),
         "5": m("circuit_ender_eye")})
+    shaped("vox_box", m("vox_box"), ["121", "465", "131"], {
+        "1": m("component_case"), "2": m("component_computer"), "3": m("component_power_supply"), "4": m("circuit_spider_eye"),
+        "5": m("circuit_ender_eye"), "6": "minecraft:jukebox"})
     shaped("clay_furnace", m("clay_furnace"), ["111", "121", "111"], {"1": "minecraft:terracotta", "2": "minecraft:furnace"})
     # early-game help for the Thermosonic Bonder's nether star: mutant DNA over a skull in soul sand gives a wither skeleton egg
     shaped("wither_skeleton_spawn_egg", "minecraft:wither_skeleton_spawn_egg", ["212", "232", "242"], {
@@ -521,6 +526,8 @@ def gui_lang():
         "gui.madscience.health_percent": "Health %s %%",
         "gui.madscience.neural_percent": "Neural %s %%",
         "gui.madscience.meat_left": "Meat: %s / %s",
+        "gui.madscience.place_written_book": "Place written book",
+        "chat.madscience.vox_box": "[Announcement] %s",
         "gui.madscience.soniclocator_targets": "Targets left in chunk: %s (after %s thumps)",
         "gui.madscience.clay_furnace_hint": "Light with flint and steel. Hit it when it stops burning, wait for it to cool, then hit it again.",
         "gui.madscience.millibuckets": "%s mB",

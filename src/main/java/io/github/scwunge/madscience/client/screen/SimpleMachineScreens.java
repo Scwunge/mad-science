@@ -106,4 +106,22 @@ public final class SimpleMachineScreens {
                     Component.translatable("gui.madscience.meat_left", value(4), value(5)));
         }
     }
+    public static class VoxBox extends MachineScreen {
+        public VoxBox(MachineMenu menu, Inventory inventory, Component title) {
+            super(menu, inventory, title, "vox_box");
+        }
+
+        @Override
+        protected void drawGauges(GuiGraphics graphics) {
+            blitUp(graphics, 80, 43, 176, 0, 14, 14, scaled(value(0), value(1), 14));
+        }
+
+        @Override
+        protected void addTooltips() {
+            tip(80, 43, 14, 14, percent("gui.madscience.energy_percent", value(0), value(1)), energyLine(value(0), value(1)));
+            if (menu.machine().items().getStackInSlot(0).isEmpty()) {
+                tip(79, 25, 16, 16, Component.translatable("gui.madscience.place_written_book"));
+            }
+        }
+    }
 }

@@ -20,6 +20,7 @@ public final class MadConfig {
     public static final ModConfigSpec.IntValue CRYOTUBE_FE_PER_NEURON;
     public static final ModConfigSpec.IntValue SONICLOCATOR_CONFLICT_RANGE;
     public static final ModConfigSpec.IntValue SONICLOCATOR_SCAN_TOP;
+    public static final ModConfigSpec.IntValue VOX_BOX_RANGE;
     public static final ModConfigSpec.BooleanValue ABOMINATION_LAYS_EGGS;
     public static final ModConfigSpec.BooleanValue ABOMINATION_TELEPORTS;
     public static final ModConfigSpec.BooleanValue PULSE_RIFLE_ENABLED;
@@ -42,6 +43,8 @@ public final class MadConfig {
         SONICLOCATOR_CONFLICT_RANGE = BUILDER.comment("If two Soniclocators thump within this many blocks of each other, both explode (like the original).",
                         "0 turns this off. Explosions still respect claims and protection mods.")
                 .defineInRange("soniclocatorConflictRange", 2600, 0, 30_000_000);
+        VOX_BOX_RANGE = BUILDER.comment("Players within this many blocks of an Announcement System see its announcements.")
+                .defineInRange("voxBoxRange", 64, 1, 30_000_000);
         SONICLOCATOR_SCAN_TOP = BUILDER.comment("Highest Y level the Soniclocator searches (the original searched up to 127).")
                 .defineInRange("soniclocatorScanTop", 127, -64, 320);
         BUILDER.pop();
