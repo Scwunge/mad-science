@@ -260,7 +260,11 @@ def fluids():
         if ORIG.exists():
             for kind in ("still", "flowing"):
                 copy_texture(ORIG / f"textures/blocks/{orig}_{kind}.png", ASSETS / f"textures/block/{fid}_{kind}.png")
-                shutil.copyfile(ORIG / f"textures/blocks/{orig}_{kind}.png.mcmeta", ASSETS / f"textures/block/{fid}_{kind}.png.mcmeta")
+                meta = (ORIG / f"textures/blocks/{orig}_{kind}.png.mcmeta").read_text(encoding="utf-8").replace("
+", "
+")
+                (ASSETS / f"textures/block/{fid}_{kind}.png.mcmeta").write_text(meta, encoding="utf-8", newline="
+")
             copy_texture(ORIG / f"textures/items/{bucket_tex}.png", ASSETS / f"textures/item/{fid}_bucket.png")
         write_json(ASSETS / f"blockstates/{fid}.json", {"variants": {"": {"model": f"{MOD}:block/{fid}"}}})
         write_json(ASSETS / f"models/block/{fid}.json", {"textures": {"particle": f"{MOD}:block/{fid}_still"}})
