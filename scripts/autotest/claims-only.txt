@@ -1,0 +1,37 @@
+# Claims only: grenade in an unclaimed chunk versus a server-claimed one.
+wait 300
+cmd gamemode creative @s
+cmd forceload add 0 0 31 15
+cmd fill -2 100 -2 33 100 17 minecraft:dirt
+cmd fill -2 101 -2 33 110 17 air
+wait 60
+log --- grenade in an unclaimed chunk
+cmd tp @s 24.5 101 8.5 0 90
+wait 20
+cmd item replace entity @s weapon.mainhand with madscience:pulse_rifle[madscience:rifle={rounds:20,grenades:4,grenade_mode:true,magazine:true}]
+wait 10
+look 0 90
+hold attack 5
+wait 60
+cmd execute if block 24 100 8 minecraft:dirt run say UNCLAIMED: dirt survived
+cmd execute unless block 24 100 8 minecraft:dirt run say UNCLAIMED: grenade broke the dirt
+
+log --- grenade in a server claim
+cmd tp @s 8.5 101 8.5 0 90
+wait 20
+cmd oclaims server-claim-mode
+wait 10
+cmd oclaims claim
+wait 20
+look 0 90
+hold attack 5
+wait 60
+cmd execute if block 8 100 8 minecraft:dirt run say CLAIMED: dirt survived
+cmd execute unless block 8 100 8 minecraft:dirt run say CLAIMED: grenade broke the dirt
+screenshot srv-claim
+cmd oclaims unclaim
+cmd oclaims server-claim-mode
+
+cmd oclaims about
+log --- done
+quit

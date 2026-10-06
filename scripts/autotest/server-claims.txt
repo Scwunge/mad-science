@@ -1,0 +1,82 @@
+# Joined to a dedicated server with Open Parties and Claims: the rifle over the network, machines, and grenades in an
+# unclaimed chunk versus a server-claimed one. The runner grants op over RCON after the player joins.
+wait 300
+cmd gamemode creative @s
+cmd time set day
+cmd gamerule doMobSpawning false
+cmd forceload add 0 0 31 15
+cmd fill -2 100 -2 33 100 17 minecraft:dirt
+cmd fill -2 101 -2 33 110 17 air
+wait 60
+
+log --- grenade in an unclaimed chunk
+cmd tp @s 24.5 101 8.5 0 90
+wait 20
+cmd item replace entity @s weapon.mainhand with madscience:pulse_rifle[madscience:rifle={rounds:20,grenades:4,grenade_mode:true,magazine:true}]
+wait 10
+look 0 90
+hold attack 5
+wait 60
+cmd execute if block 24 100 8 minecraft:dirt run say UNCLAIMED: dirt survived
+cmd execute unless block 24 100 8 minecraft:dirt run say UNCLAIMED: grenade broke the dirt
+
+log --- grenade in a server claim
+cmd tp @s 8.5 101 8.5 0 90
+wait 20
+cmd oclaims server-claim-mode
+wait 10
+cmd oclaims claim
+wait 20
+look 0 90
+hold attack 5
+wait 60
+cmd execute if block 8 100 8 minecraft:dirt run say CLAIMED: dirt survived
+cmd execute unless block 8 100 8 minecraft:dirt run say CLAIMED: grenade broke the dirt
+screenshot srv-claim
+cmd oclaims unclaim
+cmd oclaims server-claim-mode
+
+log --- rounds over the network
+cmd tp @s 24.5 101 2.5 0 0
+cmd item replace entity @s weapon.mainhand with madscience:pulse_rifle[madscience:rifle={rounds:42,grenades:0,grenade_mode:false,magazine:true}]
+cmd summon minecraft:zombie 24.5 101 12.5 {NoAI:1b,PersistenceRequired:1b}
+wait 20
+look 0 5
+hold attack 60
+wait 30
+screenshot srv-rifle-firing
+wait 40
+cmd data get entity @s SelectedItem.components."madscience:rifle"
+cmd execute unless entity @e[type=zombie,distance=..30] run say RIFLE: zombie killed
+cmd execute if entity @e[type=zombie,distance=..30] run say RIFLE: zombie still alive
+
+log --- machines and their GUIs over the network
+cmd kill @e[type=!player,distance=..60]
+cmd setblock 22 101 6 madscience:dna_extractor[facing=north]
+cmd setblock 25 101 6 madscience:cnc_machine[facing=north]
+cmd setblock 25 101 7 minecraft:redstone_block
+cmd setblock 28 101 6 madscience:magazine_loader[facing=north]
+cmd setblock 28 101 7 minecraft:redstone_block
+wait 40
+cmd data merge block 22 101 6 {Energy:1000000,Items:{Size:5,Items:[{Slot:0,id:"madscience:syringe_cow",count:2}]}}
+cmd data merge block 25 101 6 {Energy:250000,Tank:{Fluid:{id:"minecraft:water",amount:5000}},Items:{Size:5,Items:[{Slot:1,id:"minecraft:iron_block",count:1},{Slot:2,id:"minecraft:written_book",count:1,components:{"minecraft:written_book_content":{title:"Bolt",author:"Test",pages:['"pulse rifle bolt"']}}}]}}
+cmd data merge block 28 101 6 {Energy:250000,Items:{Size:14,Items:[{Slot:0,id:"madscience:pulse_rifle_magazine",count:1},{Slot:2,id:"madscience:pulse_rifle_round",count:64},{Slot:3,id:"madscience:pulse_rifle_round",count:64}]}}
+cmd tp @s 25.5 101 2.5 0 15
+wait 100
+do use_block {"x":25,"y":101,"z":6}
+wait 30
+screenshot srv-gui-cnc
+close
+wait 10
+do use_block {"x":28,"y":101,"z":6}
+wait 30
+screenshot srv-gui-magazine-loader
+close
+screenshot srv-machines
+wait 1000
+cmd data get block 22 101 6 Items
+cmd data get block 25 101 6 Items
+cmd data get block 28 101 6 Items
+screenshot srv-machines-done
+log --- done
+quit

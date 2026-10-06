@@ -41,6 +41,16 @@ neoForge {
                 }
             }
         }
+        // -Pautotest=<script> runs a Cortex autotest script (needs the Cortex jar in runs/client/mods);
+        // -PautotestServer=host:port makes it join that server
+        if (project.hasProperty('autotest')) {
+            client {
+                systemProperty 'cortex.autotest', file(project.property('autotest')).absolutePath
+                if (project.hasProperty('autotestServer')) {
+                    systemProperty 'cortex.autotest.server', project.property('autotestServer')
+                }
+            }
+        }
         server {
             server()
             gameDirectory = file('runs/server')
